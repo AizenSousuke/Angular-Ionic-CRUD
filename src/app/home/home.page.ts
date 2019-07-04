@@ -38,6 +38,7 @@ export class HomePage {
   onDelete(item) {
     this.expenses.splice(item, 1);
     console.log("Deleted " + item);
+    this.calculateTotalExpenses();
   }
 
   onClear() {
