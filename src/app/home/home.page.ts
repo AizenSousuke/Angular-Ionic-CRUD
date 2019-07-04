@@ -28,7 +28,8 @@ export class HomePage {
   }
 
   onAdd() {
-
+    
+    this.BudgetPlannerForm.reset();
     console.log("Submitted");
   }
 
@@ -38,7 +39,7 @@ export class HomePage {
   }
 
   onClear() {
-    
+    this.BudgetPlannerForm.reset();
     console.log("Cleared");
   }
 }
