@@ -18,8 +18,8 @@ export class HomePage {
   ];
   BudgetPlannerForm = new FormGroup(
     {
-        title: new FormControl('Food'),
-        value: new FormControl(100),
+        title: new FormControl('Food', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
+        value: new FormControl(100, [Validators.required, Validators.min(1), Validators.max(9999)]),
     }
   );
 
@@ -28,11 +28,15 @@ export class HomePage {
   }
 
   onAdd() {
-    console.log(this.BudgetPlannerForm.value);
-    this.expenses.push({title: this.BudgetPlannerForm.value.title, value: this.BudgetPlannerForm.value.value})
-    this.calculateTotalExpenses();
-    this.BudgetPlannerForm.reset();
-    console.log("Submitted");
+    if (this.BudgetPlannerForm.valid) {
+      console.log(this.BudgetPlannerForm.value);
+      this.expenses.push({title: this.BudgetPlannerForm.value.title, value: this.BudgetPlannerForm.value.value})
+      this.calculateTotalExpenses();
+      this.BudgetPlannerForm.reset();
+      console.log("Submitted");
+    } else {
+      console.log("Form is invalid");
+    }
   }
 
   onDelete(item) {

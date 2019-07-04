@@ -12,13 +12,13 @@
       <p class="ion-margin">
         Expenses:
       </p>
-      <ion-input formControlName="title" type="text" class="ion-margin" inputmode="text" required="true"></ion-input>
+      <ion-input formControlName="title" type="text" class="ion-margin" inputmode="text"></ion-input>
     </ion-item>
     <ion-item>
       <p class="ion-margin">
         Cost ($):
       </p>
-      <ion-input formControlName="value" type="number" class="ion-margin" inputmode="numeric" required="true"></ion-input>
+      <ion-input formControlName="value" type="number" class="ion-margin" inputmode="numeric"></ion-input>
     </ion-item>
     <ion-item>
         <ion-grid fixed>
@@ -36,6 +36,7 @@
               </ion-button>
             </ion-col>
           </ion-row>
+          <ion-label color="danger" *ngIf="!BudgetPlannerForm.valid && !BudgetPlannerForm.pristine">Error: Form is invalid</ion-label>
         </ion-grid>
     </ion-item>
   </form>
