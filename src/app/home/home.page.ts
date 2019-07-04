@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
@@ -18,17 +18,19 @@ export class HomePage {
   ];
   BudgetPlannerForm = new FormGroup(
     {
-        title: new FormControl(''),
-        value: new FormControl(''),
+        title: new FormControl('Food'),
+        value: new FormControl(100),
     }
   );
 
   constructor() {
-
+    this.calculateTotalExpenses();
   }
 
   onAdd() {
-    
+    console.log(this.BudgetPlannerForm.value);
+    this.expenses.push({title: this.BudgetPlannerForm.value.title, value: this.BudgetPlannerForm.value.value})
+    this.calculateTotalExpenses();
     this.BudgetPlannerForm.reset();
     console.log("Submitted");
   }
@@ -41,5 +43,15 @@ export class HomePage {
   onClear() {
     this.BudgetPlannerForm.reset();
     console.log("Cleared");
+  }
+
+  calculateTotalExpenses() {
+    let expenses = 0;
+    for (let index = 0; index < this.expenses.length; index++) {
+      expenses += this.expenses[index].value;
+      console.log(this.expenses[index].value);
+    }
+    this.totalExpenses = expenses;
+    console.log('Total expenses: ' + this.totalExpenses);
   }
 }
