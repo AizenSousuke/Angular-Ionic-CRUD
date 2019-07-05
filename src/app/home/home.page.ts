@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { MenuController } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
@@ -23,8 +25,15 @@ export class HomePage {
     }
   );
 
-  constructor() {
+  constructor(private _router: Router,
+              private _menu: MenuController) {
     this.calculateTotalExpenses();
+  }
+
+  openMenu() {
+    this._menu.enable(true, 'menuId');
+    this._menu.open('menuId');
+    console.log(this._menu);
   }
 
   onAdd() {
@@ -58,5 +67,9 @@ export class HomePage {
     }
     this.totalExpenses = expenses;
     console.log('Total expenses: ' + this.totalExpenses);
+  }
+
+  loadRecipeList() {
+    this._router.navigate(['/recipe-list']);
   }
 }

@@ -1,12 +1,35 @@
+
 <ion-header>
   <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button menu="menuId"></ion-menu-button>
+    </ion-buttons>
     <ion-title>
       Budget Planner: A Ionic and Angular CRUD App
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
+<ion-menu contentId="content" menuId="menuId" side="start" type="overlay">
+  <ion-header>
+    <ion-toolbar color="primary">
+      <ion-title>Menu</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-item>
+      <ion-label [routerLink]="['/recipe-list']">Recipe</ion-label>
+    </ion-item>
+  </ion-content>
+</ion-menu>
+
 <ion-content>
+  <ion-router-outlet id="content"></ion-router-outlet>
+  <ion-button (click)="openMenu()" expand="full">
+    Menu
+  </ion-button>
+  <ion-button (click)="loadRecipeList()" expand="full">Recipe List</ion-button>
+  
   <form [formGroup]="BudgetPlannerForm" (ngSubmit)="onAdd()">
     <ion-item>
       <p class="ion-margin">
