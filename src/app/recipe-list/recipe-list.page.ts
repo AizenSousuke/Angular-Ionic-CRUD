@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./recipe-list.page.scss'],
 })
 export class RecipeListPage implements OnInit {
-  listOfRecipes : Recipe[] = [
+  public listOfRecipes : Recipe[] = [
     {
       id: 1,
       imageLink: 'https://www.jocooks.com/wp-content/uploads/2013/10/classic-apple-pie-1-2-500x500.jpg',

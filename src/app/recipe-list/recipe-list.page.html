@@ -12,11 +12,11 @@
             <ion-icon name="help" class="ion-padding-start" *ngIf="!recipe.favourite" (click)="cardFavourite(recipe)"></ion-icon>
         </ion-fab-button>
       </ion-fab>
-      <ion-card-header>
+      <ion-card-header (click)="onClickRecipe(recipe)">
         <ion-avatar *ngIf="recipe.imageLink">
           <ion-img [src]="recipe.imageLink"></ion-img>
         </ion-avatar>
-        <ion-card-title (click)="onClickRecipe(recipe)">
+        <ion-card-title>
             <ion-label>{{ recipe.name }}</ion-label>
         </ion-card-title>
         <!--
