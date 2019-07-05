@@ -5,19 +5,23 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <ion-item *ngFor="let recipe of listOfRecipes">
-    <ion-card-header>
-      <ion-card-title>
-          <ion-label>{{ recipe.name }}</ion-label>
-      </ion-card-title>
-      <ion-card-subtitle>Ingredients: {{ recipe.ingredients }}</ion-card-subtitle>
-      <ion-card-content *ngIf="!recipe.favourite">
-          <ion-card button class="ion-padding" color="primary" (click)="cardFavourite(recipe)">Add {{recipe.name}} to Favourite</ion-card>
-      </ion-card-content>
-      <ion-card-content *ngIf="recipe.favourite">
-        This is currently my favourite!
-        <ion-card button class="ion-padding" color="danger" (click)="cardFavourite(recipe)">Remove from Favourite</ion-card>
-      </ion-card-content>
-    </ion-card-header>
-  </ion-item>
+  <ion-card *ngFor="let recipe of listOfRecipes">
+      <ion-card-header >
+        <ion-avatar *ngIf="recipe.imageLink">
+          <ion-img [src]="recipe.imageLink"></ion-img>
+        <ion-icon slot="end" name="heart"></ion-icon>
+        </ion-avatar>
+        <ion-card-title (click)="onClickRecipe(recipe)">
+            <ion-label>{{ recipe.name }}</ion-label>
+            <ion-icon name="heart" class="ion-padding-start" *ngIf="recipe.favourite"></ion-icon>
+        </ion-card-title>
+        <ion-card-subtitle>Ingredients: {{ recipe.ingredients }}</ion-card-subtitle>
+        <ion-card-content *ngIf="!recipe.favourite">
+            <ion-card button class="ion-padding" color="primary" (click)="cardFavourite(recipe)">Add {{recipe.name}} to Favourite</ion-card>
+        </ion-card-content>
+        <ion-card-content *ngIf="recipe.favourite">
+          <ion-card button class="ion-padding" color="danger" (click)="cardFavourite(recipe)">Remove from Favourite</ion-card>
+        </ion-card-content>
+      </ion-card-header>      
+  </ion-card>
 </ion-content>

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Recipe } from './recipe';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-recipe-list',
@@ -9,17 +10,20 @@ import { Recipe } from './recipe';
 export class RecipeListPage implements OnInit {
   listOfRecipes : Recipe[] = [
     {
+      id: 1,
+      imageLink: 'https://www.jocooks.com/wp-content/uploads/2013/10/classic-apple-pie-1-2-500x500.jpg',
       name: 'Apple Pie',
       ingredients: [' Apple', ' Pie'],
     },
     {
+      id: 2,
       name: 'Milk Tea',
       ingredients: [' Milk', ' Tea'],
       favourite: true,
     }
   ];
 
-  constructor() { }
+  constructor(private _router: Router) { }
 
   ngOnInit() {
   }
@@ -30,6 +34,11 @@ export class RecipeListPage implements OnInit {
       item.favourite = !item.favourite;
       console.log("Favourite: " + item.favourite);
     }
+  }
+
+  onClickRecipe(item : Recipe) {
+    console.log("Clicked: " + item.name + " | id: " + item.id);
+    this._router.navigate(['recipe-list', item.id]);
   }
 
 }
