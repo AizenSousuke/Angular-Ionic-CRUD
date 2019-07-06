@@ -20,6 +20,7 @@ export class RecipeListPage implements OnInit {
       imageLink: 'https://www.ohhowcivilized.com/wp-content/uploads/2019/05/0519-bubble-tea-16-2.jpg',
       name: 'Milk Tea',
       ingredients: [' Milk', ' Tea'],
+      timeNeeded: 70,
       favourite: true,
     }
   ];

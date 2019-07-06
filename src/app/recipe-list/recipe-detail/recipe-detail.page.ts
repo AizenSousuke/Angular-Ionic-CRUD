@@ -11,6 +11,12 @@ import { Location } from '@angular/common';
 })
 export class RecipeDetailPage implements OnInit {
   recipeName : string = '';
+  imageLink: string;
+  name: string;
+  description: string;
+  ingredients: string[];
+  timeNeeded: number;
+  favourite: boolean;
 
   constructor(private _route : ActivatedRoute,
               private _location : Location,
@@ -28,12 +34,27 @@ export class RecipeDetailPage implements OnInit {
       if (res.id.toString() == this._route.snapshot.paramMap.get('id')) {
         this.recipeName = res.name;
         console.log("Recipe Name: " + res.name);
+        this.getCurrentRecipe();
       }
     });
   }
 
   onBack() {
     this._location.back();
+  }
+
+  getCurrentRecipe() {
+    this._recipeListComponent.listOfRecipes.forEach((recipe) => {
+      if (recipe.name == this.recipeName) {
+        this.name = recipe.name;
+        this.imageLink = recipe.imageLink;
+        this.description = recipe.description;
+        this.ingredients = recipe.ingredients;
+        this.timeNeeded = recipe.timeNeeded;
+        this.favourite = recipe.favourite;
+        console.log("Current Recipe: " + recipe.name);
+      }
+    });
   }
 
 }
