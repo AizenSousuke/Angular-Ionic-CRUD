@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Recipe } from './recipe';
 import { Router } from '@angular/router';
 import { RecipeServiceService } from '../recipe-service.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-recipe-list',
@@ -33,6 +34,7 @@ export class RecipeListPage implements OnInit {
   constructor(
       private _router: Router,
       private _recipeService: RecipeServiceService,
+      private _location: Location,
     ) { 
       this.listOfRecipes = this._recipeService.getAllRecipes();
     }
@@ -58,6 +60,11 @@ export class RecipeListPage implements OnInit {
   onClickRecipe(item : Recipe) {
     console.log("Clicked: " + item.name + " | id: " + item.id);
     this._router.navigate(['recipe-list', item.id]);
+  }
+
+  onBack() {
+    //this._location.back();
+    this._router.navigate(['/']);
   }
 
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { RecipeListPage } from '../recipe-list.page';
 import { Location } from '@angular/common';
 import { RecipeServiceService } from 'src/app/recipe-service.service';
@@ -21,6 +21,7 @@ export class RecipeDetailPage implements OnInit {
   favourite: boolean;
 
   constructor(private _route : ActivatedRoute,
+              private _router : Router,
               private _location : Location,
               private _recipeListComponent : RecipeListPage,
               private _recipeService : RecipeServiceService,
@@ -54,7 +55,8 @@ export class RecipeDetailPage implements OnInit {
   }
 
   onBack() {
-    this._location.back();
+    //this._location.back();
+    this._router.navigate(['/recipe-list']);
   }
 
   /*
