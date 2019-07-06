@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Recipe } from './recipe';
 import { Router } from '@angular/router';
+import { RecipeServiceService } from '../recipe-service.service';
 
 @Component({
   selector: 'app-recipe-list',
@@ -8,6 +9,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./recipe-list.page.scss'],
 })
 export class RecipeListPage implements OnInit {
+  listOfRecipes : Recipe[];
+  /*
   public listOfRecipes : Recipe[] = [
     {
       id: 1,
@@ -25,8 +28,14 @@ export class RecipeListPage implements OnInit {
       favourite: true,
     }
   ];
+  */
 
-  constructor(private _router: Router) { }
+  constructor(
+      private _router: Router,
+      private _recipeService: RecipeServiceService,
+    ) { 
+      this.listOfRecipes = this._recipeService.getAllRecipes();
+    }
 
   ngOnInit() {
   }
