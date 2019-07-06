@@ -7,10 +7,10 @@
 <ion-content class="ion-padding">
   <ion-card *ngFor="let recipe of listOfRecipes">
       <ion-fab vertical="top" horizontal="end" slot="fixed">
-        <ion-fab-button size="small" color="dark">
-            <ion-icon name="heart" class="ion-padding-start" *ngIf="recipe.favourite" (click)="cardFavourite(recipe)"></ion-icon>
-            <ion-icon name="help" class="ion-padding-start" *ngIf="!recipe.favourite" (click)="cardFavourite(recipe)"></ion-icon>
-        </ion-fab-button>
+        <ion-button color="dark" shape="round" fill="clear" (click)="cardFavourite(recipe)">
+            <ion-icon name="heart" *ngIf="recipe.favourite"></ion-icon>
+            <ion-icon name="star" *ngIf="!recipe.favourite"></ion-icon>
+        </ion-button>
       </ion-fab>
       <ion-card-header (click)="onClickRecipe(recipe)">
         <ion-avatar *ngIf="recipe.imageLink">
@@ -22,9 +22,7 @@
         <!--
         <ion-icon name="heart" class="ion-padding-start" *ngIf="recipe.favourite" (click)="cardFavourite(recipe)"></ion-icon>
         <ion-icon name="help" class="ion-padding-start" *ngIf="!recipe.favourite" (click)="cardFavourite(recipe)"></ion-icon>
-        -->
         <ion-card-subtitle>Ingredients: {{ recipe.ingredients }}</ion-card-subtitle>
-        <!--
         <ion-card-content *ngIf="!recipe.favourite">
             <ion-card button class="ion-padding" color="primary" (click)="cardFavourite(recipe)">Add {{recipe.name}} to Favourite</ion-card>
         </ion-card-content>
