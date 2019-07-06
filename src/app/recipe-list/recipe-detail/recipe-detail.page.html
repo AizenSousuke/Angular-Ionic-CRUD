@@ -29,16 +29,24 @@
             </h1>
         </ion-row>
         <ion-row>
-          <ion-label *ngIf="description">Description: {{ description }}</ion-label>
+            <p>
+              <ion-label *ngIf="description">Description: {{ description }}</ion-label>
+            </p>
         </ion-row>
         <ion-row>
-          <ion-label *ngIf="ingredients">Ingredients needed: {{ ingredients }}</ion-label>
+            <p>
+              <ion-label *ngIf="ingredients">Ingredients needed: {{ ingredients }}</ion-label>
+            </p>
         </ion-row>
         <ion-row>
-          <ion-label *ngIf="timeNeeded">Time needed to make: <b>{{ timeNeeded }}</b> minutes.</ion-label>
+          <p>
+            <ion-label *ngIf="timeNeeded">Time needed to make: <b>{{ timeNeeded }}</b> minutes.</ion-label>
+          </p>
         </ion-row>
         <ion-row>
-          <ion-label *ngIf="favourite"  [ngStyle]="{'color': 'red'}">This is one of my favourite recipe!</ion-label>
+          <p>
+            <ion-label *ngIf="favourite"  [ngStyle]="{'color': 'red'}">This is one of my favourite recipe!</ion-label>
+          </p>
         </ion-row>
       </ion-col>
     </ion-row>
