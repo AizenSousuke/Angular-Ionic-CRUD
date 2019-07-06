@@ -57,4 +57,13 @@ export class RecipeDetailPage implements OnInit {
     });
   }
 
+  onFavourite() {
+    this._recipeListComponent.listOfRecipes.forEach((recipe) => {
+      if (recipe.id.toString() == this._route.snapshot.paramMap.get('id')) {
+        recipe.favourite = !recipe.favourite;
+        this.getCurrentRecipe();
+        console.log("Recipe favourited: " + recipe.favourite);
+      }
+    }
+  )};
 }

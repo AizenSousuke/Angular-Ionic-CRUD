@@ -2,10 +2,16 @@
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
       <ion-button (click)="onBack()">
-        <ion-icon slot="start" name="arrow-back"></ion-icon>
+        <ion-icon name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
     <ion-title>{{ recipeName }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="onFavourite()">
+        <ion-icon *ngIf="favourite" name="heart"></ion-icon>
+        <ion-icon *ngIf="!favourite" name="star"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -19,6 +25,7 @@
         <ion-row>
             <h1>
               {{ name }}
+              <ion-icon name="heart" *ngIf="favourite" [ngStyle]="{'color': 'red'}"></ion-icon>
             </h1>
         </ion-row>
         <ion-row>

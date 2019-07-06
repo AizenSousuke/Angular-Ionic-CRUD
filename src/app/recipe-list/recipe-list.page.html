@@ -8,8 +8,8 @@
   <ion-card *ngFor="let recipe of listOfRecipes">
       <ion-fab vertical="top" horizontal="end" slot="fixed">
         <ion-button color="dark" shape="round" fill="clear" (click)="cardFavourite(recipe)">
-            <ion-icon name="heart" *ngIf="recipe.favourite"></ion-icon>
-            <ion-icon name="star" *ngIf="!recipe.favourite"></ion-icon>
+            <ion-icon name="heart" *ngIf="recipe.favourite" [ngStyle]="{'color': 'red'}"></ion-icon>
+            <ion-icon name="star" *ngIf="!recipe.favourite" [ngStyle]="{'color': 'yellow'}"></ion-icon>
         </ion-button>
       </ion-fab>
       <ion-card-header (click)="onClickRecipe(recipe)">
