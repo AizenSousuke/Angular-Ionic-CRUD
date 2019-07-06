@@ -40,12 +40,19 @@ export class RecipeListPage implements OnInit {
   ngOnInit() {
   }
 
-  cardFavourite(item : Recipe) {
+  cardFavourite(recipe : Recipe) {
+    /*
     // Toggle favourite
     if (item.favourite !== null) {
       item.favourite = !item.favourite;
       console.log("Favourite: " + item.favourite);
     }
+    */
+
+    // Toggle favourite
+    this._recipeService.toggleFavourite(recipe);
+    // Refresh the data
+    this.listOfRecipes = this._recipeService.getAllRecipes();
   }
 
   onClickRecipe(item : Recipe) {

@@ -29,12 +29,19 @@ export class RecipeServiceService {
     return this.listOfRecipes;
   }
 
-  getRecipe(id : number) {
+  getRecipeById(id : number) {
+    /*
     this.listOfRecipes.forEach((recipe) => {
       if (recipe.id == id) {
         console.log("Recipe Name: " + recipe.name);
         return recipe;
       };
+    });
+    */
+
+    return this.listOfRecipes.find((recipe) => {
+      console.log("Recipe Name getRecipeById: " + recipe.name);
+      return recipe.id == id;
     });
   }
 
