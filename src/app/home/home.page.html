@@ -18,16 +18,14 @@
   </ion-header>
   <ion-content>
     <ion-item>
-      <ion-label [routerLink]="['/recipe-list']">Recipe</ion-label>
+      <ion-label [routerLink]="['/recipe-list']">Recipe List</ion-label>
     </ion-item>
   </ion-content>
 </ion-menu>
 
 <ion-content>
   <ion-router-outlet id="content"></ion-router-outlet>
-  <ion-button (click)="openMenu()" expand="full">
-    Menu
-  </ion-button>
+  <ion-button (click)="openMenu()" expand="full">Menu</ion-button>
   <ion-button (click)="loadRecipeList()" expand="full">Recipe List</ion-button>
   
   <form [formGroup]="BudgetPlannerForm" (ngSubmit)="onAdd()">
@@ -64,8 +62,8 @@
     </ion-item>
   </form>
 
-  <ion-card>
-    <ion-card-header color="primary">
+  <ion-card color="primary">
+    <ion-card-header>
       <ion-card-title>Total Expenses</ion-card-title>
       <ion-card-subtitle>${{ totalExpenses }}</ion-card-subtitle>
     </ion-card-header>
