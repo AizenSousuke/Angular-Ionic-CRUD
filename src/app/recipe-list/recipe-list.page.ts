@@ -62,6 +62,10 @@ export class RecipeListPage implements OnInit {
     this._router.navigate(['recipe-list', item.id]);
   }
 
+  onAddRecipe() {
+    this._recipeService.onAddRecipe();
+  }
+
   onBack() {
     //this._location.back();
     this._router.navigate(['/']);

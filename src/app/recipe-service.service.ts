@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Recipe } from './recipe-list/recipe';
+import { Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +25,10 @@ export class RecipeServiceService {
     }
   ];
 
-  constructor() { }
+  constructor(private _router: Router,
+              private _alertController: AlertController,) { 
+      
+    }
 
   getAllRecipes() {
     return this.listOfRecipes;
@@ -48,5 +53,51 @@ export class RecipeServiceService {
   toggleFavourite(recipe : Recipe) {
     recipe.favourite = !recipe.favourite;
     console.log(recipe.favourite);
+  }
+
+  onAddRecipe() {
+    console.log("Added Recipe");
+  }
+
+  onDeleteRecipe(recipe: Recipe) {
+    // Show Confirmation and do stuffs
+    this.deleteAlert(recipe);
+    // Delete Recipe by ID
+    // console.log("Deleted " + recipe.id + ", " + recipe.name);
+  }
+
+  async deleteAlert(recipe: Recipe) {
+    const alert = await this._alertController.create({
+      backdropDismiss: false,
+      header: 'Delete the Recipe?',
+      message: 'Click Delete to Delete the Recipe.',
+      buttons: [{
+        text: 'Cancel',
+        handler: () => {
+          console.log("Cancel has been selected");
+          alert.dismiss();
+        }
+      }, {
+        text: 'Delete',
+        handler: () => {
+          console.log("Delete has been selected");
+          let recipeToDelete;
+          recipeToDelete = this.listOfRecipes.find((res) => {
+            if (recipe.id == res.id) {
+              console.log("Found: " + recipe.id);
+              return true;
+            }
+          });
+          if (recipeToDelete) {
+            this.listOfRecipes.splice(recipeToDelete.id - 1, 1);
+            console.log("Deleted Recipe");
+          }
+          this._router.navigate(['/recipe-list']);
+          alert.dismiss();
+        }
+      }]
+    });
+
+    alert.present();
   }
 }

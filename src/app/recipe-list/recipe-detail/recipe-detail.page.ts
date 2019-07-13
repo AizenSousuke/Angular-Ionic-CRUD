@@ -54,6 +54,14 @@ export class RecipeDetailPage implements OnInit {
     */
   }
 
+  onAddRecipe() {
+    this._recipeService.onAddRecipe();
+  }
+
+  onDeleteRecipe() {
+    this._recipeService.onDeleteRecipe(this.recipe);
+  }
+
   onBack() {
     //this._location.back();
     this._router.navigate(['/recipe-list']);
