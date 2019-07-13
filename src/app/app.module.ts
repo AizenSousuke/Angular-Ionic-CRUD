@@ -14,6 +14,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { HttpClientModule } from '@angular/common/http';
 import { RecipeListPage } from './recipe-list/recipe-list.page';
+import { RecipeServiceService } from './recipe-service.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -32,6 +33,7 @@ import { RecipeListPage } from './recipe-list/recipe-list.page';
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     RecipeListPage,
+    RecipeServiceService
   ],
   bootstrap: [AppComponent]
 })

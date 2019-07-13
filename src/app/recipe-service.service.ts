@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { Recipe } from './recipe-list/recipe';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
@@ -7,7 +7,7 @@ import { AlertController } from '@ionic/angular';
   providedIn: 'root'
 })
 export class RecipeServiceService {
-  private listOfRecipes : Recipe[] = [
+  private listOfRecipes: Recipe[] = [
     {
       id: 1,
       imageLink: 'https://www.jocooks.com/wp-content/uploads/2013/10/classic-apple-pie-1-2-500x500.jpg',
@@ -26,15 +26,16 @@ export class RecipeServiceService {
   ];
 
   constructor(private _router: Router,
-              private _alertController: AlertController,) { 
-      
-    }
+    private _alertController: AlertController,
+    private _ngZone: NgZone) {
+
+  }
 
   getAllRecipes() {
     return this.listOfRecipes;
   }
 
-  getRecipeById(id : number) {
+  getRecipeById(id: number) {
     /*
     this.listOfRecipes.forEach((recipe) => {
       if (recipe.id == id) {
@@ -50,7 +51,7 @@ export class RecipeServiceService {
     });
   }
 
-  toggleFavourite(recipe : Recipe) {
+  toggleFavourite(recipe: Recipe) {
     recipe.favourite = !recipe.favourite;
     console.log(recipe.favourite);
   }
@@ -88,16 +89,20 @@ export class RecipeServiceService {
               return true;
             }
           });
+          console.log(recipeToDelete.name);
           if (recipeToDelete) {
             this.listOfRecipes.splice(recipeToDelete.id - 1, 1);
             console.log("Deleted Recipe");
           }
-          this._router.navigate(['/recipe-list']);
+          this._ngZone.run( async () => {
+            await this._router.navigate(['/recipe-list']);
+          })
           alert.dismiss();
         }
       }]
     });
 
     alert.present();
+
   }
 }
