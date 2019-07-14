@@ -72,6 +72,12 @@ export class RecipeServiceService {
     modal.present();
   }
 
+  onAddRecipeToDatabase() {
+    //this._fireStore.collection('recipe-list').add({
+    //  name: '',
+    //});
+  }
+
   onDeleteRecipe(recipe: Recipe) {
     // Show Confirmation and do stuffs
     this.deleteAlert(recipe);
