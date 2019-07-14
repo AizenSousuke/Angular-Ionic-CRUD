@@ -22,7 +22,6 @@ export class RecipeDetailPage implements OnInit {
 
   constructor(private _route : ActivatedRoute,
               private _router : Router,
-              private _location : Location,
               private _recipeListComponent : RecipeListPage,
               private _recipeService : RecipeServiceService,
     ) { 
@@ -64,7 +63,7 @@ export class RecipeDetailPage implements OnInit {
 
   onBack() {
     //this._location.back();
-    this._router.navigate(['/recipe-list']);
+    //this._router.navigate(['/recipe-list']);
   }
 
   /*

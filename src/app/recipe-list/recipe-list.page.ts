@@ -68,7 +68,7 @@ export class RecipeListPage implements OnInit {
 
   onBack() {
     //this._location.back();
-    this._router.navigate(['/']);
+    //this._router.navigate(['/']);
   }
 
 }

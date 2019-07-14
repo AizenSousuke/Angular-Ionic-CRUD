@@ -1,9 +1,7 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-button (click)="onBack()">
-        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
-      </ion-button>
+      <ion-back-button defaultHref="recipe-list" (click)="onBack()"></ion-back-button>
     </ion-buttons>
     <ion-title>{{ name }}</ion-title>
     <ion-buttons slot="end">
@@ -36,7 +34,11 @@
         </ion-row>
         <ion-row>
             <p>
-              <ion-label *ngIf="ingredients">Ingredients needed: {{ ingredients }}</ion-label>
+              <ion-label *ngIf="ingredients">Ingredients needed:
+                <ion-list lines="full">
+                  <ion-item *ngFor="let i of ingredients"><ion-icon slot="start" name="checkmark"></ion-icon>{{ i }}</ion-item>
+                </ion-list>
+              </ion-label>
               <ion-label *ngIf="!ingredients">There is no ingredient data for this recipe.</ion-label>
             </p>
         </ion-row>
