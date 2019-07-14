@@ -14,6 +14,7 @@ const routes: Routes = [
       }
     ]
   },
+  { path: 'recipe-modal', loadChildren: './recipe-list/recipe-modal/recipe-modal.module#RecipeModalPageModule' },
 ];
 
 @NgModule({

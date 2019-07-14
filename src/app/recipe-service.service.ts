@@ -1,7 +1,8 @@
-import { Injectable, NgZone } from '@angular/core';
+import { Injectable, NgZone, Component } from '@angular/core';
 import { Recipe } from './recipe-list/recipe';
 import { Router } from '@angular/router';
-import { AlertController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
+import { RecipeModalPage } from './recipe-list/recipe-modal/recipe-modal.page';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +28,8 @@ export class RecipeServiceService {
 
   constructor(private _router: Router,
     private _alertController: AlertController,
-    private _ngZone: NgZone) {
+    private _ngZone: NgZone,
+    private _modalController: ModalController) {
 
   }
 
@@ -56,8 +58,11 @@ export class RecipeServiceService {
     console.log(recipe.favourite);
   }
 
-  onAddRecipe() {
-    console.log("Added Recipe");
+  async onAddRecipe() {
+    let modal = await this._modalController.create({
+      component: RecipeModalPage
+    });
+    modal.present();
   }
 
   onDeleteRecipe(recipe: Recipe) {

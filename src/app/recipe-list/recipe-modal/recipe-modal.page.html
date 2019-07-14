@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Add Recipe</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-input value="{{recipeName}}" type="text"></ion-input>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-button slot="start" (click)="onDismiss()">
+      Dismiss
+    </ion-button>
+    <ion-button slot="end" (click)="onSubmit(recipeName, recipeName)">
+      Submit
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>
