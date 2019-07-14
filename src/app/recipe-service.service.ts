@@ -63,8 +63,6 @@ export class RecipeServiceService {
   onDeleteRecipe(recipe: Recipe) {
     // Show Confirmation and do stuffs
     this.deleteAlert(recipe);
-    // Delete Recipe by ID
-    // console.log("Deleted " + recipe.id + ", " + recipe.name);
   }
 
   async deleteAlert(recipe: Recipe) {
@@ -92,7 +90,16 @@ export class RecipeServiceService {
           console.log(recipeToDelete.name);
           if (recipeToDelete) {
             this.listOfRecipes.splice(recipeToDelete.id - 1, 1);
+            // Fix the remaining recipe IDs accordingly in the list
+            let id = 0;
+            this.listOfRecipes.forEach((recipe) => {
+              console.log("Changed recipe id to " + id);
+              recipe.id = id;
+              id += 1;
+            });
             console.log("Deleted Recipe");
+            // Delete Recipe by ID
+            console.log("Deleted " + recipe.id + ", " + recipe.name);
           }
           this._ngZone.run( async () => {
             await this._router.navigate(['/recipe-list']);
