@@ -17,6 +17,10 @@ import { RecipeListPage } from './recipe-list/recipe-list.page';
 import { RecipeServiceService } from './recipe-service.service';
 import { RecipeModalPageModule } from './recipe-list/recipe-modal/recipe-modal.module';
 
+import { environment } from "src/environments/environment";
+import { AngularFireModule } from "@angular/fire";
+import { AngularFirestoreModule } from "@angular/fire/firestore";
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -29,6 +33,8 @@ import { RecipeModalPageModule } from './recipe-list/recipe-modal/recipe-modal.m
     ScrollingModule,
     HttpClientModule,
     RecipeModalPageModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFirestoreModule
   ],
   providers: [
     StatusBar,

@@ -3,6 +3,7 @@ import { Recipe } from './recipe-list/recipe';
 import { Router } from '@angular/router';
 import { AlertController, ModalController } from '@ionic/angular';
 import { RecipeModalPage } from './recipe-list/recipe-modal/recipe-modal.page';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +27,9 @@ export class RecipeServiceService {
     }
   ];
 
-  constructor(private _router: Router,
+  constructor(
+    private _fireStore: AngularFirestore,
+    private _router: Router,
     private _alertController: AlertController,
     private _ngZone: NgZone,
     private _modalController: ModalController) {
@@ -35,6 +38,10 @@ export class RecipeServiceService {
 
   getAllRecipes() {
     return this.listOfRecipes;
+  }
+
+  getAllRecipesFromDatabase() {
+    return this._fireStore.collection("recipe-list").snapshotChanges();
   }
 
   getRecipeById(id: number) {

@@ -31,15 +31,19 @@ export class RecipeListPage implements OnInit {
   ];
   */
 
+  recipe;
+
   constructor(
       private _router: Router,
       private _recipeService: RecipeServiceService,
       private _location: Location,
+      
     ) { 
-      this.listOfRecipes = this._recipeService.getAllRecipes();
     }
 
   ngOnInit() {
+    this.listOfRecipes = this._recipeService.getAllRecipes();
+    this._recipeService.getAllRecipesFromDatabase().subscribe(res => (this.recipe = res));
   }
 
   cardFavourite(recipe : Recipe) {

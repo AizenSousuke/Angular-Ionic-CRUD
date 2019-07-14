@@ -1,13 +1,18 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/" (click)="onBack()"></ion-back-button>
+      <ion-back-button defaultHref="/"></ion-back-button>
     </ion-buttons>
     <ion-title>Recipe List</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
+
+  <ion-list *ngFor="let recipe of recipe">
+    {{ recipe.payload.doc.data().name }}
+  </ion-list>
+
   <ion-card *ngFor="let recipe of listOfRecipes">
       <ion-fab vertical="top" horizontal="end" slot="fixed">
         <ion-button color="dark" shape="round" fill="clear" (click)="cardFavourite(recipe)">
