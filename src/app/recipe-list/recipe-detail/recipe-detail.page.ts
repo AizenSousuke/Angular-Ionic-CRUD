@@ -20,10 +20,11 @@ export class RecipeDetailPage implements OnInit {
   timeNeeded: number;
   favourite: boolean;
 
-  constructor(private _route : ActivatedRoute,
-              private _router : Router,
-              private _recipeListComponent : RecipeListPage,
-              private _recipeService : RecipeServiceService,
+  constructor(
+    private _route : ActivatedRoute,
+    private _router : Router,
+    private _recipeListComponent : RecipeListPage,
+    private _recipeService : RecipeServiceService,
     ) { 
     this.getRecipeNameFromURL();
   }
@@ -32,8 +33,8 @@ export class RecipeDetailPage implements OnInit {
   }
 
   getRecipeNameFromURL() {
-    console.log("Params: " + this._route.snapshot.paramMap.get('id'));
-
+    // Sets the data for the recipe
+    console.log("Params ID: " + this._route.snapshot.paramMap.get('id'));
     this.recipe = this._recipeService.getRecipeById(parseInt(this._route.snapshot.paramMap.get('id')));
     this.name = this.recipe.name;
     this.imageLink = this.recipe.imageLink;
@@ -42,15 +43,6 @@ export class RecipeDetailPage implements OnInit {
     this.timeNeeded = this.recipe.timeNeeded;
     this.favourite = this.recipe.favourite;
     console.log("Current Recipe: " + this.recipe.name);
-    /*
-    this._recipeListComponent.listOfRecipes.forEach((res) => {
-      if (res.id.toString() == this._route.snapshot.paramMap.get('id')) {
-        this.recipeName = res.name;
-        console.log("Recipe Name: " + res.name);
-        this.getCurrentRecipe();
-      }
-    });
-    */
   }
 
   onAddRecipe() {
@@ -61,40 +53,12 @@ export class RecipeDetailPage implements OnInit {
     this._recipeService.onDeleteRecipe(this.recipe);
   }
 
-  onBack() {
-    //this._location.back();
-    //this._router.navigate(['/recipe-list']);
-  }
-
-  /*
-  getCurrentRecipe() {
-    this._recipeListComponent.listOfRecipes.forEach((recipe) => {
-      if (recipe.name == this.recipeName) {
-        this.name = recipe.name;
-        this.imageLink = recipe.imageLink;
-        this.description = recipe.description;
-        this.ingredients = recipe.ingredients;
-        this.timeNeeded = recipe.timeNeeded;
-        this.favourite = recipe.favourite;
-        console.log("Current Recipe: " + recipe.name);
-      }
-    });
-  }
-  */
-
   onFavourite() {
     console.log(this._recipeListComponent.listOfRecipes);
     this.recipe = this._recipeService.getRecipeById(parseInt(this._route.snapshot.paramMap.get('id')));
+    // Use the function in the parent component
     this._recipeListComponent.cardFavourite(this.recipe);
-    this.favourite = !this.favourite;
-    /* Doesn't work
-    this._recipeListComponent.listOfRecipes.forEach((recipe) => {
-      if (recipe.id.toString() == this._route.snapshot.paramMap.get('id')) {
-        recipe.favourite = !recipe.favourite;
-        this.getRecipeNameFromURL();
-        console.log("Recipe favourited: " + recipe.favourite);
-      }
-    }
-    */
+    // Get the recipe again by refreshing the data so that favourite bool is updated
+    this.getRecipeNameFromURL();
   };
 }

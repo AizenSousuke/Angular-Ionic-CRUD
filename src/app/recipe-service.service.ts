@@ -9,6 +9,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
   providedIn: 'root'
 })
 export class RecipeServiceService {
+  // List of recipes
   private listOfRecipes: Recipe[] = [
     {
       id: 1,
@@ -24,6 +25,15 @@ export class RecipeServiceService {
       ingredients: ['Milk', 'Tea'],
       timeNeeded: 70,
       favourite: true,
+    },
+    {
+      id: 3,
+      imageLink: 'https://s3media.freemalaysiatoday.com/wp-content/uploads/2017/06/kuih-raya.jpg',
+      name: 'Kuih Raya',
+      description: 'Mimas vulputate dolor porttitor. Duis finibus lectus vitae libero blandit, vel commodo magna tincidunt. Maecenas odio orci, luctus ac consectetur at, imperdiet at orci. Nunc efficitur odio elit. Nulla accumsan, enim at suscipit euismod, lectus justo viverra odio, a pulvinar felis elit quis eros. Donec tincidunt sed libero non iaculis.',
+      ingredients: ['Kuih', 'Raya'],
+      timeNeeded: 120,
+      favourite: false,
     }
   ];
 
@@ -45,15 +55,7 @@ export class RecipeServiceService {
   }
 
   getRecipeById(id: number) {
-    /*
-    this.listOfRecipes.forEach((recipe) => {
-      if (recipe.id == id) {
-        console.log("Recipe Name: " + recipe.name);
-        return recipe;
-      };
-    });
-    */
-
+    // Return Recipe Object by id number
     return this.listOfRecipes.find((recipe) => {
       console.log("Recipe Name getRecipeById: " + recipe.name);
       return recipe.id == id;
@@ -61,11 +63,13 @@ export class RecipeServiceService {
   }
 
   toggleFavourite(recipe: Recipe) {
+    // Toggles favourite
     recipe.favourite = !recipe.favourite;
-    console.log(recipe.favourite);
+    console.log(recipe.name + "'s Favourite Bool: " + recipe.favourite);
   }
 
   async onAddRecipe() {
+    // Creates a modal that user can input to create a new Recipe
     let modal = await this._modalController.create({
       component: RecipeModalPage
     });
@@ -78,12 +82,8 @@ export class RecipeServiceService {
     //});
   }
 
-  onDeleteRecipe(recipe: Recipe) {
-    // Show Confirmation and do stuffs
-    this.deleteAlert(recipe);
-  }
-
-  async deleteAlert(recipe: Recipe) {
+  async onDeleteRecipe(recipe: Recipe) {
+    // Show Delete Confirmation Alert. If user clicks delete, then it will delete. If not, it will just close the alert. 
     const alert = await this._alertController.create({
       backdropDismiss: false,
       header: 'Delete the Recipe?',
@@ -105,10 +105,10 @@ export class RecipeServiceService {
               return true;
             }
           });
-          console.log(recipeToDelete.name);
+          console.log("Deleting Recipe: " + recipeToDelete.name);
           if (recipeToDelete) {
             this.listOfRecipes.splice(recipeToDelete.id - 1, 1);
-            // Fix the remaining recipe IDs accordingly in the list
+            // Fix\Bring forward the remaining recipe IDs accordingly in the listOfRecipes
             let id = 0;
             this.listOfRecipes.forEach((recipe) => {
               console.log("Changed recipe id to " + id);
@@ -119,15 +119,17 @@ export class RecipeServiceService {
             // Delete Recipe by ID
             console.log("Deleted " + recipe.id + ", " + recipe.name);
           }
+          // Make navigation run from within Angular. Will result in an error if not using _ngZone
           this._ngZone.run( async () => {
             await this._router.navigate(['/recipe-list']);
           })
+          // Dimiss the alert
           alert.dismiss();
         }
       }]
     });
 
+    // Presents the alert
     alert.present();
-
   }
 }

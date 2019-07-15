@@ -19,6 +19,7 @@ export class RecipeModalPage implements OnInit {
   }
 
   onSubmit(name: string, ingredients: string[], description?: string) {
+    this._modalController.dismiss();
     console.log("Submitted");
   }
 

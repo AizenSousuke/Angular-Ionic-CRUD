@@ -35,9 +35,7 @@ export class RecipeListPage implements OnInit {
 
   constructor(
       private _router: Router,
-      private _recipeService: RecipeServiceService,
-      private _location: Location,
-      
+      private _recipeService: RecipeServiceService,      
     ) { 
     }
 
@@ -47,32 +45,19 @@ export class RecipeListPage implements OnInit {
   }
 
   cardFavourite(recipe : Recipe) {
-    /*
-    // Toggle favourite
-    if (item.favourite !== null) {
-      item.favourite = !item.favourite;
-      console.log("Favourite: " + item.favourite);
-    }
-    */
-
-    // Toggle favourite
+    // Toggle favourite using the _recipeService
     this._recipeService.toggleFavourite(recipe);
-    // Refresh the data
+    // Refresh the data for this component using the _recipeService
     this.listOfRecipes = this._recipeService.getAllRecipes();
   }
 
-  onClickRecipe(item : Recipe) {
-    console.log("Clicked: " + item.name + " | id: " + item.id);
-    this._router.navigate(['recipe-list', item.id]);
+  onClickRecipe(recipe : Recipe) {
+    console.log("Clicked: " + recipe.name + " | id: " + recipe.id);
+    this._router.navigate(['recipe-list', recipe.id]);
   }
 
   onAddRecipe() {
     this._recipeService.onAddRecipe();
-  }
-
-  onBack() {
-    //this._location.back();
-    //this._router.navigate(['/']);
   }
 
 }
