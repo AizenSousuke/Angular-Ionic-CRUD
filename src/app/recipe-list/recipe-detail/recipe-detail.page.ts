@@ -83,6 +83,11 @@ export class RecipeDetailPage implements OnInit {
   */
 
   onFavourite() {
+    console.log(this._recipeListComponent.listOfRecipes);
+    this.recipe = this._recipeService.getRecipeById(parseInt(this._route.snapshot.paramMap.get('id')));
+    this._recipeListComponent.cardFavourite(this.recipe);
+    this.favourite = !this.favourite;
+    /* Doesn't work
     this._recipeListComponent.listOfRecipes.forEach((recipe) => {
       if (recipe.id.toString() == this._route.snapshot.paramMap.get('id')) {
         recipe.favourite = !recipe.favourite;
@@ -90,5 +95,6 @@ export class RecipeDetailPage implements OnInit {
         console.log("Recipe favourited: " + recipe.favourite);
       }
     }
-  )};
+    */
+  };
 }
