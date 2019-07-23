@@ -12,6 +12,7 @@ import { Recipe } from '../recipe';
   styleUrls: ['./recipe-detail.page.scss'],
 })
 export class RecipeDetailPage implements OnInit {
+  id: number;
   recipe : Recipe;
   imageLink: string;
   name: string;
@@ -22,7 +23,6 @@ export class RecipeDetailPage implements OnInit {
 
   constructor(
     private _route : ActivatedRoute,
-    private _router : Router,
     private _recipeListComponent : RecipeListPage,
     private _recipeService : RecipeServiceService,
     ) { 
@@ -36,6 +36,7 @@ export class RecipeDetailPage implements OnInit {
     // Sets the data for the recipe
     console.log("Params ID: " + this._route.snapshot.paramMap.get('id'));
     this.recipe = this._recipeService.getRecipeById(parseInt(this._route.snapshot.paramMap.get('id')));
+    this.id = this.recipe.id;
     this.name = this.recipe.name;
     this.imageLink = this.recipe.imageLink;
     this.description = this.recipe.description;

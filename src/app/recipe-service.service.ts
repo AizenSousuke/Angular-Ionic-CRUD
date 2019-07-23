@@ -72,14 +72,21 @@ export class RecipeServiceService {
   async onAddRecipe() {
     // Creates a modal that user can input to create a new Recipe
     let modal = await this._modalController.create({
-      component: RecipeModalPage
+      component: RecipeModalPage,
+      componentProps: {
+        "id": this.listOfRecipes.length + 1,
+      },
     });
     modal.present();
     const { data } = await modal.onDidDismiss();
     if (data) {
+      // Save data to the database here
+      this.listOfRecipes.push(data);
+      console.log('List of Recipes: ' + this.listOfRecipes);
+      // Show the toast
       const toast = await this._toastController.create({
         message: 'Recipe created successfully!',
-        duration: 1000,
+        duration: 2000,
         showCloseButton: true, 
       });
       toast.present();
@@ -121,7 +128,7 @@ export class RecipeServiceService {
           if (recipeToDelete) {
             this.listOfRecipes.splice(recipeToDelete.id - 1, 1);
             // Fix\Bring forward the remaining recipe IDs accordingly in the listOfRecipes
-            let id = 0;
+            let id = 1;
             this.listOfRecipes.forEach((recipe) => {
               console.log("Changed recipe id to " + id);
               recipe.id = id;

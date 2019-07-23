@@ -14,7 +14,12 @@
           <ion-item>
             <ion-label position="floating">Recipe Name: <ion-text color="danger">*</ion-text>
             </ion-label>
-            <ion-input formControlName="recipeName" type="text" placeholder="Awesome recipe"></ion-input>
+            <ion-input required formControlName="recipeName" type="text" placeholder="Awesome recipe"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Image Link: <ion-text color="danger"></ion-text>
+            </ion-label>
+            <ion-input formControlName="imageLink" type="text" placeholder="The image link url"></ion-input>
           </ion-item>
           <ion-item>
             <ion-label position="floating">Description: <ion-text color="danger"></ion-text>
@@ -25,7 +30,7 @@
           <ion-item>
             <ion-label position="floating">Ingredients: <ion-text color="danger">*</ion-text>
             </ion-label>
-            <ion-input formControlName="ingredients" type="text" placeholder="Split ingredients with a comma ','"></ion-input>
+            <ion-input required formControlName="ingredients" type="text" placeholder="Split ingredients with a comma ','"></ion-input>
           </ion-item>
           <ion-item lines='none'>
             <ion-button color="secondary" (click)="addRecipeForm.reset()">Reset</ion-button>
