@@ -1,7 +1,7 @@
 import { Injectable, NgZone, Component } from '@angular/core';
 import { Recipe } from './recipe-list/recipe';
 import { Router } from '@angular/router';
-import { AlertController, ModalController } from '@ionic/angular';
+import { AlertController, ModalController, ToastController } from '@ionic/angular';
 import { RecipeModalPage } from './recipe-list/recipe-modal/recipe-modal.page';
 import { AngularFirestore } from '@angular/fire/firestore';
 
@@ -42,7 +42,8 @@ export class RecipeServiceService {
     private _router: Router,
     private _alertController: AlertController,
     private _ngZone: NgZone,
-    private _modalController: ModalController) {
+    private _modalController: ModalController,
+    private _toastController: ToastController) {
 
   }
 
@@ -74,6 +75,17 @@ export class RecipeServiceService {
       component: RecipeModalPage
     });
     modal.present();
+    const { data } = await modal.onDidDismiss();
+    if (data) {
+      const toast = await this._toastController.create({
+        message: 'Recipe created successfully!',
+        duration: 1000,
+        showCloseButton: true, 
+      });
+      toast.present();
+      console.log("Shown toast");
+    }
+    console.log(data);
   }
 
   onAddRecipeToDatabase() {
