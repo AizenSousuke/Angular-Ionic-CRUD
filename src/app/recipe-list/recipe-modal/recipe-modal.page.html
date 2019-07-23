@@ -32,6 +32,17 @@
             </ion-label>
             <ion-input required formControlName="ingredients" type="text" placeholder="Split ingredients with a comma ','"></ion-input>
           </ion-item>
+          <ion-item>
+            <ion-label position="floating">Time Needed (minutes): <ion-text color="danger"></ion-text>
+            </ion-label>
+            <ion-input formControlName="timeNeeded" type="number"
+              placeholder="60"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Favourite: <ion-text color="danger"></ion-text>
+            </ion-label>
+            <ion-checkbox formControlName="favourite"></ion-checkbox>
+          </ion-item>
           <ion-item lines='none'>
             <ion-button color="secondary" (click)="addRecipeForm.reset()">Reset</ion-button>
           </ion-item>

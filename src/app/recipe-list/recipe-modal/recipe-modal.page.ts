@@ -22,6 +22,8 @@ export class RecipeModalPage implements OnInit {
     imageLink: '',
     description: '',
     ingredients: '',
+    timeNeeded: '',
+    favourite: '',
   })
 
   constructor(
@@ -47,8 +49,8 @@ export class RecipeModalPage implements OnInit {
       "name": f.get('recipeName').value,
       "description": f.get('description').value,
       "ingredients": f.get('ingredients').value.split(','),
-      "timeNeeded?": 1,
-      "favourite": false,
+      "timeNeeded": f.get('timeNeeded').value,
+      "favourite": f.get('favourite').value,
     }
     this._modalController.dismiss(data);
     //console.log(f);
