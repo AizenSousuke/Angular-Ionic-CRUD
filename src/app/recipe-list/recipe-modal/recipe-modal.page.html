@@ -7,9 +7,7 @@
 <ion-content>
   <ion-grid fixed>
     <ion-row>
-      <ion-col size-sm="6" offset-sm="3">
-        <h3 class="ion-padding-horizontal">Not yet implemented.</h3>
-
+      <ion-col size-sm="8" offset-sm="2">
         <form [formGroup]="addRecipeForm" (ngSubmit)="onSubmitRecipe(addRecipeForm)">
           <ion-item>
             <ion-label position="floating">Recipe Name: <ion-text color="danger">*</ion-text>
@@ -24,8 +22,8 @@
           <ion-item>
             <ion-label position="floating">Description: <ion-text color="danger"></ion-text>
             </ion-label>
-            <ion-input formControlName="description" type="text"
-              placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut non aliquam lectus."></ion-input>
+            <ion-textarea formControlName="description" type="text" rows="5"
+              placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut non aliquam lectus."></ion-textarea>
           </ion-item>
           <ion-item>
             <ion-label position="floating">Ingredients: <ion-text color="danger">*</ion-text>
@@ -39,7 +37,7 @@
               placeholder="60"></ion-input>
           </ion-item>
           <ion-item>
-            <ion-label position="floating">Favourite: <ion-text color="danger"></ion-text>
+            <ion-label position="inline">Favourite: <ion-text color="danger"></ion-text>
             </ion-label>
             <ion-checkbox formControlName="favourite"></ion-checkbox>
           </ion-item>
@@ -54,10 +52,10 @@
 
 <ion-footer>
   <ion-toolbar>
-    <ion-button slot="start" (click)="onDismiss()">
+    <ion-button class="ion-padding-horizontal" slot="start" (click)="onDismiss()">
       Dismiss
     </ion-button>
-    <ion-button slot="end" type="submit" [disabled]="!addRecipeForm.valid" (click)="onSubmitRecipe(addRecipeForm)">
+    <ion-button class="ion-padding-horizontal" slot="end" type="submit" [disabled]="!addRecipeForm.valid" (click)="onSubmitRecipe(addRecipeForm)">
       Submit
     </ion-button>
   </ion-toolbar>
