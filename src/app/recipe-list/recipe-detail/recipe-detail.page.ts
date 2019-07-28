@@ -13,13 +13,16 @@ import { Recipe } from '../recipe';
 })
 export class RecipeDetailPage implements OnInit {
   id: number;
-  recipe : Recipe;
+  //recipe : Recipe;
+  recipe;
   imageLink: string;
   name: string;
   description: string;
   ingredients: string[];
   timeNeeded: number;
   favourite: boolean;
+
+  recipeInDatabase: Array<any>;
 
   constructor(
     private _route : ActivatedRoute,
@@ -30,12 +33,14 @@ export class RecipeDetailPage implements OnInit {
   }
 
   ngOnInit() {
+    
   }
 
   getRecipeNameFromURL() {
     // Sets the data for the recipe
     console.log("Params ID: " + this._route.snapshot.paramMap.get('id'));
     this.recipe = this._recipeService.getRecipeById(parseInt(this._route.snapshot.paramMap.get('id')));
+    console.log("Recipe: " + this.recipe);
     this.id = this.recipe.id;
     this.name = this.recipe.name;
     this.imageLink = this.recipe.imageLink;

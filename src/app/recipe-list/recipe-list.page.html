@@ -8,6 +8,7 @@
 </ion-header>
 
 <ion-content class="ion-padding">
+  <!--
   <ion-card *ngFor="let recipe of listOfRecipes">
       <ion-fab vertical="top" horizontal="end" slot="fixed">
         <ion-button color="dark" shape="round" fill="clear" (click)="cardFavourite(recipe)">
@@ -24,7 +25,23 @@
         </ion-card-title>
       </ion-card-header>
   </ion-card>
-
+  -->
+  <ion-card *ngFor="let item of recipe">
+    <ion-fab vertical="top" horizontal="end" slot="fixed">
+      <ion-button color="dark" shape="round" fill="clear" (click)="cardFavourite(item.payload.doc.data())">
+          <ion-icon name="heart" *ngIf="item.payload.doc.data().favourite" [ngStyle]="{'color': 'red'}"></ion-icon>
+          <ion-icon name="star" *ngIf="!item.payload.doc.data().favourite" [ngStyle]="{'color': 'yellow'}"></ion-icon>
+      </ion-button>
+    </ion-fab>
+    <ion-card-header (click)="onClickRecipe(item.payload.doc.data())">
+      <ion-avatar *ngIf="item.payload.doc.data().imageLink">
+        <ion-img [src]="item.payload.doc.data().imageLink"></ion-img>
+      </ion-avatar>
+      <ion-card-title>
+          <ion-label>{{ item.payload.doc.data().name }}</ion-label>
+      </ion-card-title>
+    </ion-card-header>
+  </ion-card>
 </ion-content>
 <ion-footer>
   <ion-toolbar>

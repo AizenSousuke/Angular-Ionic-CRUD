@@ -31,7 +31,7 @@ export class RecipeListPage implements OnInit {
   ];
   */
 
-  recipe;
+  recipe: Array<any>;
 
   constructor(
       private _router: Router,
@@ -40,15 +40,20 @@ export class RecipeListPage implements OnInit {
     }
 
   ngOnInit() {
-    this.listOfRecipes = this._recipeService.getAllRecipes();
-    this._recipeService.getAllRecipesFromDatabase().subscribe(res => (this.recipe = res));
+    //this.listOfRecipes = this._recipeService.getAllRecipes();
+
+    // Load data from the database
+    this._recipeService.getAllRecipesFromDatabase().subscribe(result => {
+      this.recipe = result;
+      this._recipeService.recipe = result;
+    });
   }
 
-  cardFavourite(recipe : Recipe) {
+  cardFavourite(recipe) {
     // Toggle favourite using the _recipeService
     this._recipeService.toggleFavourite(recipe);
     // Refresh the data for this component using the _recipeService
-    this.listOfRecipes = this._recipeService.getAllRecipes();
+    //this.listOfRecipes = this._recipeService.getAllRecipes();
   }
 
   onClickRecipe(recipe : Recipe) {

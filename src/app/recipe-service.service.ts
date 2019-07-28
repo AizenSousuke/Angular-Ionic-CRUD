@@ -47,25 +47,37 @@ export class RecipeServiceService {
 
   }
 
+  recipe: Array<any>;
+  recipeObj;
+
   getAllRecipes() {
     return this.listOfRecipes;
   }
 
   getAllRecipesFromDatabase() {
-    return this._fireStore.collection("recipe-list").snapshotChanges();
+    return this._fireStore.collection('recipe-list').snapshotChanges();
   }
 
   getRecipeById(id: number) {
+    // Return Recipe Object by id number
+    //this.recipeObj = this._fireStore.collection('recipe-list').doc(id.toString()).get();
+    this.recipeObj = this._fireStore.collection('recipe-list', ref => ref.where('id', '==', 1));
+    console.log(this.recipeObj);
+    return this.recipeObj;
+    /*
     // Return Recipe Object by id number
     return this.listOfRecipes.find((recipe) => {
       console.log("Recipe Name getRecipeById: " + recipe.name);
       return recipe.id == id;
     });
+    */
   }
 
-  toggleFavourite(recipe: Recipe) {
+  toggleFavourite(recipe) {
     // Toggles favourite
     recipe.favourite = !recipe.favourite;
+    // Write to database
+    this._fireStore.collection('recipe-list').doc(recipe.id.toString()).set({ 'favourite' : recipe.favourite }, { 'merge' : true });
     console.log(recipe.name + "'s Favourite Bool: " + recipe.favourite);
   }
 
@@ -74,15 +86,22 @@ export class RecipeServiceService {
     let modal = await this._modalController.create({
       component: RecipeModalPage,
       componentProps: {
-        "id": this.listOfRecipes.length + 1,
+        //"id": this.listOfRecipes.length + 1,
+        "id": this.recipe.length + 1,
       },
     });
     modal.present();
     const { data } = await modal.onDidDismiss();
     if (data) {
       // Save data to the database here
+      /*
       this.listOfRecipes.push(data);
       console.log('List of Recipes: ' + this.listOfRecipes);
+      */
+
+      // Save data to the database here
+      this._fireStore.collection('recipe-list').doc(data.id.toString()).set(data);
+
       // Show the toast
       const toast = await this._toastController.create({
         message: 'Recipe created successfully!',
@@ -95,13 +114,7 @@ export class RecipeServiceService {
     console.log(data);
   }
 
-  onAddRecipeToDatabase() {
-    //this._fireStore.collection('recipe-list').add({
-    //  name: '',
-    //});
-  }
-
-  async onDeleteRecipe(recipe: Recipe) {
+  async onDeleteRecipe(recipe) {
     // Show Delete Confirmation Alert. If user clicks delete, then it will delete. If not, it will just close the alert. 
     const alert = await this._alertController.create({
       backdropDismiss: false,
@@ -117,6 +130,8 @@ export class RecipeServiceService {
         text: 'Delete',
         handler: () => {
           console.log("Delete has been selected");
+          // Delete the recipe from the database here
+          /*
           let recipeToDelete;
           recipeToDelete = this.listOfRecipes.find((res) => {
             if (recipe.id == res.id) {
@@ -138,6 +153,12 @@ export class RecipeServiceService {
             // Delete Recipe by ID
             console.log("Deleted " + recipe.id + ", " + recipe.name);
           }
+          */
+          
+          //Delete the recipe from the database
+          console.log(recipe.name);
+          this._fireStore.collection('recipe-list').doc(recipe.name).delete();
+
           // Make navigation run from within Angular. Will result in an error if not using _ngZone
           this._ngZone.run( async () => {
             await this._router.navigate(['/recipe-list']);
