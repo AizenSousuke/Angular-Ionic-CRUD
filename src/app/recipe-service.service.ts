@@ -59,11 +59,38 @@ export class RecipeServiceService {
   }
 
   getRecipeById(id: number) {
+    return this._fireStore.collection('recipe-list').doc(id.toString()).get();
+    /*
+    return this._fireStore.collection('recipe-list').doc(id.toString()).get().subscribe(data => {
+      console.log(data);
+      this.recipeObj = data;
+    });
+    */
     // Return Recipe Object by id number
     //this.recipeObj = this._fireStore.collection('recipe-list').doc(id.toString()).get();
-    this.recipeObj = this._fireStore.collection('recipe-list', ref => ref.where('id', '==', 1));
+    //this.recipeObj = this._fireStore.collection('recipe-list', ref => ref.where('id', '==', id));
+    /*
+    let obj;
+    this.recipeObj = this._fireStore.collection('recipe-list').doc(id.toString()).ref.get().then(snapshot => {
+      obj = snapshot.data();
+      console.log(snapshot.data());
+      return obj;
+    });
     console.log(this.recipeObj);
-    return this.recipeObj;
+    */
+   /*
+    this._fireStore.collection('recipe-list').doc(id.toString()).ref.get().then(
+      doc => {
+        if (doc) {
+          console.log('Document exists');
+          console.log(doc.data());
+          return doc;
+        } else {
+          console.log('No document exists');
+        }
+      }
+    );
+    */
     /*
     // Return Recipe Object by id number
     return this.listOfRecipes.find((recipe) => {
@@ -73,11 +100,22 @@ export class RecipeServiceService {
     */
   }
 
+  setDocFavourite(id) {
+    let fav;
+    this._fireStore.collection('recipe-list').doc(id.toString()).get().subscribe(favourite => {
+      console.log('Current Favourite: ' + favourite.get('favourite'));
+      fav = !favourite.get('favourite');
+      console.log('Favourite will be set to: ' + fav);
+      this._fireStore.collection('recipe-list').doc(id.toString()).set({ 'favourite' : fav }, { 'merge' : true });
+    });
+  }
+
   toggleFavourite(recipe) {
     // Toggles favourite
     recipe.favourite = !recipe.favourite;
     // Write to database
-    this._fireStore.collection('recipe-list').doc(recipe.id.toString()).set({ 'favourite' : recipe.favourite }, { 'merge' : true });
+    //console.log('Recipe ID: ' + recipe.id.toString());
+    this._fireStore.collection('recipe-list').doc(parseInt(recipe.id).toString()).set({ 'favourite' : recipe.favourite }, { 'merge' : true });
     console.log(recipe.name + "'s Favourite Bool: " + recipe.favourite);
   }
 
