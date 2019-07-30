@@ -145,20 +145,19 @@ export class RecipeServiceService {
           this._fireStore.collection('recipe-list').doc(recipe.get('name').toString()).delete().then(() => {
             console.log('Deleted!');
             // Update all the ids in the collection so as not to rewrite\merge data that's already in the database
-            /*
+
             let num = 1;
             this.getAllRecipesCollection().get().subscribe(recipe => {
               recipe.forEach(x => {
                 console.log('Found recipe');
-                console.log('Old ID: ' + x.get('id'));
-                this._fireStore.collection('recipe-list').doc(x.get('id').toString()).set(
+                //console.log('Old ID: ' + x.get('id'));
+                this._fireStore.collection('recipe-list').doc(x.get('name').toString()).set(
                   { 'id' : num }, { 'merge' : true }
                 );
-                console.log('New ID: ' + x.get('id'));
+                //console.log('New ID: ' + (x.get('id')+1));
                 num += 1;
               });
             });
-            */
           });
 
           // Make navigation run from within Angular. Will result in an error if not using _ngZone
