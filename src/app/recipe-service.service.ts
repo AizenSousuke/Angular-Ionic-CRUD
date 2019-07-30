@@ -62,8 +62,9 @@ export class RecipeServiceService {
     return this._fireStore.collection('recipe-list').snapshotChanges();
   }
 
-  getRecipeById(id: number) {
-    return this._fireStore.collection('recipe-list').doc(id.toString()).get();
+  getRecipeById(document) {
+    console.log('Getting recipe with ID: ' + document);
+    return this._fireStore.collection('recipe-list').doc(document.toString()).get();
   }
 
   setDocFavourite(id) {
@@ -107,7 +108,8 @@ export class RecipeServiceService {
       // TODO: Check if data exists and let user choose if he wants to replace it
 
       // Save data to the database here
-      this._fireStore.collection('recipe-list').doc(data.id.toString()).set(data, { 'merge' : false });
+      console.log('ID before set: ' + data.id);
+      this._fireStore.collection('recipe-list').doc(data.name.toString()).set(data, { 'merge' : false });
 
       // Show the toast
       const toast = await this._toastController.create({

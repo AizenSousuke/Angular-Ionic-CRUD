@@ -11,7 +11,6 @@ import { RecipeServiceService } from 'src/app/recipe-service.service';
 })
 export class RecipeDetailPage implements OnInit {
   id: number;
-  //recipe : Recipe;
   recipe;
   imageLink: string;
   name: string;
@@ -34,10 +33,11 @@ export class RecipeDetailPage implements OnInit {
 
   getRecipeNameFromURL() {
     // Sets the data for the recipe
-    console.log("Params ID: " + this._route.snapshot.paramMap.get('id'));
+    console.log("Params ID in the URL: " + this._route.snapshot.paramMap.get('id'));
     this._recipeService.getRecipeById(parseInt(this._route.snapshot.paramMap.get('id'))).subscribe(data => {
       this.recipe = data;
       this.id = this.recipe.get('id');
+      console.log("ID: " + this.id);
       this.name = this.recipe.get('name');
       this.imageLink = this.recipe.get('imageLink');
       this.description = this.recipe.get('description');

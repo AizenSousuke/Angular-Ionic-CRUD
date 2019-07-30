@@ -19,6 +19,10 @@ export class RecipeListPage implements OnInit {
     }
 
   ngOnInit() {
+    this.initRecipe();
+  }
+
+  initRecipe() {
     // Load data from the database
     this._recipeService.getAllRecipesSnapshots().subscribe(result => {
       this.recipe = result;
@@ -32,12 +36,13 @@ export class RecipeListPage implements OnInit {
   }
 
   onClickRecipe(recipe : Recipe) {
-    console.log("Clicked: " + recipe.name + " | id: " + recipe.id);
+    console.log("Clicked name: " + recipe.name + " | id: " + recipe.id);
     this._router.navigate(['recipe-list', recipe.id]);
   }
 
   onAddRecipe() {
     this._recipeService.onAddRecipe();
+    this.initRecipe();
   }
 
   addDefaultRecipes() {
