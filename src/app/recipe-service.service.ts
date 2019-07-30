@@ -10,6 +10,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 })
 export class RecipeServiceService {
   // List of recipes
+  /*
   private listOfRecipes: Recipe[] = [
     {
       id: 1,
@@ -36,10 +37,12 @@ export class RecipeServiceService {
       favourite: false,
     }
   ];
+  */
 
+  // Recipe array for calculations 
   recipe: Array<any>;
-  recipeObj;
-  id;
+  // Recipe Number for calculations
+  id: number;
 
   constructor(
     private _fireStore: AngularFirestore,
@@ -51,12 +54,11 @@ export class RecipeServiceService {
 
   }
 
-
-  getAllRecipes() {
+  getAllRecipesCollection() {
     return this._fireStore.collection('recipe-list');
   }
 
-  getAllRecipesFromDatabase() {
+  getAllRecipesSnapshots() {
     return this._fireStore.collection('recipe-list').snapshotChanges();
   }
 
@@ -85,7 +87,7 @@ export class RecipeServiceService {
 
   countRecipeInDatabase() {
     // Set the recipe ID first
-    this.getAllRecipes().ref.get().then(recipe => {
+    this.getAllRecipesCollection().ref.get().then(recipe => {
       this.id = recipe.size;
       console.log('ID set to: ' + this.id);
     });
@@ -102,6 +104,8 @@ export class RecipeServiceService {
     modal.present();
     const { data } = await modal.onDidDismiss();
     if (data) {
+      // TODO: Check if data exists and let user choose if he wants to replace it
+
       // Save data to the database here
       this._fireStore.collection('recipe-list').doc(data.id.toString()).set(data, { 'merge' : false });
 
@@ -139,7 +143,7 @@ export class RecipeServiceService {
             console.log('Deleted!');
             // Update all the ids in the collection so as not to rewrite\merge data that's already in the database
             let num = 1;
-            this.getAllRecipes().get().subscribe(recipe => {
+            this.getAllRecipesCollection().get().subscribe(recipe => {
               recipe.forEach(x => {
                 console.log('Found recipe');
                 console.log('Old ID: ' + x.get('id'));
@@ -187,6 +191,13 @@ export class RecipeServiceService {
         "ingredients": ['3'],
       }
     ];
+    // Delete existing recipes
+    /*
+    for (let i=0; i<3; i++) {
+      this._fireStore.collection('recipe-list').doc((i+1).toString()).delete();
+    }
+    */
+    // Add the 3 recipes
     for (let i=0; i<3; i++) {
       this._fireStore.collection('recipe-list').doc((i+1).toString()).set(data[i] , { 'merge' : true });
     }

@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RecipeListPage } from '../recipe-list.page';
-import { Location } from '@angular/common';
 import { RecipeServiceService } from 'src/app/recipe-service.service';
-import { Recipe } from '../recipe';
 
 
 @Component({
