@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { FormGroup, FormBuilder } from "@angular/forms";
-import { RecipeServiceService } from 'src/app/recipe-service.service';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-recipe-modal',
@@ -29,11 +29,16 @@ export class RecipeModalPage implements OnInit {
   constructor(
     private _modalController: ModalController,
     private _formBuilder: FormBuilder,
+    private _angularFireStore: AngularFirestore,
   ) {
     
   }
 
   ngOnInit() {
+    this._angularFireStore.collection('recipe-list').ref.get().then(recipe => {
+      this.id = recipe.size + 1;
+      console.log('ID in modal set to: ' + this.id);
+    });
   }
 
   onSubmitRecipe(f: FormGroup) {
@@ -43,6 +48,7 @@ export class RecipeModalPage implements OnInit {
     //f.patchValue({'description' : 'fjaslkdfjasldfjasldf'});
     //console.log(f.get('recipeName').value);
     //console.log(f.setValue({'recipeName': 'Awesome recipe', 'description': 'Hello'}));
+    console.log('ID in modal before submitting is: ' + this.id);
     let data = {
       "id": this.id,
       "imageLink": 'https://cdn.auth0.com/blog/get-started-ionic/logo.png',

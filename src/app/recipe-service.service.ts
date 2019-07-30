@@ -37,6 +37,10 @@ export class RecipeServiceService {
     }
   ];
 
+  recipe: Array<any>;
+  recipeObj;
+  id;
+
   constructor(
     private _fireStore: AngularFirestore,
     private _router: Router,
@@ -47,11 +51,9 @@ export class RecipeServiceService {
 
   }
 
-  recipe: Array<any>;
-  recipeObj;
 
   getAllRecipes() {
-    return this.listOfRecipes;
+    return this._fireStore.collection('recipe-list');
   }
 
   getAllRecipesFromDatabase() {
@@ -60,44 +62,6 @@ export class RecipeServiceService {
 
   getRecipeById(id: number) {
     return this._fireStore.collection('recipe-list').doc(id.toString()).get();
-    /*
-    return this._fireStore.collection('recipe-list').doc(id.toString()).get().subscribe(data => {
-      console.log(data);
-      this.recipeObj = data;
-    });
-    */
-    // Return Recipe Object by id number
-    //this.recipeObj = this._fireStore.collection('recipe-list').doc(id.toString()).get();
-    //this.recipeObj = this._fireStore.collection('recipe-list', ref => ref.where('id', '==', id));
-    /*
-    let obj;
-    this.recipeObj = this._fireStore.collection('recipe-list').doc(id.toString()).ref.get().then(snapshot => {
-      obj = snapshot.data();
-      console.log(snapshot.data());
-      return obj;
-    });
-    console.log(this.recipeObj);
-    */
-   /*
-    this._fireStore.collection('recipe-list').doc(id.toString()).ref.get().then(
-      doc => {
-        if (doc) {
-          console.log('Document exists');
-          console.log(doc.data());
-          return doc;
-        } else {
-          console.log('No document exists');
-        }
-      }
-    );
-    */
-    /*
-    // Return Recipe Object by id number
-    return this.listOfRecipes.find((recipe) => {
-      console.log("Recipe Name getRecipeById: " + recipe.name);
-      return recipe.id == id;
-    });
-    */
   }
 
   setDocFavourite(id) {
@@ -114,9 +78,17 @@ export class RecipeServiceService {
     // Toggles favourite
     recipe.favourite = !recipe.favourite;
     // Write to database
-    //console.log('Recipe ID: ' + recipe.id.toString());
+    console.log('Recipe ID: ' + recipe.id.toString());
     this._fireStore.collection('recipe-list').doc(parseInt(recipe.id).toString()).set({ 'favourite' : recipe.favourite }, { 'merge' : true });
     console.log(recipe.name + "'s Favourite Bool: " + recipe.favourite);
+  }
+
+  countRecipeInDatabase() {
+    // Set the recipe ID first
+    this.getAllRecipes().ref.get().then(recipe => {
+      this.id = recipe.size;
+      console.log('ID set to: ' + this.id);
+    });
   }
 
   async onAddRecipe() {
@@ -124,21 +96,14 @@ export class RecipeServiceService {
     let modal = await this._modalController.create({
       component: RecipeModalPage,
       componentProps: {
-        //"id": this.listOfRecipes.length + 1,
-        "id": this.recipe.length + 1,
+        "id": this.id,
       },
     });
     modal.present();
     const { data } = await modal.onDidDismiss();
     if (data) {
       // Save data to the database here
-      /*
-      this.listOfRecipes.push(data);
-      console.log('List of Recipes: ' + this.listOfRecipes);
-      */
-
-      // Save data to the database here
-      this._fireStore.collection('recipe-list').doc(data.id.toString()).set(data);
+      this._fireStore.collection('recipe-list').doc(data.id.toString()).set(data, { 'merge' : true });
 
       // Show the toast
       const toast = await this._toastController.create({
@@ -149,7 +114,7 @@ export class RecipeServiceService {
       toast.present();
       console.log("Shown toast");
     }
-    console.log(data);
+    console.log('Data: ' + data);
   }
 
   async onDeleteRecipe(recipe) {
@@ -167,35 +132,23 @@ export class RecipeServiceService {
       }, {
         text: 'Delete',
         handler: () => {
-          console.log("Delete has been selected");
-          // Delete the recipe from the database here
-          /*
-          let recipeToDelete;
-          recipeToDelete = this.listOfRecipes.find((res) => {
-            if (recipe.id == res.id) {
-              console.log("Found: " + recipe.id);
-              return true;
-            }
-          });
-          console.log("Deleting Recipe: " + recipeToDelete.name);
-          if (recipeToDelete) {
-            this.listOfRecipes.splice(recipeToDelete.id - 1, 1);
-            // Fix\Bring forward the remaining recipe IDs accordingly in the listOfRecipes
-            let id = 1;
-            this.listOfRecipes.forEach((recipe) => {
-              console.log("Changed recipe id to " + id);
-              recipe.id = id;
-              id += 1;
-            });
-            console.log("Deleted Recipe");
-            // Delete Recipe by ID
-            console.log("Deleted " + recipe.id + ", " + recipe.name);
-          }
-          */
-          
+          console.log("Delete has been selected");          
           //Delete the recipe from the database
-          console.log(recipe.name);
-          this._fireStore.collection('recipe-list').doc(recipe.name).delete();
+          console.log("Deleting: " + recipe.get('id').toString());
+          this._fireStore.collection('recipe-list').doc(recipe.get('id').toString()).delete().then(() => {
+            console.log('Deleted!');
+            // Update all the ids in the collection so as not to rewrite\merge data that's already in the database
+            let num = 1;
+            /*
+            this.getAllRecipesFromDatabase().subscribe(recipe => {
+              recipe.forEach(x => {
+                console.log('Set new ID to ' + num);
+                x.payload.doc.ref.set({'id' : num}, { 'merge' : true });
+                num += 1;
+              })
+            })  
+            */   
+          });
 
           // Make navigation run from within Angular. Will result in an error if not using _ngZone
           this._ngZone.run( async () => {

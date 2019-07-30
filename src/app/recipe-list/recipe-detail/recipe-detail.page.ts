@@ -74,6 +74,7 @@ export class RecipeDetailPage implements OnInit {
   onFavourite() {
     this._recipeService.setDocFavourite(parseInt(this._route.snapshot.paramMap.get('id')));
     this.favourite = !this.favourite;
+    this.recipe = this._recipeService.getRecipeById(parseInt(this._route.snapshot.paramMap.get('id')));
     /*
     this.recipe = this._recipeService.getDoc(this._route.snapshot.paramMap.get('id')).subscribe(data => {
       this._recipeService.toggleFavourite(data);
