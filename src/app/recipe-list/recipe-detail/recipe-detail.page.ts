@@ -34,7 +34,7 @@ export class RecipeDetailPage implements OnInit {
   getRecipeNameFromURL() {
     // Sets the data for the recipe
     console.log("Params ID in the URL: " + this._route.snapshot.paramMap.get('id'));
-    this._recipeService.getRecipeById(parseInt(this._route.snapshot.paramMap.get('id'))).subscribe(data => {
+    this._recipeService.getRecipeByName(this._route.snapshot.paramMap.get('id').toString()).subscribe(data => {
       this.recipe = data;
       this.id = this.recipe.get('id');
       console.log("ID: " + this.id);
@@ -56,8 +56,8 @@ export class RecipeDetailPage implements OnInit {
   }
 
   onFavourite() {
-    this._recipeService.setDocFavourite(parseInt(this._route.snapshot.paramMap.get('id')));
+    this._recipeService.setDocFavourite(this._route.snapshot.paramMap.get('id').toString());
     this.favourite = !this.favourite;
-    this.recipe = this._recipeService.getRecipeById(parseInt(this._route.snapshot.paramMap.get('id')));
+    this.recipe = this._recipeService.getRecipeByName(this._route.snapshot.paramMap.get('id').toString());
   };
 }

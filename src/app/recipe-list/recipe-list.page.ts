@@ -31,13 +31,12 @@ export class RecipeListPage implements OnInit {
   }
 
   cardFavourite(recipe) {
-    // Toggle favourite using the _recipeService
     this._recipeService.toggleFavourite(recipe);
   }
 
   onClickRecipe(recipe : Recipe) {
-    console.log("Clicked name: " + recipe.name + " | id: " + recipe.id);
-    this._router.navigate(['recipe-list', recipe.id]);
+    console.log("Clicked name: " + recipe.name);
+    this._router.navigate(['recipe-list', recipe.name.toString()]);
   }
 
   onAddRecipe() {
