@@ -103,7 +103,7 @@ export class RecipeServiceService {
     const { data } = await modal.onDidDismiss();
     if (data) {
       // Save data to the database here
-      this._fireStore.collection('recipe-list').doc(data.id.toString()).set(data, { 'merge' : true });
+      this._fireStore.collection('recipe-list').doc(data.id.toString()).set(data, { 'merge' : false });
 
       // Show the toast
       const toast = await this._toastController.create({
@@ -139,15 +139,17 @@ export class RecipeServiceService {
             console.log('Deleted!');
             // Update all the ids in the collection so as not to rewrite\merge data that's already in the database
             let num = 1;
-            /*
-            this.getAllRecipesFromDatabase().subscribe(recipe => {
+            this.getAllRecipes().get().subscribe(recipe => {
               recipe.forEach(x => {
-                console.log('Set new ID to ' + num);
-                x.payload.doc.ref.set({'id' : num}, { 'merge' : true });
+                console.log('Found recipe');
+                console.log('Old ID: ' + x.get('id'));
+                this._fireStore.collection('recipe-list').doc(x.get('id').toString()).set(
+                  { 'id' : num }, { 'merge' : true }
+                );
+                console.log('New ID: ' + x.get('id'));
                 num += 1;
-              })
-            })  
-            */   
+              });
+            });
           });
 
           // Make navigation run from within Angular. Will result in an error if not using _ngZone
@@ -162,5 +164,31 @@ export class RecipeServiceService {
 
     // Presents the alert
     alert.present();
+  }
+
+  addDefaultRecipes() {
+    let data = [
+      {
+        "id": 1,
+        "imageLink": 'https://cdn.auth0.com/blog/get-started-ionic/logo.png',
+        "name": '1',
+        "ingredients": ['1'],
+      },
+      {
+        "id": 2,
+        "imageLink": 'https://cdn.auth0.com/blog/get-started-ionic/logo.png',
+        "name": '2',
+        "ingredients": ['2'],
+      },
+      {
+        "id": 3,
+        "imageLink": 'https://cdn.auth0.com/blog/get-started-ionic/logo.png',
+        "name": '3',
+        "ingredients": ['3'],
+      }
+    ];
+    for (let i=0; i<3; i++) {
+      this._fireStore.collection('recipe-list').doc((i+1).toString()).set(data[i] , { 'merge' : true });
+    }
   }
 }
