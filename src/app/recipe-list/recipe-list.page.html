@@ -26,7 +26,7 @@
       </ion-card-header>
   </ion-card>
   -->
-  <ion-card *ngFor="let item of recipe">
+  <ion-card *ngFor="let item of recipe; trackBy: trackRecipe">
     <ion-fab vertical="top" horizontal="end" slot="fixed">
       <ion-button color="dark" shape="round" fill="clear" (click)="cardFavourite(item.payload.doc.data())">
           <ion-icon name="heart" *ngIf="item.payload.doc.data().favourite" [ngStyle]="{'color': 'red'}"></ion-icon>

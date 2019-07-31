@@ -56,7 +56,7 @@ export class RecipeDetailPage implements OnInit {
   }
 
   onFavourite() {
-    this._recipeService.setDocFavourite(this._route.snapshot.paramMap.get('id').toString());
+    this._recipeService.setDocFavourite(this._route.snapshot.paramMap.get('id').toString(), this.favourite);
     this.favourite = !this.favourite;
     this.recipe = this._recipeService.getRecipeByName(this._route.snapshot.paramMap.get('id').toString());
   };

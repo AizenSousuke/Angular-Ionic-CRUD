@@ -67,14 +67,20 @@ export class RecipeServiceService {
     return this._fireStore.collection('recipe-list').doc(document.toString()).get();
   }
 
-  setDocFavourite(document) {
+  setDocFavourite(document, prev) {
     let fav;
+    /*
     this._fireStore.collection('recipe-list').doc(document.toString()).get().subscribe(favourite => {
       console.log('Current Favourite: ' + favourite.get('favourite'));
       fav = !favourite.get('favourite');
       console.log('Favourite will be set to: ' + fav);
       this._fireStore.collection('recipe-list').doc(document.toString()).set({ 'favourite' : fav }, { 'merge' : true });
     });
+    */
+    console.log('Current Favourite: ' + prev);
+    fav = !prev;
+    console.log('Favourite will be set to: ' + fav);
+    this._fireStore.collection('recipe-list').doc(document.toString()).set({ 'favourite' : fav }, { 'merge' : true });
   }
 
   toggleFavourite(recipe) {

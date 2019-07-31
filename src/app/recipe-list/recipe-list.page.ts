@@ -10,7 +10,8 @@ import { Location } from '@angular/common';
   styleUrls: ['./recipe-list.page.scss'],
 })
 export class RecipeListPage implements OnInit {
-  recipe: Array<any>;
+  //recipe: Array<any>;
+  recipe;
 
   constructor(
       private _router: Router,
@@ -28,6 +29,12 @@ export class RecipeListPage implements OnInit {
       this.recipe = result;
       this._recipeService.recipe = result;
     });
+    /*
+    this._recipeService.getAllRecipesCollection().ref.get().then(recipe => {
+      this.recipe = recipe;
+      console.log(this.recipe);
+    });
+    */
   }
 
   cardFavourite(recipe) {
@@ -41,10 +48,13 @@ export class RecipeListPage implements OnInit {
 
   onAddRecipe() {
     this._recipeService.onAddRecipe();
-    this.initRecipe();
+    //this.initRecipe();
   }
 
   addDefaultRecipes() {
     this._recipeService.addDefaultRecipes();
+  }
+
+  trackRecipe(index, item) {
   }
 }
