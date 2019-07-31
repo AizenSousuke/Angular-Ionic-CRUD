@@ -51,6 +51,10 @@ export class RecipeDetailPage implements OnInit {
     this._recipeService.onAddRecipe();
   }
 
+  onEditRecipe() {
+    this._recipeService.onEditRecipe(this.recipe);
+  }
+
   onDeleteRecipe() {
     this._recipeService.onDeleteRecipe(this.recipe);
   }

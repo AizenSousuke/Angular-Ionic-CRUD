@@ -12,6 +12,13 @@ export class RecipeModalPage implements OnInit {
   // Get the latest ID to use
   @Input() id: number;
 
+  @Input() name: string;
+  @Input() imageLink: string;
+  @Input() description: string;
+  @Input() ingredients: string[];
+  @Input() timeNeeded: number;
+  @Input() favourite: boolean;
+
   addRecipeForm = this._formBuilder.group({
     recipeName: '',
     imageLink: '',
@@ -30,10 +37,29 @@ export class RecipeModalPage implements OnInit {
   }
 
   ngOnInit() {
-    this._angularFireStore.collection('recipe-list').ref.get().then(recipe => {
-      this.id = recipe.size + 1;
-      console.log('ID in modal set to: ' + this.id);
-    });
+    if (this.name == null) {
+      // If there is no name passed to the modal, assume that it was trigged from add recipe button and prefill stuffs
+      console.log("Name is null");
+      this.addRecipeForm.get('imageLink').setValue('https://cdn.auth0.com/blog/get-started-ionic/logo.png');
+      this._angularFireStore.collection('recipe-list').ref.get().then(recipe => {
+        this.id = recipe.size + 1;
+        console.log('ID in modal set to: ' + this.id);
+      });
+    } else {
+      // Prefill the values
+      this.prefillValues();
+    }
+  }
+
+  prefillValues() {
+    console.log(this.name);
+    console.log(this.ingredients);
+    this.addRecipeForm.get('recipeName').setValue(this.name);
+    this.addRecipeForm.get('imageLink').setValue(this.imageLink);
+    this.addRecipeForm.get('description').setValue(this.description);
+    this.addRecipeForm.get('ingredients').setValue(this.ingredients);
+    this.addRecipeForm.get('timeNeeded').setValue(this.timeNeeded);
+    this.addRecipeForm.get('favourite').setValue(this.favourite);
   }
 
   onSubmitRecipe(f: FormGroup) {
@@ -41,10 +67,10 @@ export class RecipeModalPage implements OnInit {
     console.log('ID in modal before submitting is: ' + this.id);
     let data = {
       "id": this.id,
-      "imageLink": 'https://cdn.auth0.com/blog/get-started-ionic/logo.png',
+      "imageLink": f.get('imageLink').value,
       "name": f.get('recipeName').value,
       "description": f.get('description').value,
-      "ingredients": f.get('ingredients').value.split(','),
+      "ingredients": f.get('ingredients').value.split(','), // TODO: Fix error here when editing and then submitting recipe
       "timeNeeded": f.get('timeNeeded').value,
       "favourite": f.get('favourite').value,
     }

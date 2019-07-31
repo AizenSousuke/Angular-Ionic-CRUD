@@ -147,7 +147,7 @@ export class RecipeServiceService {
         handler: () => {
           console.log("Delete has been selected");          
           //Delete the recipe from the database
-          console.log("Deleting: " + recipe.get('id').toString());
+          console.log("Deleting: " + recipe.get('name').toString());
           this._fireStore.collection('recipe-list').doc(recipe.get('name').toString()).delete().then(() => {
             console.log('Deleted!');
             // Update all the ids in the collection so as not to rewrite\merge data that's already in the database
@@ -178,6 +178,24 @@ export class RecipeServiceService {
 
     // Presents the alert
     alert.present();
+  }
+
+  async onEditRecipe(recipe) {
+    console.log(recipe.get('name'));
+    // Create modal to edit recipe
+    let modal = await this._modalController.create({
+      component: RecipeModalPage,
+      componentProps: {
+        "id": recipe.get('id'),
+        "name": recipe.get('name'),
+        "imageLink": recipe.get('imageLink'),
+        "description": recipe.get('description'),
+        "ingredients": recipe.get('ingredients'),
+        "timeNeeded": recipe.get('timeNeeded'),
+        "favourite": recipe.get('favourite'),
+      }
+    });
+    modal.present();
   }
 
   addDefaultRecipes() {
