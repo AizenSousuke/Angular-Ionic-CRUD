@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AlertController, ModalController, ToastController } from '@ionic/angular';
 import { RecipeModalPage } from './recipe-list/recipe-modal/recipe-modal.page';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { FormControl } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -111,11 +112,13 @@ export class RecipeServiceService {
     });
     modal.present();
     const { data } = await modal.onDidDismiss();
-    if (data) {
-      // TODO: Check if data exists and let user choose if he wants to replace it
+    if (data != undefined) {
+      // TODO: Check if recipe name data exists and let user choose if he wants to replace it by recipe name
 
       // Save data to the database here
       console.log('ID before set: ' + data.id);
+      console.log("Data:");
+      console.log(data);
       this._fireStore.collection('recipe-list').doc(data.name.toString()).set(data, { 'merge' : false });
 
       // Show the toast
@@ -180,8 +183,8 @@ export class RecipeServiceService {
     alert.present();
   }
 
-  async onEditRecipe(recipe) {
-    console.log(recipe.get('name'));
+  async onEditRecipe(recipe : FormControl) {
+    console.log("Editting Recipe: " + recipe.get('name'));
     // Create modal to edit recipe
     let modal = await this._modalController.create({
       component: RecipeModalPage,
@@ -190,12 +193,30 @@ export class RecipeServiceService {
         "name": recipe.get('name'),
         "imageLink": recipe.get('imageLink'),
         "description": recipe.get('description'),
-        "ingredients": recipe.get('ingredients'),
+        "ingredients": recipe.get('ingredients'),  // TODO: Temp .toString()
         "timeNeeded": recipe.get('timeNeeded'),
         "favourite": recipe.get('favourite'),
       }
     });
     modal.present();
+    const { data } = await modal.onDidDismiss();
+    // TODO: This function runs when modal is dismissed without data. It shouldn't run. Fixed with != undefined check. 
+    if (data != undefined) {
+      console.log("Data on modal dismissed");
+      console.log(data.data);
+      // Update data in the database here
+      // TODO: Error here in data.data.name
+      this._fireStore.collection('recipe-list').doc(data.name.toString()).set(data, { 'merge' : true });
+
+      // Show the toast
+      const toast = await this._toastController.create({
+        message: 'Recipe updated successfully!',
+        duration: 2000,
+        showCloseButton: true, 
+      });
+      toast.present();
+      console.log("Shown toast");
+    }
   }
 
   addDefaultRecipes() {

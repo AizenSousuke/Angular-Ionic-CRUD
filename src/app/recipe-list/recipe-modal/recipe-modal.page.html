@@ -46,6 +46,11 @@
             <ion-button color="secondary" (click)="addRecipeForm.reset()">Reset</ion-button>
           </ion-item>
         </form>
+        <ion-button (click)="onDebugForm(addRecipeForm)">
+          Debug Button
+        </ion-button>
+        ID: {{ id }}
+        Favourite: {{ favourite }}
       </ion-col>
     </ion-row>
   </ion-grid>

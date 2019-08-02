@@ -12,21 +12,21 @@ export class RecipeModalPage implements OnInit {
   // Get the latest ID to use
   @Input() id: number;
 
-  @Input() name: string;
-  @Input() imageLink: string;
-  @Input() description: string;
-  @Input() ingredients: string[];
-  @Input() timeNeeded: number;
-  @Input() favourite: boolean;
+  @Input() name: string = "";
+  @Input() imageLink: string = "";
+  @Input() description: string = "";
+  @Input() ingredients: string[] = [""];
+  @Input() timeNeeded: number = 0;
+  @Input() favourite: boolean = false;
 
-  addRecipeForm = this._formBuilder.group({
-    recipeName: '',
-    imageLink: '',
-    description: '',
-    ingredients: '',
-    timeNeeded: '',
-    favourite: '',
-  })
+  addRecipeForm : FormGroup = this._formBuilder.group({
+    recipeName: [''],
+    imageLink: [''],
+    description: [''],
+    ingredients: [''],
+    timeNeeded: [''],
+    favourite: [''],
+  });
 
   constructor(
     private _modalController: ModalController,
@@ -37,14 +37,17 @@ export class RecipeModalPage implements OnInit {
   }
 
   ngOnInit() {
-    if (this.name == null) {
-      // If there is no name passed to the modal, assume that it was trigged from add recipe button and prefill stuffs
+    if (this.name == null || this.name == "") {
+      // If there is no name passed to the modal, assume that it was triggered from add recipe button and prefill stuffs
       console.log("Name is null");
       this.addRecipeForm.get('imageLink').setValue('https://cdn.auth0.com/blog/get-started-ionic/logo.png');
       this._angularFireStore.collection('recipe-list').ref.get().then(recipe => {
         this.id = recipe.size + 1;
         console.log('ID in modal set to: ' + this.id);
       });
+
+      // Set default values because @Input of type boolean doesn't provide a value (undefined)
+      this.favourite = false;
     } else {
       // Prefill the values
       this.prefillValues();
@@ -52,14 +55,29 @@ export class RecipeModalPage implements OnInit {
   }
 
   prefillValues() {
+    console.log(this.id);
     console.log(this.name);
+    console.log(this.imageLink);
+    console.log(this.description);
     console.log(this.ingredients);
+    console.log(this.timeNeeded);
+    console.log(this.favourite);
+    /*
     this.addRecipeForm.get('recipeName').setValue(this.name);
     this.addRecipeForm.get('imageLink').setValue(this.imageLink);
     this.addRecipeForm.get('description').setValue(this.description);
     this.addRecipeForm.get('ingredients').setValue(this.ingredients);
     this.addRecipeForm.get('timeNeeded').setValue(this.timeNeeded);
     this.addRecipeForm.get('favourite').setValue(this.favourite);
+    */
+    this.addRecipeForm.patchValue({
+      'recipeName': this.name,
+      'imageLink': this.imageLink,
+      'description': this.description,
+      'ingredients': this.ingredients,
+      'timeNeeded': this.timeNeeded,
+      'favourite': this.favourite,
+    });
   }
 
   onSubmitRecipe(f: FormGroup) {
@@ -74,13 +92,28 @@ export class RecipeModalPage implements OnInit {
       "timeNeeded": f.get('timeNeeded').value,
       "favourite": f.get('favourite').value,
     }
+    console.log("Data: ");
+    console.log(data);
     this._modalController.dismiss(data);
     //console.log(f);
   }
 
   onDismiss() {
     this._modalController.dismiss();
-    console.log("Dismissed");
+    console.log("Dismissed modal without data");
   }
 
+  onDebugForm(f: FormGroup) {
+    /*
+    f.get('favourite').valueChanges.subscribe(event => {
+      console.log(event);
+    });
+    //f.get('favourite').setValue(true);
+    this.favorite = !this.favorite;
+    console.log(this.favorite);
+    */
+    this.favourite = !this.favourite;
+    console.log(this.favourite);
+    f.get('favourite').patchValue(this.favourite);
+  }
 }
