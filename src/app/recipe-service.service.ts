@@ -189,6 +189,7 @@ export class RecipeServiceService {
     let modal = await this._modalController.create({
       component: RecipeModalPage,
       componentProps: {
+        "recipe": recipe,
         "id": recipe.get('id'),
         "name": recipe.get('name'),
         "imageLink": recipe.get('imageLink'),
@@ -203,7 +204,7 @@ export class RecipeServiceService {
     // TODO: This function runs when modal is dismissed without data. It shouldn't run. Fixed with != undefined check. 
     if (data != undefined) {
       console.log("Data on modal dismissed");
-      console.log(data.data);
+      console.log(data);
       // Update data in the database here
       // TODO: Error here in data.data.name
       this._fireStore.collection('recipe-list').doc(data.name.toString()).set(data, { 'merge' : true });

@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { FormGroup, FormBuilder } from "@angular/forms";
 import { AngularFirestore } from '@angular/fire/firestore';
+import { Recipe } from '../recipe';
 
 @Component({
   selector: 'app-recipe-modal',
@@ -12,6 +13,7 @@ export class RecipeModalPage implements OnInit {
   // Get the latest ID to use
   @Input() id: number;
 
+  @Input() recipe: Recipe;
   @Input() name: string = "";
   @Input() imageLink: string = "";
   @Input() description: string = "";
@@ -45,16 +47,18 @@ export class RecipeModalPage implements OnInit {
         this.id = recipe.size + 1;
         console.log('ID in modal set to: ' + this.id);
       });
-
+      
       // Set default values because @Input of type boolean doesn't provide a value (undefined)
       this.favourite = false;
     } else {
       // Prefill the values
-      this.prefillValues();
+      this.prefillValues(this.recipe);
     }
   }
 
-  prefillValues() {
+  prefillValues(recipe: Recipe) {
+    console.log("---------------------");
+    console.log(this.recipe);
     console.log(this.id);
     console.log(this.name);
     console.log(this.imageLink);
@@ -62,6 +66,7 @@ export class RecipeModalPage implements OnInit {
     console.log(this.ingredients);
     console.log(this.timeNeeded);
     console.log(this.favourite);
+    console.log("---------------------");
     /*
     this.addRecipeForm.get('recipeName').setValue(this.name);
     this.addRecipeForm.get('imageLink').setValue(this.imageLink);
@@ -78,6 +83,8 @@ export class RecipeModalPage implements OnInit {
       'timeNeeded': this.timeNeeded,
       'favourite': this.favourite,
     });
+
+    this.addRecipeForm.get('favourite').patchValue('true');
   }
 
   onSubmitRecipe(f: FormGroup) {
@@ -88,7 +95,7 @@ export class RecipeModalPage implements OnInit {
       "imageLink": f.get('imageLink').value,
       "name": f.get('recipeName').value,
       "description": f.get('description').value,
-      "ingredients": f.get('ingredients').value.split(','), // TODO: Fix error here when editing and then submitting recipe
+      "ingredients": f.get('ingredients').value, //.split(','), // TODO: Fix error here when editing and then submitting recipe
       "timeNeeded": f.get('timeNeeded').value,
       "favourite": f.get('favourite').value,
     }
@@ -115,5 +122,7 @@ export class RecipeModalPage implements OnInit {
     this.favourite = !this.favourite;
     console.log(this.favourite);
     f.get('favourite').patchValue(this.favourite);
+
+    //console.log(this.addRecipeForm.valueChanges);
   }
 }
