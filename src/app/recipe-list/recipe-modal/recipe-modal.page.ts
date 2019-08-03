@@ -58,6 +58,7 @@ export class RecipeModalPage implements OnInit {
   }
 
   prefillValues(recipe: Recipe) {
+    console.log("Prefilling values")
     console.log("---------------------");
     console.log(this.recipe);
     console.log(this.id);
@@ -84,8 +85,6 @@ export class RecipeModalPage implements OnInit {
       'timeNeeded': this.timeNeeded,
       'favourite': this.favourite,
     });
-
-    this.addRecipeForm.get('favourite').patchValue('true');
   }
 
   onSubmitRecipe(f: FormGroup) {
@@ -97,7 +96,7 @@ export class RecipeModalPage implements OnInit {
       "imageLink": f.get('imageLink').value,
       "name": f.get('recipeName').value,
       "description": f.get('description').value,
-      "ingredients": f.get('ingredients').value.split(','), // TODO: Fix error here when editing and then submitting recipe
+      "ingredients": f.get('ingredients').value.split(','), // TODO: Somehow errors out when no value is input by the user when submitting the form
       "timeNeeded": f.get('timeNeeded').value,
       "favourite": f.get('favourite').value,
     }

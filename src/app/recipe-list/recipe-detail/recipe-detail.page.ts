@@ -40,7 +40,7 @@ export class RecipeDetailPage implements OnInit {
       this.imageLink = this.recipe.get('imageLink');
       this.description = this.recipe.get('description');
       console.log("Ingredients: " + this.recipe.get('ingredients'));
-      console.log(this.recipe.get('ingredients').length);
+      console.log("Ingredients Length: " + this.recipe.get('ingredients').length);
       if (this.recipe.get('ingredients').length > 1) {
         this.ingredients = this.recipe.get('ingredients'); //.split(',');
       } else {
@@ -67,6 +67,10 @@ export class RecipeDetailPage implements OnInit {
     this._recipeService.setDocFavourite(this._route.snapshot.paramMap.get('id').toString(), this.favourite);
     this.favourite = !this.favourite;
     console.log('Updating favourite');
-    //this.recipe = this._recipeService.getRecipeByName(this._route.snapshot.paramMap.get('id').toString()); // TODO: This returns an Observable which caused errors when trying to edit the recipe after running this function.
+    console.log(this.recipe); // Document Snapshot
+    this._recipeService.getRecipeByName(this._route.snapshot.paramMap.get('id').toString()).subscribe(data => {
+      this.recipe = data;
+    }); // TODO: This returns an Observable which caused errors when trying to edit the recipe after running this function.
+    console.log(this.recipe); // Observable
   };
 }

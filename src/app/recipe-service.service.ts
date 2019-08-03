@@ -197,7 +197,7 @@ export class RecipeServiceService {
         "name": recipe.get('name'),
         "imageLink": recipe.get('imageLink') ? recipe.get('imageLink') : "",
         "description": recipe.get('description') ? recipe.get('description') : "",
-        "ingredients": recipe.get('ingredients') ? recipe.get('ingredients') : "",  // TODO: Temp .toString()
+        "ingredients": recipe.get('ingredients') ? recipe.get('ingredients') : [""] as string[],  // TODO: Temp .toString()
         "timeNeeded": recipe.get('timeNeeded') ? recipe.get('timeNeeded') : "",
         "favourite": recipe.get('favourite') ? true : false,
       }
@@ -254,7 +254,7 @@ export class RecipeServiceService {
     */
     // Add the 3 recipes
     for (let i=0; i<3; i++) {
-      this._fireStore.collection('recipe-list').doc((i+1).toString()).set(data[i] , { 'merge' : true });
+      this._fireStore.collection('recipe-list').doc((i+1).toString()).set(data[i] , { 'merge' : false });
     }
   }
 }
