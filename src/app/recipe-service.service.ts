@@ -51,7 +51,8 @@ export class RecipeServiceService {
     private _alertController: AlertController,
     private _ngZone: NgZone,
     private _modalController: ModalController,
-    private _toastController: ToastController) {
+    private _toastController: ToastController,
+    ) {
 
   }
 
@@ -184,7 +185,9 @@ export class RecipeServiceService {
   }
 
   async onEditRecipe(recipe : FormControl) {
+    console.log(recipe);
     console.log("Editting Recipe: " + recipe.get('name'));
+    console.log("Favourite: " + (recipe.get('favourite') ? true : false));
     // Create modal to edit recipe
     let modal = await this._modalController.create({
       component: RecipeModalPage,
@@ -192,11 +195,11 @@ export class RecipeServiceService {
         "recipe": recipe,
         "id": recipe.get('id'),
         "name": recipe.get('name'),
-        "imageLink": recipe.get('imageLink'),
-        "description": recipe.get('description'),
-        "ingredients": recipe.get('ingredients'),  // TODO: Temp .toString()
-        "timeNeeded": recipe.get('timeNeeded'),
-        "favourite": recipe.get('favourite'),
+        "imageLink": recipe.get('imageLink') ? recipe.get('imageLink') : "",
+        "description": recipe.get('description') ? recipe.get('description') : "",
+        "ingredients": recipe.get('ingredients') ? recipe.get('ingredients') : "",  // TODO: Temp .toString()
+        "timeNeeded": recipe.get('timeNeeded') ? recipe.get('timeNeeded') : "",
+        "favourite": recipe.get('favourite') ? true : false,
       }
     });
     modal.present();
@@ -217,6 +220,8 @@ export class RecipeServiceService {
       });
       toast.present();
       console.log("Shown toast");
+
+      // TODO: Update the recipe detail page here
     }
   }
 

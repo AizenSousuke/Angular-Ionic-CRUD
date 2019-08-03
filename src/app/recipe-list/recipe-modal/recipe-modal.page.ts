@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, NavParams } from '@ionic/angular';
 import { FormGroup, FormBuilder } from "@angular/forms";
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Recipe } from '../recipe';
@@ -39,6 +39,7 @@ export class RecipeModalPage implements OnInit {
   }
 
   ngOnInit() {
+
     if (this.name == null || this.name == "") {
       // If there is no name passed to the modal, assume that it was triggered from add recipe button and prefill stuffs
       console.log("Name is null");
@@ -49,7 +50,7 @@ export class RecipeModalPage implements OnInit {
       });
       
       // Set default values because @Input of type boolean doesn't provide a value (undefined)
-      this.favourite = false;
+      // this.favourite = false;
     } else {
       // Prefill the values
       this.prefillValues(this.recipe);
@@ -90,12 +91,13 @@ export class RecipeModalPage implements OnInit {
   onSubmitRecipe(f: FormGroup) {
     // Convert string of ingredients to string[] by ','
     console.log('ID in modal before submitting is: ' + this.id);
+    console.log("Ingredients: " + f.get('ingredients').value);
     let data = {
       "id": this.id,
       "imageLink": f.get('imageLink').value,
       "name": f.get('recipeName').value,
       "description": f.get('description').value,
-      "ingredients": f.get('ingredients').value, //.split(','), // TODO: Fix error here when editing and then submitting recipe
+      "ingredients": f.get('ingredients').value.split(','), // TODO: Fix error here when editing and then submitting recipe
       "timeNeeded": f.get('timeNeeded').value,
       "favourite": f.get('favourite').value,
     }

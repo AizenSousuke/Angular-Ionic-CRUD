@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { RecipeListPage } from '../recipe-list.page';
 import { RecipeServiceService } from 'src/app/recipe-service.service';
 
 
@@ -21,7 +20,6 @@ export class RecipeDetailPage implements OnInit {
 
   constructor(
     private _route : ActivatedRoute,
-    private _recipeListComponent : RecipeListPage,
     private _recipeService : RecipeServiceService,
     ) { 
   }
@@ -41,7 +39,13 @@ export class RecipeDetailPage implements OnInit {
       this.name = this.recipe.get('name');
       this.imageLink = this.recipe.get('imageLink');
       this.description = this.recipe.get('description');
-      this.ingredients = this.recipe.get('ingredients');
+      console.log("Ingredients: " + this.recipe.get('ingredients'));
+      console.log(this.recipe.get('ingredients').length);
+      if (this.recipe.get('ingredients').length > 1) {
+        this.ingredients = this.recipe.get('ingredients'); //.split(',');
+      } else {
+        this.ingredients = this.recipe.get('ingredients');
+      }
       this.timeNeeded = this.recipe.get('timeNeeded');
       this.favourite = this.recipe.get('favourite');
     });
@@ -62,6 +66,7 @@ export class RecipeDetailPage implements OnInit {
   onFavourite() {
     this._recipeService.setDocFavourite(this._route.snapshot.paramMap.get('id').toString(), this.favourite);
     this.favourite = !this.favourite;
-    this.recipe = this._recipeService.getRecipeByName(this._route.snapshot.paramMap.get('id').toString());
+    console.log('Updating favourite');
+    //this.recipe = this._recipeService.getRecipeByName(this._route.snapshot.paramMap.get('id').toString()); // TODO: This returns an Observable which caused errors when trying to edit the recipe after running this function.
   };
 }
