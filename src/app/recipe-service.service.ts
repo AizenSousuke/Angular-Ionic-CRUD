@@ -69,6 +69,11 @@ export class RecipeServiceService {
     return this._fireStore.collection('recipe-list').doc(document.toString()).get();
   }
 
+  getRecipeIngredients(recipe : Recipe) {
+    // Gets the ingredients in the recipe as an array to be used with FormArray later
+    return recipe.ingredients;
+  }
+
   setDocFavourite(document, prev) {
     let fav;
     /*

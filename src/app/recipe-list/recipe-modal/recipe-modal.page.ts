@@ -61,7 +61,7 @@ export class RecipeModalPage implements OnInit {
   }
 
   ngOnInit() {
-    //this.setup();
+    this.setup();
   }
 
   setup() {
@@ -94,17 +94,29 @@ export class RecipeModalPage implements OnInit {
     //console.log(this.addRecipeForm.get('ingredientsArray'));
     //const ingredientsArray = this.addRecipeForm.get('ingredientsArray') as FormArray;
     //console.log(ingredientsArray.at(0).value);
-    /*
     this.addRecipeForm.patchValue({
       'recipeName': this.name,
       'imageLink': this.imageLink,
       'description': this.description,
-      'ingredients': this.ingredients,
       'timeNeeded': this.timeNeeded,
       'favourite': this.favourite,
     });
-    */
     //console.log(this.addRecipeForm.get('ingredients').value);
+    this.prefillIngredients();
+  }
+
+  prefillIngredients() {
+    console.log();
+    // Create the number of controls first based on the number of objects in ingredients array
+    for (let index = 0; index < this.ingredients.length - 1; index++) {
+      this.addIngredients();
+      console.log('Added ingredients field for every ingredient.');
+    }
+    let index = 0;
+    this.getIngredients().controls.forEach(control => {
+      control.get('ingredients').setValue(this.ingredients[index].toString());
+      index += 1;
+    });
   }
 
   getIngredients() {
