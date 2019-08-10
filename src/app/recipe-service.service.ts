@@ -195,10 +195,10 @@ export class RecipeServiceService {
         "recipe": recipe,
         "id": recipe.get('id'),
         "name": recipe.get('name'),
-        "imageLink": recipe.get('imageLink') ? recipe.get('imageLink') : "",
-        "description": recipe.get('description') ? recipe.get('description') : "",
-        "ingredients": recipe.get('ingredients') ? recipe.get('ingredients') : [""] as string[],  // TODO: Temp .toString()
-        "timeNeeded": recipe.get('timeNeeded') ? recipe.get('timeNeeded') : "",
+        "imageLink": recipe.get('imageLink'),
+        "description": recipe.get('description'),
+        "ingredients": recipe.get('ingredients'),  
+        "timeNeeded": recipe.get('timeNeeded'),
         "favourite": recipe.get('favourite') ? true : false,
       }
     });

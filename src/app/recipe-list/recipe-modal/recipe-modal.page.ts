@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ModalController, NavParams } from '@ionic/angular';
-import { FormGroup, FormBuilder } from "@angular/forms";
+import { FormGroup, FormBuilder, FormArray } from "@angular/forms";
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Recipe } from '../recipe';
 
@@ -21,6 +21,7 @@ export class RecipeModalPage implements OnInit {
   @Input() timeNeeded: number = 0;
   @Input() favourite: boolean = false;
 
+  /*
   addRecipeForm : FormGroup = this._formBuilder.group({
     recipeName: [''],
     imageLink: [''],
@@ -29,17 +30,41 @@ export class RecipeModalPage implements OnInit {
     timeNeeded: [''],
     favourite: [''],
   });
+  */
+  addRecipeForm : FormGroup;/* = this._formBuilder.group({
+    recipeName: [''],
+    imageLink: [''],
+    description: [''],
+    ingredientsArray: this._formBuilder.array([
+      
+    ]),
+    timeNeeded: [''],
+    favourite: [''],
+  });
+  */
 
   constructor(
     private _modalController: ModalController,
     private _formBuilder: FormBuilder,
     private _angularFireStore: AngularFirestore,
   ) {
-    
+    this.addRecipeForm = this._formBuilder.group({
+      recipeName: [''],
+      imageLink: [''],
+      description: [''],
+      ingredientsArray: this._formBuilder.array([
+        this.addIngredientsGroup()
+      ]),
+      timeNeeded: [''],
+      favourite: [''],
+    });
   }
 
   ngOnInit() {
+    //this.setup();
+  }
 
+  setup() {
     if (this.name == null || this.name == "") {
       // If there is no name passed to the modal, assume that it was triggered from add recipe button and prefill stuffs
       console.log("Name is null");
@@ -48,9 +73,6 @@ export class RecipeModalPage implements OnInit {
         this.id = recipe.size + 1;
         console.log('ID in modal set to: ' + this.id);
       });
-      
-      // Set default values because @Input of type boolean doesn't provide a value (undefined)
-      // this.favourite = false;
     } else {
       // Prefill the values
       this.prefillValues(this.recipe);
@@ -69,14 +91,10 @@ export class RecipeModalPage implements OnInit {
     console.log(this.timeNeeded);
     console.log(this.favourite);
     console.log("---------------------");
+    //console.log(this.addRecipeForm.get('ingredientsArray'));
+    //const ingredientsArray = this.addRecipeForm.get('ingredientsArray') as FormArray;
+    //console.log(ingredientsArray.at(0).value);
     /*
-    this.addRecipeForm.get('recipeName').setValue(this.name);
-    this.addRecipeForm.get('imageLink').setValue(this.imageLink);
-    this.addRecipeForm.get('description').setValue(this.description);
-    this.addRecipeForm.get('ingredients').setValue(this.ingredients);
-    this.addRecipeForm.get('timeNeeded').setValue(this.timeNeeded);
-    this.addRecipeForm.get('favourite').setValue(this.favourite);
-    */
     this.addRecipeForm.patchValue({
       'recipeName': this.name,
       'imageLink': this.imageLink,
@@ -85,6 +103,28 @@ export class RecipeModalPage implements OnInit {
       'timeNeeded': this.timeNeeded,
       'favourite': this.favourite,
     });
+    */
+    //console.log(this.addRecipeForm.get('ingredients').value);
+  }
+
+  getIngredients() {
+    return this.addRecipeForm.get('ingredientsArray') as FormArray;
+  }
+
+  addIngredientsGroup() {
+    return this._formBuilder.group({
+      ingredients: [''],
+    });
+  }
+
+  addIngredients() {
+    this.getIngredients().push(this.addIngredientsGroup());
+    console.log("Added ingredients");
+  }
+
+  onDeleteIngredients(ingredients) {
+    console.log("Deleted " + this.getIngredients().at(ingredients).get('ingredients').value);
+    this.getIngredients().removeAt(ingredients);
   }
 
   onSubmitRecipe(f: FormGroup) {
