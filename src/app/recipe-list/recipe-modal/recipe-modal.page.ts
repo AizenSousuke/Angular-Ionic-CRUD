@@ -17,7 +17,7 @@ export class RecipeModalPage implements OnInit {
   @Input() name: string = "";
   @Input() imageLink: string = "";
   @Input() description: string = "";
-  @Input() ingredients: string[] = [""];
+  @Input() ingredients;
   @Input() timeNeeded: number = 0;
   @Input() favourite: boolean = false;
 
@@ -91,9 +91,6 @@ export class RecipeModalPage implements OnInit {
     console.log(this.timeNeeded);
     console.log(this.favourite);
     console.log("---------------------");
-    //console.log(this.addRecipeForm.get('ingredientsArray'));
-    //const ingredientsArray = this.addRecipeForm.get('ingredientsArray') as FormArray;
-    //console.log(ingredientsArray.at(0).value);
     this.addRecipeForm.patchValue({
       'recipeName': this.name,
       'imageLink': this.imageLink,
@@ -101,22 +98,25 @@ export class RecipeModalPage implements OnInit {
       'timeNeeded': this.timeNeeded,
       'favourite': this.favourite,
     });
-    //console.log(this.addRecipeForm.get('ingredients').value);
     this.prefillIngredients();
   }
 
   prefillIngredients() {
-    console.log();
+    //console.log(this.ingredients[0].ingredients);
     // Create the number of controls first based on the number of objects in ingredients array
-    for (let index = 0; index < this.ingredients.length - 1; index++) {
-      this.addIngredients();
-      console.log('Added ingredients field for every ingredient.');
+    if (this.ingredients != null) {
+      for (let index = 0; index < this.ingredients.length - 1; index++) {
+        this.addIngredients();
+        console.log('Added ingredients field for every ingredient.');
+      }
+      
+      // For every control, loop through this.ingredients and patch its values
+      let index = 0;
+      this.getIngredients().controls.forEach(control => {
+        control.get('ingredients').setValue(this.ingredients[index].ingredients);
+        index += 1;
+      });
     }
-    let index = 0;
-    this.getIngredients().controls.forEach(control => {
-      control.get('ingredients').setValue(this.ingredients[index].toString());
-      index += 1;
-    });
   }
 
   getIngredients() {
@@ -131,7 +131,7 @@ export class RecipeModalPage implements OnInit {
 
   addIngredients() {
     this.getIngredients().push(this.addIngredientsGroup());
-    console.log("Added ingredients");
+    console.log("Added ingredients group to the Form Array.");
   }
 
   onDeleteIngredients(ingredients) {
@@ -140,15 +140,15 @@ export class RecipeModalPage implements OnInit {
   }
 
   onSubmitRecipe(f: FormGroup) {
-    // Convert string of ingredients to string[] by ','
     console.log('ID in modal before submitting is: ' + this.id);
-    console.log("Ingredients: " + f.get('ingredients').value);
+    console.log(f.get('ingredientsArray').value);
     let data = {
       "id": this.id,
       "imageLink": f.get('imageLink').value,
       "name": f.get('recipeName').value,
       "description": f.get('description').value,
-      "ingredients": f.get('ingredients').value.split(','), // TODO: Somehow errors out when no value is input by the user when submitting the form
+      "ingredients" : f.get('ingredientsArray').value,
+      //"ingredients": f.get('ingredients').value.split(','), // TODO: Somehow errors out when no value is input by the user when submitting the form
       "timeNeeded": f.get('timeNeeded').value,
       "favourite": f.get('favourite').value,
     }
