@@ -26,40 +26,24 @@
             <ion-textarea formControlName="description" type="text" rows="5"
               placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut non aliquam lectus."></ion-textarea>
           </ion-item>
-          <ion-item>
-            <div>
-              <ion-label>Ingredients: <ion-text color="danger">*</ion-text>
-              </ion-label>
-            </div>
-            <!--
-            <ion-input required formControlName="ingredients" type="text" placeholder="Split ingredients with a comma ','"></ion-input>
-            -->
-            <!--
-            <div formArrayName="ingredientsArray">
-              <div *ngFor="let ingredients of addRecipeForm.controls; let i=index;">
-                <div [formGroupName]="i">
-                  <ion-input required formControlName="ingredients" type="text"></ion-input>
-                </div>
+          <ion-item lines="none">
+            <ion-label>Ingredients: <ion-text color="danger">*</ion-text>
+            </ion-label>
+          </ion-item>
+          <div formArrayName="ingredientsArray">
+            <ion-item *ngFor="let ingredients of addRecipeForm.get('ingredientsArray').controls; index as i" [formGroupName]="i">
+              <div class="ion-padding-end">
+                Ingredient {{i+1}}: 
               </div>
-            </div>
-            <ion-button (click)="addIngredients()">
+              <ion-input type="text" formControlName="ingredients"></ion-input>
+              <ion-button (click)="onDeleteIngredients(i)">
+                <ion-icon slot="icon-only" name="trash"></ion-icon>
+              </ion-button>
+            </ion-item>
+            <ion-button expand="full" (click)="addIngredients()">
               <ion-icon slot="icon-only" name="add"></ion-icon>
             </ion-button>
-            -->
-          </ion-item>
-          <ion-item>
-            <div formArrayName="ingredientsArray">
-              <div *ngFor="let ingredients of addRecipeForm.get('ingredientsArray').controls; index as i" [formGroupName]="i">
-                Ingredient {{i+1}}: <input type="text" formControlName="ingredients">
-                <ion-button (click)="onDeleteIngredients(i)">
-                  <ion-icon slot="icon-only" name="trash"></ion-icon>
-                </ion-button>
-              </div>
-              <ion-button (click)="addIngredients()">
-                <ion-icon slot="icon-only" name="add"></ion-icon>
-              </ion-button>
-            </div>
-          </ion-item>
+          </div>
           <ion-item>
             <ion-label position="floating">Time Needed (minutes): <ion-text color="danger"></ion-text>
             </ion-label>

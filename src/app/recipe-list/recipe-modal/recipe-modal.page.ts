@@ -21,27 +21,7 @@ export class RecipeModalPage implements OnInit {
   @Input() timeNeeded: number = 0;
   @Input() favourite: boolean = false;
 
-  /*
-  addRecipeForm : FormGroup = this._formBuilder.group({
-    recipeName: [''],
-    imageLink: [''],
-    description: [''],
-    ingredients: [''],
-    timeNeeded: [''],
-    favourite: [''],
-  });
-  */
-  addRecipeForm : FormGroup;/* = this._formBuilder.group({
-    recipeName: [''],
-    imageLink: [''],
-    description: [''],
-    ingredientsArray: this._formBuilder.array([
-      
-    ]),
-    timeNeeded: [''],
-    favourite: [''],
-  });
-  */
+  addRecipeForm : FormGroup;
 
   constructor(
     private _modalController: ModalController,
@@ -104,18 +84,22 @@ export class RecipeModalPage implements OnInit {
   prefillIngredients() {
     //console.log(this.ingredients[0].ingredients);
     // Create the number of controls first based on the number of objects in ingredients array
-    if (this.ingredients != null) {
+    if (this.ingredients != null && this.ingredients.length > 1) {
       for (let index = 0; index < this.ingredients.length - 1; index++) {
         this.addIngredients();
         console.log('Added ingredients field for every ingredient.');
       }
-      
+
       // For every control, loop through this.ingredients and patch its values
       let index = 0;
       this.getIngredients().controls.forEach(control => {
         control.get('ingredients').setValue(this.ingredients[index].ingredients);
         index += 1;
       });
+    } else if (this.ingredients != null) {
+      // Just fill in the one ingredient
+      this.getIngredients().controls[0].get('ingredients').setValue(this.ingredients[0].ingredients);
+      console.log(this.getIngredients().controls[0].get('ingredients').value);
     }
   }
 
@@ -148,7 +132,6 @@ export class RecipeModalPage implements OnInit {
       "name": f.get('recipeName').value,
       "description": f.get('description').value,
       "ingredients" : f.get('ingredientsArray').value,
-      //"ingredients": f.get('ingredients').value.split(','), // TODO: Somehow errors out when no value is input by the user when submitting the form
       "timeNeeded": f.get('timeNeeded').value,
       "favourite": f.get('favourite').value,
     }
@@ -164,18 +147,8 @@ export class RecipeModalPage implements OnInit {
   }
 
   onDebugForm(f: FormGroup) {
-    /*
-    f.get('favourite').valueChanges.subscribe(event => {
-      console.log(event);
-    });
-    //f.get('favourite').setValue(true);
-    this.favorite = !this.favorite;
-    console.log(this.favorite);
-    */
     this.favourite = !this.favourite;
     console.log(this.favourite);
     f.get('favourite').patchValue(this.favourite);
-
-    //console.log(this.addRecipeForm.valueChanges);
   }
 }

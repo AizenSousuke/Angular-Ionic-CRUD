@@ -1,4 +1,4 @@
-import { Injectable, NgZone, Component } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { Recipe } from './recipe-list/recipe';
 import { Router } from '@angular/router';
 import { AlertController, ModalController, ToastController } from '@ionic/angular';
@@ -10,35 +10,6 @@ import { FormControl } from '@angular/forms';
   providedIn: 'root'
 })
 export class RecipeServiceService {
-  // List of recipes
-  /*
-  private listOfRecipes: Recipe[] = [
-    {
-      id: 1,
-      imageLink: 'https://www.jocooks.com/wp-content/uploads/2013/10/classic-apple-pie-1-2-500x500.jpg',
-      name: 'Apple Pie',
-      ingredients: ['Apple', 'Pie'],
-    },
-    {
-      id: 2,
-      imageLink: 'https://www.ohhowcivilized.com/wp-content/uploads/2019/05/0519-bubble-tea-16-2.jpg',
-      name: 'Milk Tea',
-      description: 'Vivamus faucibus tincidunt eros sed scelerisque. Pellentesque bibendum urna at neque vehicula, in vulputate dolor porttitor. Duis finibus lectus vitae libero blandit, vel commodo magna tincidunt. Maecenas odio orci, luctus ac consectetur at, imperdiet at orci. Nunc efficitur odio elit. Nulla accumsan, enim at suscipit euismod, lectus justo viverra odio, a pulvinar felis elit quis eros. Donec tincidunt sed libero non iaculis.',
-      ingredients: ['Milk', 'Tea'],
-      timeNeeded: 70,
-      favourite: true,
-    },
-    {
-      id: 3,
-      imageLink: 'https://s3media.freemalaysiatoday.com/wp-content/uploads/2017/06/kuih-raya.jpg',
-      name: 'Kuih Raya',
-      description: 'Mimas vulputate dolor porttitor. Duis finibus lectus vitae libero blandit, vel commodo magna tincidunt. Maecenas odio orci, luctus ac consectetur at, imperdiet at orci. Nunc efficitur odio elit. Nulla accumsan, enim at suscipit euismod, lectus justo viverra odio, a pulvinar felis elit quis eros. Donec tincidunt sed libero non iaculis.',
-      ingredients: ['Kuih', 'Raya'],
-      timeNeeded: 120,
-      favourite: false,
-    }
-  ];
-  */
 
   // Recipe array for calculations 
   recipe: Array<any>;
@@ -127,6 +98,8 @@ export class RecipeServiceService {
       console.log(data);
       this._fireStore.collection('recipe-list').doc(data.name.toString()).set(data, { 'merge' : false });
 
+      // Go to the recipe list page here
+
       // Show the toast
       const toast = await this._toastController.create({
         message: 'Recipe created successfully!',
@@ -214,9 +187,9 @@ export class RecipeServiceService {
       console.log("Data on modal dismissed");
       console.log(data);
       // Update data in the database here
-      // TODO: Error here in data.data.name
       this._fireStore.collection('recipe-list').doc(data.name.toString()).set(data, { 'merge' : true });
-
+      // Refresh data here
+      
       // Show the toast
       const toast = await this._toastController.create({
         message: 'Recipe updated successfully!',

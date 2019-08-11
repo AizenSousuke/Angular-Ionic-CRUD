@@ -42,22 +42,8 @@ export class RecipeDetailPage implements OnInit {
       console.log("Ingredients: " + this.recipe.get('ingredients'));
       //console.log(this.recipe.get('ingredients')[0].ingredients);
       //console.log("Ingredients Length: " + this.recipe.get('ingredients').length);
-      // For each ingredient, add it to the ingredient string[]
+      // Add ingredientsArray to ingredients
       this.ingredients = this.recipe.get('ingredients');
-      /*
-      for (let ingredient = 0; ingredient < this.recipe.get('ingredients').length; ingredient++) {
-        const element = this.recipe.get('ingredients')[ingredient].ingredients;
-        console.log(element);
-        this.ingredients.push(element.value);
-      }
-      */
-      /*
-      if (this.recipe.get('ingredients').length > 1) {
-        this.ingredients = this.recipe.get('ingredients'); //.split(',');
-      } else {
-        this.ingredients = this.recipe.get('ingredients');
-      }
-      */
       this.timeNeeded = this.recipe.get('timeNeeded');
       this.favourite = this.recipe.get('favourite');
     });
