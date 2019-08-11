@@ -13,6 +13,7 @@ export class RecipeModalPage implements OnInit {
   // Get the latest ID to use
   @Input() id: number;
 
+  // Get other information for calculations and to fill up the form
   @Input() recipe: Recipe;
   @Input() name: string = "";
   @Input() imageLink: string = "";
@@ -21,6 +22,7 @@ export class RecipeModalPage implements OnInit {
   @Input() timeNeeded: number = 0;
   @Input() favourite: boolean = false;
 
+  // The form to use
   addRecipeForm : FormGroup;
 
   constructor(
@@ -28,6 +30,7 @@ export class RecipeModalPage implements OnInit {
     private _formBuilder: FormBuilder,
     private _angularFireStore: AngularFirestore,
   ) {
+    // Initialized the form
     this.addRecipeForm = this._formBuilder.group({
       recipeName: [''],
       imageLink: [''],
@@ -45,6 +48,7 @@ export class RecipeModalPage implements OnInit {
   }
 
   setup() {
+    // Check whether the form needs to be prefilled using the recipe name
     if (this.name == null || this.name == "") {
       // If there is no name passed to the modal, assume that it was triggered from add recipe button and prefill stuffs
       console.log("Name is null");
@@ -83,7 +87,8 @@ export class RecipeModalPage implements OnInit {
 
   prefillIngredients() {
     //console.log(this.ingredients[0].ingredients);
-    // Create the number of controls first based on the number of objects in ingredients array
+
+    // Create the number of controls with name ingredients first based on the number of objects in ingredients array
     if (this.ingredients != null && this.ingredients.length > 1) {
       for (let index = 0; index < this.ingredients.length - 1; index++) {
         this.addIngredients();
@@ -104,10 +109,12 @@ export class RecipeModalPage implements OnInit {
   }
 
   getIngredients() {
+    // Get the ingredients in the form as a FormArray
     return this.addRecipeForm.get('ingredientsArray') as FormArray;
   }
 
   addIngredientsGroup() {
+    // Add a group into the form array with ingredients as the object
     return this._formBuilder.group({
       ingredients: [''],
     });
@@ -118,9 +125,10 @@ export class RecipeModalPage implements OnInit {
     console.log("Added ingredients group to the Form Array.");
   }
 
-  onDeleteIngredients(ingredients) {
-    console.log("Deleted " + this.getIngredients().at(ingredients).get('ingredients').value);
-    this.getIngredients().removeAt(ingredients);
+  onDeleteIngredients(position) {
+    // Delete the ingredients object at position x in the FormArray
+    console.log("Deleted " + this.getIngredients().at(position).get('ingredients').value);
+    this.getIngredients().removeAt(position);
   }
 
   onSubmitRecipe(f: FormGroup) {
@@ -137,11 +145,13 @@ export class RecipeModalPage implements OnInit {
     }
     console.log("Data: ");
     console.log(data);
+    // Dismiss the modal while sending data as the data
     this._modalController.dismiss(data);
     //console.log(f);
   }
 
   onDismiss() {
+    // Dismiss without sending data
     this._modalController.dismiss();
     console.log("Dismissed modal without data");
   }

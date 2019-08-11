@@ -183,13 +183,12 @@ export class RecipeServiceService {
     });
     modal.present();
     const { data } = await modal.onDidDismiss();
-    // TODO: This function runs when modal is dismissed without data. It shouldn't run. Fixed with != undefined check. 
+    // This function runs when modal is dismissed without data. It shouldn't run. Fixed with != undefined check. 
     if (data != undefined) {
       console.log("Data on modal dismissed");
       console.log(data);
       // Update data in the database here
       this._fireStore.collection('recipe-list').doc(data.name.toString()).set(data, { 'merge' : true });
-      // Refresh data here
       
       // Show the toast
       const toast = await this._toastController.create({
@@ -199,8 +198,6 @@ export class RecipeServiceService {
       });
       toast.present();
       console.log("Shown toast");
-
-      // TODO: Update the recipe detail page here
     }
   }
 
