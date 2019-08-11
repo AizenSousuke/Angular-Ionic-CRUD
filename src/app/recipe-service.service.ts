@@ -99,6 +99,7 @@ export class RecipeServiceService {
       this._fireStore.collection('recipe-list').doc(data.name.toString()).set(data, { 'merge' : false });
 
       // Go to the recipe list page here
+      this._router.navigate(['/recipe-list']);
 
       // Show the toast
       const toast = await this._toastController.create({

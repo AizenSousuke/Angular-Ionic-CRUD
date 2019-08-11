@@ -35,8 +35,8 @@
               <div class="ion-padding-end">
                 Ingredient {{i+1}}: 
               </div>
-              <ion-input type="text" formControlName="ingredients"></ion-input>
-              <ion-button (click)="onDeleteIngredients(i)">
+              <ion-input required type="text" formControlName="ingredients"></ion-input>
+              <ion-button *ngIf="i!=0" (click)="onDeleteIngredients(i)">
                 <ion-icon slot="icon-only" name="trash"></ion-icon>
               </ion-button>
             </ion-item>
