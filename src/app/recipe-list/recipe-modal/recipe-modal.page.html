@@ -54,15 +54,17 @@
           <ion-item>
             <ion-label position="inline">Favourite: <ion-text color="danger"></ion-text>
             </ion-label>
-            <ion-checkbox formControlName="favourite"></ion-checkbox>
+            <ion-checkbox formControlName="favourite" [checked]="favourite"></ion-checkbox>
           </ion-item>
           <ion-item lines='none'>
             <ion-button color="secondary" (click)="addRecipeForm.reset()">Reset</ion-button>
           </ion-item>
         </form>
+        <!--
         <ion-button (click)="onDebugForm(addRecipeForm)">
           Debug Button
         </ion-button>
+        -->
         ID: {{ id }}
         Favourite: {{ favourite }}
         Form: {{ addRecipeForm.value | json }}
