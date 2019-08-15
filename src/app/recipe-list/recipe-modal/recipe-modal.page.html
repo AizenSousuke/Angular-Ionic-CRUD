@@ -14,10 +14,11 @@
             </ion-label>
             <ion-input required formControlName="recipeName" type="text" placeholder="Awesome recipe"></ion-input>
           </ion-item>
-          <ion-item>
+          <ion-item lines="none">
             <ion-label position="floating">Image Link: <ion-text color="danger"></ion-text>
             </ion-label>
-            <ion-input formControlName="imageLink" type="text" placeholder="The image link url"></ion-input>
+            <!-- TODO: Insert image upload app component here -->
+            <app-image-upload-component>Image upload component not loaded</app-image-upload-component>
             <!--<ion-input formControlName="imageLink" type="text" placeholder="The image link url" value="https://cdn.auth0.com/blog/get-started-ionic/logo.png"></ion-input>-->
           </ion-item>
           <ion-item>
