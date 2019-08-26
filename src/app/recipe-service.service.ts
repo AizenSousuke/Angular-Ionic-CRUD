@@ -175,9 +175,9 @@ export class RecipeServiceService {
         "id": recipe.get('id'),
         "name": recipe.get('name'),
         "imageLink": recipe.get('imageLink'),
-        "description": recipe.get('description'),
+        "description": recipe.get('description') ? recipe.get('description') : "",
         "ingredients": recipe.get('ingredients'),  
-        "timeNeeded": recipe.get('timeNeeded'),
+        "timeNeeded": recipe.get('timeNeeded') ? recipe.get('timeNeeded') : "",
         "favourite": recipe.get('favourite') ? true : false,
       }
     });
