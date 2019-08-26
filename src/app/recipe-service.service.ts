@@ -207,19 +207,19 @@ export class RecipeServiceService {
         "id": 1,
         "imageLink": 'https://cdn.auth0.com/blog/get-started-ionic/logo.png',
         "name": '1',
-        "ingredients": ['1'],
+        "ingredients": [{"ingredients" : "1"}],
       },
       {
         "id": 2,
         "imageLink": 'https://cdn.auth0.com/blog/get-started-ionic/logo.png',
         "name": '2',
-        "ingredients": ['2'],
+        "ingredients": [{"ingredients" : "2"}],
       },
       {
         "id": 3,
         "imageLink": 'https://cdn.auth0.com/blog/get-started-ionic/logo.png',
         "name": '3',
-        "ingredients": ['3'],
+        "ingredients": [{"ingredients" : "3"}],
       }
     ];
     // Delete existing recipes
