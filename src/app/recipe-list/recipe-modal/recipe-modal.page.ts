@@ -161,4 +161,8 @@ export class RecipeModalPage implements OnInit {
     console.log(this.favourite);
     f.get('favourite').patchValue(this.favourite);
   }
+
+  getControls() {
+    return (this.addRecipeForm.get('ingredientsArray') as FormArray).controls;
+  }
 }

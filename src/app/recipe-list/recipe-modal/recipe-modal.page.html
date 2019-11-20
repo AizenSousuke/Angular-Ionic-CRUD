@@ -32,7 +32,8 @@
             </ion-label>
           </ion-item>
           <div formArrayName="ingredientsArray">
-            <ion-item *ngFor="let ingredients of addRecipeForm.get('ingredientsArray').controls; index as i" [formGroupName]="i">
+            <!--<ion-item *ngFor="let ingredients of addRecipeForm.get('ingredientsArray').controls; index as i" [formGroupName]="i">-->
+            <ion-item *ngFor="let ingredients of getControls(); index as i" [formGroupName]="i">
               <div class="ion-padding-end">
                 Ingredient {{i+1}}: 
               </div>
