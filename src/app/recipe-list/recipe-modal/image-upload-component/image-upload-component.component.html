@@ -1,5 +1,7 @@
 <p>
-  <ion-button (click)="onAddImage()" class="button">
+  <input #imagePicker style="display:none" type="file" name="imagePicker" id="imagePicker" (change)="onAddImage($event)">
+
+  <ion-button (click)="imagePicker.click()" class="button">
     Add Image
     <ion-icon name="add"></ion-icon>
   </ion-button>

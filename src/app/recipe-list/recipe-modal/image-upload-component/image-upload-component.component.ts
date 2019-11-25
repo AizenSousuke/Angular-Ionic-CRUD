@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ImgurService } from "../../../imgur.service";
 
 @Component({
   selector: 'app-image-upload-component',
@@ -7,12 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ImageUploadComponentComponent implements OnInit {
 
-  constructor() { }
+  constructor(private _imgurService: ImgurService) { }
 
   ngOnInit() {}
 
-  onAddImage() {
-    
-    console.log("Image added");
+  onAddImage(event) {
+    let response = this._imgurService.registerApplication(event.target.files[0]);
+    console.log("Image added " + response);
+    console.log(event);
+  }
+
+  uploadImage() {
+    console.log("Image is being uploaded");
   }
 }
