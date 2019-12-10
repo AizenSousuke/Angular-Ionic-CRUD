@@ -8,17 +8,18 @@ export class ImgurService {
 
   constructor(private _httpClient: HttpClient) { }
 
-  registerApplication(file: File) {
+  registerApplication(image) {
     //Get client_id
     console.log("Getting client id");
     let headers = new HttpHeaders();
-    headers = headers.set('Authorization','Client-ID bb9a76769ed64d0');
-    headers = headers.set('Content-Type','image/jpeg');
-    let body = new HttpParams();
-    body.set('binary', file.toString());
+    headers.set('Authorization','Client-ID bb9a76769ed64d0');
+    //headers.set('Access-Control-Allow-Origin:', '*');
+    headers.set('Content-Type','image/jpeg');
+    let body = new FormData();
+    body.append("image", image); //"https://vignette.wikia.nocookie.net/vsbattles/images/3/37/Doraemon_renderImproved.png/revision/latest?cb=20190730170109"
     return this._httpClient.post(
       'https://api.imgur.com/3/upload',
-      file,
+      body,
       {
         headers: headers
       }).subscribe((data) => {

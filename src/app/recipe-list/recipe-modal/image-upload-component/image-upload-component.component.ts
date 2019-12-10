@@ -15,6 +15,7 @@ export class ImageUploadComponentComponent implements OnInit {
   onAddImage(event) {
     let response = this._imgurService.registerApplication(event.target.files[0]);
     console.log("Image added " + response);
+    console.log(response);
     console.log(event);
   }
 
