@@ -1,12 +1,16 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import * as firebase from 'firebase';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ImgurService {
 
-  constructor(private _httpClient: HttpClient) { }
+  constructor(
+    private _httpClient: HttpClient,) {
+
+  }
 
   registerApplication(image) {
     //Get client_id
@@ -26,5 +30,16 @@ export class ImgurService {
         console.log("DATA: " + data);
       }
     );
+  }
+
+  // TODO: Add firebase storage apis
+  uploadImage(image) {
+    console.log(image);
+    var storage = firebase.storage().ref();
+    storage.child('myupload/recipe.jpg').put(image).then(results => {
+      results.ref.getDownloadURL().then(results => {
+        console.log(results);
+      });
+    })
   }
 }

@@ -13,10 +13,12 @@ export class ImageUploadComponentComponent implements OnInit {
   ngOnInit() {}
 
   onAddImage(event) {
-    let response = this._imgurService.registerApplication(event.target.files[0]);
+    console.log("Attempting to add image");
+    console.log(event);
+    //let response = this._imgurService.registerApplication(event.target.files[0]);
+    let response = this._imgurService.uploadImage(event.target.files[0]);
     console.log("Image added " + response);
     console.log(response);
-    console.log(event);
   }
 
   uploadImage() {
