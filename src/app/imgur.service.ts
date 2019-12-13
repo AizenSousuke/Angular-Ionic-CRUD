@@ -33,12 +33,15 @@ export class ImgurService {
   }
 
   // TODO: Add firebase storage apis
-  uploadImage(image) {
+  async uploadImage(image: File) {
     console.log(image);
     var storage = firebase.storage().ref();
-    storage.child('myupload/recipe.jpg').put(image).then(results => {
-      results.ref.getDownloadURL().then(results => {
+    var imageName = image.name;
+    return await storage.child(imageName).put(image).then(async results => {
+      return await results.ref.getDownloadURL().then(async results => {
         console.log(results);
+        // Return the url of the image once uploaded
+        return await results;
       });
     })
   }
