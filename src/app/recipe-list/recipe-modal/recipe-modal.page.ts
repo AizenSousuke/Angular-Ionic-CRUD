@@ -165,4 +165,10 @@ export class RecipeModalPage implements OnInit {
   getControls() {
     return (this.addRecipeForm.get('ingredientsArray') as FormArray).controls;
   }
+
+  getNewImageLink(event) {
+    console.log("Outputting new link from child to parent");
+    console.log(event);
+    this.addRecipeForm.get('imageLink').setValue(event);
+  }
 }

@@ -1,6 +1,6 @@
 
 <input #imagePicker style="display:none" type="file" name="imagePicker" id="imagePicker" (change)="onAddImage($event)">
-<p>{{ imageUploaded }}</p>
+<p style="color: red;">{{ imageUploaded }}</p>
 
 <ion-button (click)="imagePicker.click()" class="button">
   Add Image
