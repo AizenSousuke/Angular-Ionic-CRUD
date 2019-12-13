@@ -27,10 +27,12 @@ export class RecipeServiceService {
 
   }
 
+  // Get all the recipes from the collection. This is used to edit\delete.
   getAllRecipesCollection() {
     return this._fireStore.collection('recipe-list');
   }
 
+  // Get all the recipes and metadata from the collection. This is used to put the data in a list\array for realtime changes tracking.
   getAllRecipesSnapshots() {
     return this._fireStore.collection('recipe-list').snapshotChanges();
   }

@@ -9,7 +9,6 @@ import { RecipeServiceService } from '../recipe-service.service';
   styleUrls: ['./recipe-list.page.scss'],
 })
 export class RecipeListPage implements OnInit {
-  //recipe: Array<any>;
   recipe;
 
   constructor(
@@ -23,31 +22,24 @@ export class RecipeListPage implements OnInit {
   }
 
   initRecipe() {
-    // Load data from the database
+    // Load data from the database and update it when there are any changes in realtime
     this._recipeService.getAllRecipesSnapshots().subscribe(result => {
       this.recipe = result;
       this._recipeService.recipe = result;
     });
-    /*
-    this._recipeService.getAllRecipesCollection().ref.get().then(recipe => {
-      this.recipe = recipe;
-      console.log(this.recipe);
-    });
-    */
   }
 
-  cardFavourite(recipe) {
+  cardFavourite(recipe: Recipe) {
     this._recipeService.toggleFavourite(recipe);
   }
 
-  onClickRecipe(recipe : Recipe) {
+  onClickRecipe(recipe: Recipe) {
     console.log("Clicked name: " + recipe.name);
     this._router.navigate(['recipe-list', recipe.name.toString()]);
   }
 
   onAddRecipe() {
     this._recipeService.onAddRecipe();
-    //this.initRecipe();
   }
 
   addDefaultRecipes() {

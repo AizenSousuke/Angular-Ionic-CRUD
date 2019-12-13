@@ -22,13 +22,9 @@ export class ImageUploadComponentComponent implements OnInit {
     console.log("Attempting to add image");
     console.log(event);
     this.imageUploaded = "Uploading Image...";
-    this.imageUploaded = await this._imageService.uploadImage(event.target.files[0]);
+    this.imageUploaded = await this._imageService.uploadImageAndReturnURL(event.target.files[0]);
 
     // Pass the imageUploaded URL string back to the recipe modal as imageLink
     this.outputImageLink.emit(this.imageUploaded);
-  }
-
-  uploadImage() {
-    console.log("Image is being uploaded");
   }
 }
