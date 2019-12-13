@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, Input, Output, EventEmitter } from '@angular/core';
-import { ImgurService } from "../../../imgur.service";
+import { ImageService } from "../../../image.service";
 
 @Component({
   selector: 'app-image-upload-component',
@@ -14,7 +14,7 @@ export class ImageUploadComponentComponent implements OnInit {
   @Input() imageUploaded = "";
   @Output() outputImageLink = new EventEmitter();
 
-  constructor(private _imgurService: ImgurService) { }
+  constructor(private _imageService: ImageService) { }
 
   ngOnInit() {}
 
@@ -22,7 +22,7 @@ export class ImageUploadComponentComponent implements OnInit {
     console.log("Attempting to add image");
     console.log(event);
     this.imageUploaded = "Uploading Image...";
-    this.imageUploaded = await this._imgurService.uploadImage(event.target.files[0]);
+    this.imageUploaded = await this._imageService.uploadImage(event.target.files[0]);
 
     // Pass the imageUploaded URL string back to the recipe modal as imageLink
     this.outputImageLink.emit(this.imageUploaded);
