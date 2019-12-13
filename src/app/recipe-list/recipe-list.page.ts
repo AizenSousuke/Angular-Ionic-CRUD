@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Recipe } from './recipe';
 import { Router } from '@angular/router';
 import { RecipeServiceService } from '../recipe-service.service';
-import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-recipe-list',

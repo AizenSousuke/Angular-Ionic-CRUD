@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input, Output, EventEmitter } from '@angular/core';
 import { ImgurService } from "../../../imgur.service";
 
 @Component({
@@ -9,10 +9,9 @@ import { ImgurService } from "../../../imgur.service";
 
 export class ImageUploadComponentComponent implements OnInit {
 
-  imageUploaded = "";
-
   @ViewChild('imagePicker', {static: true}) imagePicker: ElementRef;
-
+  
+  @Input() imageUploaded = "";
   @Output() outputImageLink = new EventEmitter();
 
   constructor(private _imgurService: ImgurService) { }

@@ -17,9 +17,8 @@
           <ion-item lines="none">
             <ion-label position="floating">Image Link: <ion-text color="danger"></ion-text>
             </ion-label>
-            <!-- TODO: Insert image upload app component here -->
-            <app-image-upload-component (outputImageLink)="getNewImageLink($event)">Image upload component not loaded</app-image-upload-component>
-            <!--<ion-input formControlName="imageLink" type="text" placeholder="The image link url" value="https://cdn.auth0.com/blog/get-started-ionic/logo.png"></ion-input>-->
+            <!-- Image upload app component -->
+            <app-image-upload-component [imageUploaded]="imageLink" (outputImageLink)="getNewImageLink($event)">Image upload component not loaded</app-image-upload-component>
           </ion-item>
           <ion-item>
             <ion-label position="floating">Description: <ion-text color="danger"></ion-text>
