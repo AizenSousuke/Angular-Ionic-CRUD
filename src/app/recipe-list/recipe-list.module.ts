@@ -7,7 +7,6 @@ import { IonicModule } from '@ionic/angular';
 
 import { RecipeListPage } from './recipe-list.page';
 import { RecipeServiceService } from '../recipe-service.service';
-import { ImageService } from '../image.service';
 
 const routes: Routes = [
   {

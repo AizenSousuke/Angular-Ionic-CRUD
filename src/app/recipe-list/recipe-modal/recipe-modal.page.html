@@ -18,7 +18,13 @@
             <ion-label position="floating">Image Link: <ion-text color="danger"></ion-text>
             </ion-label>
             <!-- Image upload component. TODO: Image service is causing errors. See F12 for error. -->
-            <app-image-upload-component [imageUploaded]="imageLink" (outputImageLink)="getNewImageLink($event)">Image upload component not loaded</app-image-upload-component>
+            <!--<app-image-upload-component [imageUploaded]="imageLink" (outputImageLink)="getNewImageLink($event)">Image upload component not loaded</app-image-upload-component>-->
+            <input #imagePicker style="display:none" type="file" name="imagePicker" id="imagePicker" (change)="onAddImage($event)">
+            <p style="color: red;">{{ imageUploaded }}</p>
+            <ion-button (click)="imagePicker.click()" class="button">
+              Add Image
+              <ion-icon name="add"></ion-icon>
+            </ion-button>
           </ion-item>
           <ion-item>
             <ion-label position="floating">Description: <ion-text color="danger"></ion-text>

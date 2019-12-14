@@ -3,6 +3,7 @@ import { ModalController, NavParams } from '@ionic/angular';
 import { FormGroup, FormBuilder, FormArray } from "@angular/forms";
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Recipe } from '../recipe';
+import { ImageService } from 'src/app/image.service';
 
 @Component({
   selector: 'app-recipe-modal',
@@ -25,10 +26,13 @@ export class RecipeModalPage implements OnInit {
   // The form to use
   addRecipeForm : FormGroup;
 
+  imageUploaded = "No Image";
+
   constructor(
     private _modalController: ModalController,
     private _formBuilder: FormBuilder,
     private _angularFireStore: AngularFirestore,
+    private _imageService: ImageService
   ) {
     // Initialized the form
     this.addRecipeForm = this._formBuilder.group({
@@ -171,5 +175,14 @@ export class RecipeModalPage implements OnInit {
     console.log("Outputting new link from child to parent");
     console.log(event);
     this.addRecipeForm.get('imageLink').setValue(event);
+  }
+
+  async onAddImage(event) {
+    console.log("Attempting to add image");
+    console.log(event.target.files[0].name);
+    console.log(this._imageService);
+    this.imageUploaded = "Uploading Image...";
+    this.imageUploaded = await this._imageService.uploadImageAndReturnURL(event.target.files[0]);
+    console.log(this.imageUploaded);
   }
 }

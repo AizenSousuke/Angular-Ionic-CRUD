@@ -28,5 +28,8 @@ const routes: Routes = [
     RecipeModalPage, 
     ImageUploadComponentComponent
   ],
+  providers: [
+    {provide:ImageService},
+  ]
 })
 export class RecipeModalPageModule {}
