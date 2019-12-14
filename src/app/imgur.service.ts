@@ -5,7 +5,6 @@ import * as firebase from "firebase";
 @Injectable({
   providedIn: 'root'
 })
-
 export class ImgurService {
 
   constructor(
