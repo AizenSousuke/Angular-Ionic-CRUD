@@ -6,9 +6,7 @@ import { RecipeModalPage } from './recipe-list/recipe-modal/recipe-modal.page';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { FormControl } from '@angular/forms';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class RecipeServiceService {
 
   // Recipe array for calculations 

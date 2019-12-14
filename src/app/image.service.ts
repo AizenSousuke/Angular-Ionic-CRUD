@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FirebaseStorage } from "@angular/fire";
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class ImageService {
 
   constructor(private _firebaseStorage: FirebaseStorage) { }

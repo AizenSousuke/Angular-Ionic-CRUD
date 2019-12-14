@@ -5,10 +5,11 @@ import { ImageService } from 'src/app/image.service';
   selector: 'app-image-upload-component',
   templateUrl: './image-upload-component.component.html',
   styleUrls: ['./image-upload-component.component.scss'],
+  providers: [{
+    provide: ImageService
+  }]
 })
 export class ImageUploadComponentComponent implements OnInit {
-
-  //@ViewChild('imagePicker', {static: true}) imagePicker: ElementRef;
   
   @Input() imageUploaded = "";
   @Output() outputImageLink = new EventEmitter();

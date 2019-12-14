@@ -3,15 +3,11 @@ import { ModalController, NavParams } from '@ionic/angular';
 import { FormGroup, FormBuilder, FormArray } from "@angular/forms";
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Recipe } from '../recipe';
-import { ImageService } from 'src/app/image.service';
 
 @Component({
   selector: 'app-recipe-modal',
   templateUrl: './recipe-modal.page.html',
   styleUrls: ['./recipe-modal.page.scss'],
-  providers: [{
-    provide: ImageService
-  }]
 })
 export class RecipeModalPage implements OnInit {
   // Get the latest ID to use

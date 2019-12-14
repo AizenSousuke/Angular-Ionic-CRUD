@@ -25,7 +25,9 @@ import { ImageUploadComponentComponent } from './recipe-list/recipe-modal/image-
   declarations: [
     AppComponent,
   ],
-  entryComponents: [],
+  entryComponents: [
+    
+  ],
   imports: [
     BrowserModule, 
     IonicModule.forRoot(), 
