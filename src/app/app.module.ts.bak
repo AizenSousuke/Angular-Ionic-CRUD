@@ -42,8 +42,8 @@ import { AngularFirestoreModule } from "@angular/fire/firestore";
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    RecipeListPage,
     RecipeServiceService,
+    RecipeListPage,
   ],
   bootstrap: [AppComponent]
 })

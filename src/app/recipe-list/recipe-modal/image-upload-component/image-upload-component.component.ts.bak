@@ -27,7 +27,7 @@ export class ImageUploadComponentComponent implements OnInit {
     console.log(event.target.files[0].name);
     console.log(this._imgurService);
     this.imageUploaded = "Uploading Image...";
-    this.imageUploaded = await this._imgurService.uploadImageAndReturnURL(event.target.files[0]);
+    this.imageUploaded = await this._ImgurService.uploadImageAndReturnURL(event.target.files[0]);
     console.log(this.imageUploaded);
     // Pass the imageUploaded URL string back to the recipe modal as imageLink
     this.outputImageLink.emit(this.imageUploaded);

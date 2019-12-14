@@ -19,6 +19,7 @@ export class RecipeListPage implements OnInit {
 
   ngOnInit() {
     this.initRecipe();
+    console.log(this._recipeService);
   }
 
   initRecipe() {

@@ -99,9 +99,9 @@ export class RecipeServiceService {
         "id": this.id,
       },
     });
-    await modal.present();
+    modal.present();
     const { data } = await modal.onDidDismiss();
-    if (await data != undefined) {
+    if (data != undefined) {
       // TODO: Check if recipe name data exists and let user choose if he wants to replace it by recipe name
 
       // Save data to the database here
