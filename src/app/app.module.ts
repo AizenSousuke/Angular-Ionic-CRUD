@@ -13,13 +13,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { HttpClientModule } from '@angular/common/http';
-import { RecipeListPage } from './recipe-list/recipe-list.page';
-import { RecipeServiceService } from './recipe-service.service';
 import { RecipeModalPageModule } from './recipe-list/recipe-modal/recipe-modal.module';
 
 import { environment } from "src/environments/environment";
 import { AngularFireModule } from "@angular/fire";
 import { AngularFirestoreModule } from "@angular/fire/firestore";
+import { ImageService } from './image.service';
+import { ImageUploadComponentComponent } from './recipe-list/recipe-modal/image-upload-component/image-upload-component.component';
 
 @NgModule({
   declarations: [
@@ -34,16 +34,14 @@ import { AngularFirestoreModule } from "@angular/fire/firestore";
     DragDropModule,
     ScrollingModule,
     HttpClientModule,
-    RecipeModalPageModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule,
+    RecipeModalPageModule,
   ],
   providers: [
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    RecipeListPage,
-    RecipeServiceService,
   ],
   bootstrap: [AppComponent]
 })

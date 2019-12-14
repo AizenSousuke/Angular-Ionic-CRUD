@@ -13,7 +13,7 @@ export class RecipeListPage implements OnInit {
 
   constructor(
       private _router: Router,
-      private _recipeService: RecipeServiceService,      
+      private _recipeService: RecipeServiceService,
     ) { 
     }
 

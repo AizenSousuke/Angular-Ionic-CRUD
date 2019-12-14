@@ -8,7 +8,7 @@ import { ImageService } from 'src/app/image.service';
 })
 export class ImageUploadComponentComponent implements OnInit {
 
-  @ViewChild('imagePicker', {static: true}) imagePicker: ElementRef;
+  //@ViewChild('imagePicker', {static: true}) imagePicker: ElementRef;
   
   @Input() imageUploaded = "";
   @Output() outputImageLink = new EventEmitter();
