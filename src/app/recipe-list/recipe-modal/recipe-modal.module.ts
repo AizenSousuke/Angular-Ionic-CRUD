@@ -6,7 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { RecipeModalPage } from './recipe-modal.page';
-import { ImageUploadComponentComponent } from "./image-upload-component/image-upload-component.component";
+import { ImageUploadComponentComponent } from './image-upload-component/image-upload-component.component';
 
 const routes: Routes = [
   {
@@ -25,7 +25,7 @@ const routes: Routes = [
   ],
   declarations: [
     RecipeModalPage, 
-    ImageUploadComponentComponent,
+    ImageUploadComponentComponent
   ],
 })
 export class RecipeModalPageModule {}
