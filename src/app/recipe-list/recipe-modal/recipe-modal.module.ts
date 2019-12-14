@@ -25,7 +25,7 @@ const routes: Routes = [
   ],
   declarations: [
     RecipeModalPage, 
-    ImageUploadComponentComponent
-  ]
+    ImageUploadComponentComponent,
+  ],
 })
 export class RecipeModalPageModule {}

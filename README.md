@@ -8,11 +8,11 @@ or
 `npm install`
 `ionic serve`
 Access it from https://localhost:8100/
-   
+
 
 ### Future Plans 
 *(Not in order of importance)*
 - Full Screen Mode with\without navigation bars
 - Disable buttons when app is loading data (or using loading page)
-- Offline mode
+- Offline mode with\without data changes
 - User authentication

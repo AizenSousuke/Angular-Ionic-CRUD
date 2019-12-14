@@ -17,7 +17,7 @@
           <ion-item lines="none">
             <ion-label position="floating">Image Link: <ion-text color="danger"></ion-text>
             </ion-label>
-            <!-- Image upload app component -->
+            <!-- Image upload component. TODO: Image service is causing errors. See F12 for error. -->
             <app-image-upload-component [imageUploaded]="imageLink" (outputImageLink)="getNewImageLink($event)">Image upload component not loaded</app-image-upload-component>
           </ion-item>
           <ion-item>

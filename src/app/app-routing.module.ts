@@ -12,7 +12,6 @@ const routes: Routes = [
       {
         path: ':id', loadChildren: './recipe-list/recipe-detail/recipe-detail.module#RecipeDetailPageModule'
       },
-      //{ path: 'recipe-modal', loadChildren: './recipe-list/recipe-modal/recipe-modal.module#RecipeModalPageModule' },
     ]
   },
 ];

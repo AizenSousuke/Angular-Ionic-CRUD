@@ -5,6 +5,9 @@ import { ImageService } from "../../../image.service";
   selector: 'app-image-upload-component',
   templateUrl: './image-upload-component.component.html',
   styleUrls: ['./image-upload-component.component.scss'],
+  //providers: [{
+  //  provide: ImageService
+  //}],
 })
 
 export class ImageUploadComponentComponent implements OnInit {
@@ -23,7 +26,7 @@ export class ImageUploadComponentComponent implements OnInit {
     console.log(event);
     this.imageUploaded = "Uploading Image...";
     this.imageUploaded = await this._imageService.uploadImageAndReturnURL(event.target.files[0]);
-
+    
     // Pass the imageUploaded URL string back to the recipe modal as imageLink
     this.outputImageLink.emit(this.imageUploaded);
   }

@@ -34,50 +34,60 @@ export class RecipeServiceService {
 
   // Get all the recipes and metadata from the collection. This is used to put the data in a list\array for realtime changes tracking.
   getAllRecipesSnapshots() {
-    return this._fireStore.collection('recipe-list').snapshotChanges();
+    return this._fireStore.collection('recipe-list')
+                          .snapshotChanges();
   }
 
-  getRecipeByName(document) {
-    console.log('Getting recipe with name: ' + document);
-    return this._fireStore.collection('recipe-list').doc(document.toString()).get();
+  // Get a recipe object by name
+  getRecipeByName(recipeName) {
+    console.log('Getting recipe with name: ' + recipeName);
+    return this._fireStore.collection('recipe-list')
+                          .doc(recipeName.toString())
+                          .get();
   }
 
+  // Gets the ingredients in the recipe as an array to be used with FormArray later
   getRecipeIngredients(recipe : Recipe) {
-    // Gets the ingredients in the recipe as an array to be used with FormArray later
     return recipe.ingredients;
   }
 
+  // Set the favourite status of the recipe by inversing it
   setDocFavourite(document, prev) {
     let fav;
-    /*
-    this._fireStore.collection('recipe-list').doc(document.toString()).get().subscribe(favourite => {
-      console.log('Current Favourite: ' + favourite.get('favourite'));
-      fav = !favourite.get('favourite');
-      console.log('Favourite will be set to: ' + fav);
-      this._fireStore.collection('recipe-list').doc(document.toString()).set({ 'favourite' : fav }, { 'merge' : true });
-    });
-    */
     console.log('Current Favourite: ' + prev);
     fav = !prev;
-    console.log('Favourite will be set to: ' + fav);
-    this._fireStore.collection('recipe-list').doc(document.toString()).set({ 'favourite' : fav }, { 'merge' : true });
+    this._fireStore.collection('recipe-list')
+                    .doc(document.toString())
+                    .set({ 'favourite' : fav }, { 'merge' : true })
+                    .then(() => {
+                      console.log('Favourite has be set to: ' + fav);
+    });
   }
 
+  // Toggle the favourite status of the recipe by inversing it
   toggleFavourite(recipe) {
-    // Toggles favourite
+    // Toggle favourite
     recipe.favourite = !recipe.favourite;
     // Write to database
     console.log('Recipe ID: ' + recipe.id.toString());
     console.log('Recipe Name: ' + recipe.name.toString());
-    this._fireStore.collection('recipe-list').doc(recipe.name.toString()).set({ 'favourite' : recipe.favourite }, { 'merge' : true });
-    console.log(recipe.name + "'s Favourite Bool: " + recipe.favourite);
+    this._fireStore.collection('recipe-list')
+                    .doc(recipe.name.toString())
+                    .set({ 'favourite' : recipe.favourite }, { 'merge' : true })
+                    .then(() => {
+                      console.log(recipe.name + "'s Favourite Bool: " + recipe.favourite);
+    });
   }
 
+  // Count the number of recipes in the database
   countRecipeInDatabase() {
     // Set the recipe ID first
-    this.getAllRecipesCollection().ref.get().then(recipe => {
-      this.id = recipe.size;
-      console.log('ID set to: ' + this.id);
+    this.getAllRecipesCollection()
+        .ref
+        .get()
+        .then(recipe => {
+          this.id = recipe.size;
+          console.log('ID set to: ' + this.id);
     });
   }
 
@@ -89,9 +99,9 @@ export class RecipeServiceService {
         "id": this.id,
       },
     });
-    modal.present();
+    await modal.present();
     const { data } = await modal.onDidDismiss();
-    if (data != undefined) {
+    if (await data != undefined) {
       // TODO: Check if recipe name data exists and let user choose if he wants to replace it by recipe name
 
       // Save data to the database here

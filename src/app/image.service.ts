@@ -4,6 +4,7 @@ import { FirebaseStorage } from "@angular/fire";
 @Injectable({
   providedIn: 'root'
 })
+
 export class ImageService {
 
   constructor(
@@ -24,6 +25,6 @@ export class ImageService {
         // Return the url of the image once uploaded
         return await results;
       });
-    })
+    });
   }
 }
