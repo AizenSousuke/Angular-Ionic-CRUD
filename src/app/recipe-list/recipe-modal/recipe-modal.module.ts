@@ -7,7 +7,6 @@ import { IonicModule } from '@ionic/angular';
 
 import { RecipeModalPage } from './recipe-modal.page';
 import { ImageUploadComponentComponent } from './image-upload-component/image-upload-component.component';
-import { ImageService } from 'src/app/image.service';
 
 const routes: Routes = [
   {
@@ -29,7 +28,7 @@ const routes: Routes = [
     ImageUploadComponentComponent
   ],
   providers: [
-    {provide:ImageService},
+    
   ]
 })
 export class RecipeModalPageModule {}

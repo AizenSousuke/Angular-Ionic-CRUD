@@ -1,16 +1,18 @@
 import { Injectable } from '@angular/core';
-import { FirebaseStorage } from "@angular/fire";
+import * as firebase from 'firebase';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class ImageService {
 
-  constructor(private _firebaseStorage: FirebaseStorage) { }
+  constructor() { }
 
   // Upload Image to Firebase Storage and return its URL
   async uploadImageAndReturnURL(image: File) {
     console.log(image);
     // Set the reference to firebase storage
-    var storage = this._firebaseStorage.ref();
+    var storage = firebase.storage().ref();
     // Save the image as imageName in firebase storage under the appropriate folder
     var imageName = image.name;
     return await storage.child("recipe_images/" + imageName).put(image).then(async results => {

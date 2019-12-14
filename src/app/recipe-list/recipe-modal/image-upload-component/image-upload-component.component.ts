@@ -1,13 +1,10 @@
 import { Component, OnInit, ViewChild, ElementRef, Input, Output, EventEmitter } from '@angular/core';
-import { ImageService } from 'src/app/image.service';
+import { ImageService } from '../../../image.service';
 
 @Component({
   selector: 'app-image-upload-component',
   templateUrl: './image-upload-component.component.html',
   styleUrls: ['./image-upload-component.component.scss'],
-  providers: [{
-    provide: ImageService
-  }]
 })
 export class ImageUploadComponentComponent implements OnInit {
   
