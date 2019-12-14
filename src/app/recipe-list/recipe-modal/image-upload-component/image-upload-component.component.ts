@@ -5,9 +5,9 @@ import { ImageService } from "../../../image.service";
   selector: 'app-image-upload-component',
   templateUrl: './image-upload-component.component.html',
   styleUrls: ['./image-upload-component.component.scss'],
-  //providers: [{
-  //  provide: ImageService
-  //}],
+  providers: [{
+    provide: ImageService
+  }],
 })
 
 export class ImageUploadComponentComponent implements OnInit {
@@ -19,7 +19,8 @@ export class ImageUploadComponentComponent implements OnInit {
 
   constructor(private _imageService: ImageService) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   async onAddImage(event) {
     console.log("Attempting to add image");

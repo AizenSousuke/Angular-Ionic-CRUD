@@ -20,10 +20,10 @@ export class ImageService {
     // Save the image as imageName in firebase storage under the appropriate folder
     var imageName = image.name;
     return await storage.child("recipe_images/" + imageName).put(image).then(async results => {
-      return await results.ref.getDownloadURL().then(async results => {
-        console.log(results);
+      return await results.ref.getDownloadURL().then(async url => {
+        console.log(url);
         // Return the url of the image once uploaded
-        return await results;
+        return await url;
       });
     });
   }
