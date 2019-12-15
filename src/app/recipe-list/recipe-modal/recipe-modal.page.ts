@@ -139,10 +139,29 @@ export class RecipeModalPage implements OnInit {
   // Submit with the updated imageLink if any
   onSubmitRecipe(f: FormGroup) {
     console.log(this.imageFileFromImageUploadComponent);
-    this._imageService.uploadImageAndReturnURL(this.imageFileFromImageUploadComponent).then((returnedLink) => {
-      //Get the new returned link and set it to the form controls
-      f.get('imageLink').setValue(returnedLink);
-
+    if (this.imageFileFromImageUploadComponent != null) {
+      this._imageService.uploadImageAndReturnURL(this.imageFileFromImageUploadComponent).then((returnedLink) => {
+        //Get the new returned link and set it to the form controls
+        f.get('imageLink').setValue(returnedLink);
+  
+        console.log('ID in modal before submitting is: ' + this.id);
+        console.log(f.get('ingredientsArray').value);
+        let data = {
+          "id": this.id,
+          "imageLink": f.get('imageLink').value,
+          "name": f.get('recipeName').value,
+          "description": f.get('description').value,
+          "ingredients" : f.get('ingredientsArray').value,
+          "timeNeeded": f.get('timeNeeded').value,
+          "favourite": f.get('favourite').value,
+        }
+        console.log("Data: ");
+        console.log(data);
+        // Dismiss the modal while sending data as the data
+        this._modalController.dismiss(data);
+        //console.log(f);
+      });
+    } else {
       console.log('ID in modal before submitting is: ' + this.id);
       console.log(f.get('ingredientsArray').value);
       let data = {
@@ -159,7 +178,7 @@ export class RecipeModalPage implements OnInit {
       // Dismiss the modal while sending data as the data
       this._modalController.dismiss(data);
       //console.log(f);
-    });
+    }
   }
 
   onDismiss() {
