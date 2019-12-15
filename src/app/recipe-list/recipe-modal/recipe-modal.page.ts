@@ -23,6 +23,8 @@ export class RecipeModalPage implements OnInit {
   @Input() timeNeeded: number = 0;
   @Input() favourite: boolean = false;
 
+  imageFileFromImageUploadComponent;
+
   // The form to use
   addRecipeForm : FormGroup;
 
@@ -30,6 +32,7 @@ export class RecipeModalPage implements OnInit {
     private _modalController: ModalController,
     private _formBuilder: FormBuilder,
     private _angularFireStore: AngularFirestore,
+    private _imageService: ImageService,
   ) {
     // Initialized the form
     this.addRecipeForm = this._formBuilder.group({
@@ -133,23 +136,30 @@ export class RecipeModalPage implements OnInit {
     this.getIngredients().removeAt(position);
   }
 
+  // Submit with the updated imageLink if any
   onSubmitRecipe(f: FormGroup) {
-    console.log('ID in modal before submitting is: ' + this.id);
-    console.log(f.get('ingredientsArray').value);
-    let data = {
-      "id": this.id,
-      "imageLink": f.get('imageLink').value,
-      "name": f.get('recipeName').value,
-      "description": f.get('description').value,
-      "ingredients" : f.get('ingredientsArray').value,
-      "timeNeeded": f.get('timeNeeded').value,
-      "favourite": f.get('favourite').value,
-    }
-    console.log("Data: ");
-    console.log(data);
-    // Dismiss the modal while sending data as the data
-    this._modalController.dismiss(data);
-    //console.log(f);
+    console.log(this.imageFileFromImageUploadComponent);
+    this._imageService.uploadImageAndReturnURL(this.imageFileFromImageUploadComponent).then((returnedLink) => {
+      //Get the new returned link and set it to the form controls
+      f.get('imageLink').setValue(returnedLink);
+
+      console.log('ID in modal before submitting is: ' + this.id);
+      console.log(f.get('ingredientsArray').value);
+      let data = {
+        "id": this.id,
+        "imageLink": f.get('imageLink').value,
+        "name": f.get('recipeName').value,
+        "description": f.get('description').value,
+        "ingredients" : f.get('ingredientsArray').value,
+        "timeNeeded": f.get('timeNeeded').value,
+        "favourite": f.get('favourite').value,
+      }
+      console.log("Data: ");
+      console.log(data);
+      // Dismiss the modal while sending data as the data
+      this._modalController.dismiss(data);
+      //console.log(f);
+    });
   }
 
   onDismiss() {
@@ -168,9 +178,11 @@ export class RecipeModalPage implements OnInit {
     return (this.addRecipeForm.get('ingredientsArray') as FormArray).controls;
   }
 
-  getNewImageLink(event) {
+  // Update the new image file name in the modal
+  getNewImageFile(file) {
     console.log("Outputting new link from child to parent");
-    console.log(event);
-    this.addRecipeForm.get('imageLink').setValue(event);
+    console.log(file);
+    this.addRecipeForm.get('imageLink').setValue(file.name);
+    this.imageFileFromImageUploadComponent = file;
   }
 }
