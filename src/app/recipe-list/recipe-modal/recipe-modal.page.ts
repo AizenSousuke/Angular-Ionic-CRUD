@@ -57,7 +57,7 @@ export class RecipeModalPage implements OnInit {
       // If there is no name passed to the modal, assume that it was triggered from add recipe button and prefill stuffs
       console.log("Name is null. Setting it to empty.");
       this.name = "";
-      this.addRecipeForm.get('imageLink').setValue('https://cdn.auth0.com/blog/get-started-ionic/logo.png');
+      this.addRecipeForm.get('imageLink').setValue(this.imageLink);
       this._angularFireStore.collection('recipe-list').ref.get().then(recipe => {
         this.id = recipe.size + 1;
         console.log('ID in modal set to: ' + this.id);

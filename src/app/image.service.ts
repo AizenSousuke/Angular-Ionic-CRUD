@@ -6,16 +6,17 @@ import * as firebase from 'firebase';
 })
 export class ImageService {
 
+  // Set the reference to firebase storage
+  storage = firebase.storage().ref();
+
   constructor() { }
 
-  // Upload Image to Firebase Storage and return its URL
+  // Upload Image to Firebase Storage and return the uploaded image's URL
   async uploadImageAndReturnURL(image: File) {
     console.log(image);
-    // Set the reference to firebase storage
-    var storage = firebase.storage().ref();
     // Save the image as imageName in firebase storage under the appropriate folder
     var imageName = image.name;
-    return await storage.child("recipe_images/" + imageName).put(image).then(async results => {
+    return await this.storage.child("recipe_images/" + imageName).put(image).then(async results => {
       return await results.ref.getDownloadURL().then(async results => {
         console.log(results);
         // Return the url of the image once uploaded

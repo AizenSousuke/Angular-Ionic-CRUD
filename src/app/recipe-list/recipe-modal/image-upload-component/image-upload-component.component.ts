@@ -8,7 +8,7 @@ import { ImageService } from '../../../image.service';
 })
 export class ImageUploadComponentComponent implements OnInit {
   
-  @Input() imageUploaded = "";
+  @Input() imageUploaded = "No image yet";
   @Output() outputImageFile = new EventEmitter();
 
   constructor(private _imageService: ImageService) { }

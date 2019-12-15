@@ -13,6 +13,8 @@ export class RecipeServiceService {
   recipe: Array<any>;
   // Recipe Number for calculations
   id: number;
+  // Image link default
+  imageLink = 'https://cdn.auth0.com/blog/get-started-ionic/logo.png';
 
   constructor(
     private _fireStore: AngularFirestore,
@@ -95,6 +97,7 @@ export class RecipeServiceService {
       component: RecipeModalPage,
       componentProps: {
         "id": this.id,
+        "imageLink": this.imageLink,
       },
     });
     modal.present();
