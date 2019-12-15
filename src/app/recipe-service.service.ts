@@ -6,15 +6,20 @@ import { RecipeModalPage } from './recipe-list/recipe-modal/recipe-modal.page';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { FormControl } from '@angular/forms';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class RecipeServiceService {
 
   // Recipe array for calculations 
   recipe: Array<any>;
   // Recipe Number for calculations
   id: number;
-  // Image link default
+  // Image link default that is placed in the form values if there is nothing
   imageLink = 'https://cdn.auth0.com/blog/get-started-ionic/logo.png';
+
+  // The collection to use for recipe
+  recipeCollection = 'recipe-list';
 
   constructor(
     private _fireStore: AngularFirestore,
@@ -28,39 +33,34 @@ export class RecipeServiceService {
   }
 
   // Get all the recipes from the collection. This is used to edit\delete.
-  getAllRecipesCollection() {
-    return this._fireStore.collection('recipe-list');
+  getAllRecipesFromCollection() {
+    return this._fireStore.collection(this.recipeCollection);
   }
 
   // Get all the recipes and metadata from the collection. This is used to put the data in a list\array for realtime changes tracking.
-  getAllRecipesSnapshots() {
-    return this._fireStore.collection('recipe-list')
+  getAllRecipesFromCollectionSnapshots() {
+    return this._fireStore.collection(this.recipeCollection)
                           .snapshotChanges();
   }
 
   // Get a recipe object by name
-  getRecipeByName(recipeName) {
+  getRecipeByName(recipeName: String) {
     console.log('Getting recipe with name: ' + recipeName);
-    return this._fireStore.collection('recipe-list')
+    return this._fireStore.collection(this.recipeCollection)
                           .doc(recipeName.toString())
                           .get();
   }
 
-  // Gets the ingredients in the recipe as an array to be used with FormArray later
-  getRecipeIngredients(recipe : Recipe) {
-    return recipe.ingredients;
-  }
-
-  // Set the favourite status of the recipe by inversing it
-  setDocFavourite(document, prev) {
-    let fav;
-    console.log('Current Favourite: ' + prev);
-    fav = !prev;
-    this._fireStore.collection('recipe-list')
-                    .doc(document.toString())
-                    .set({ 'favourite' : fav }, { 'merge' : true })
+  // Set the favourite status of the recipe by inversing the old value
+  setDocFavourite(recipe, previousValue) {
+    let favouriteStatus;
+    console.log('Current Favourite: ' + previousValue);
+    favouriteStatus = !previousValue;
+    this._fireStore.collection(this.recipeCollection)
+                    .doc(recipe.toString())
+                    .set({ 'favourite' : favouriteStatus }, { 'merge' : true })
                     .then(() => {
-                      console.log('Favourite has be set to: ' + fav);
+                      console.log('Favourite has be set to: ' + favouriteStatus);
     });
   }
 
@@ -71,7 +71,7 @@ export class RecipeServiceService {
     // Write to database
     console.log('Recipe ID: ' + recipe.id.toString());
     console.log('Recipe Name: ' + recipe.name.toString());
-    this._fireStore.collection('recipe-list')
+    this._fireStore.collection(this.recipeCollection)
                     .doc(recipe.name.toString())
                     .set({ 'favourite' : recipe.favourite }, { 'merge' : true })
                     .then(() => {
@@ -82,7 +82,7 @@ export class RecipeServiceService {
   // Count the number of recipes in the database
   countRecipeInDatabase() {
     // Set the recipe ID first
-    this.getAllRecipesCollection()
+    this.getAllRecipesFromCollection()
         .ref
         .get()
         .then(recipe => {
@@ -109,7 +109,7 @@ export class RecipeServiceService {
       console.log('ID before set: ' + data.id);
       console.log("Data:");
       console.log(data);
-      this._fireStore.collection('recipe-list').doc(data.name.toString()).set(data, { 'merge' : false });
+      this._fireStore.collection(this.recipeCollection).doc(data.name.toString()).set(data, { 'merge' : false });
 
       // Go to the recipe list page here
       this._router.navigate(['/recipe-list']);
@@ -144,16 +144,16 @@ export class RecipeServiceService {
           console.log("Delete has been selected");          
           //Delete the recipe from the database
           console.log("Deleting: " + recipe.get('name').toString());
-          this._fireStore.collection('recipe-list').doc(recipe.get('name').toString()).delete().then(() => {
+          this._fireStore.collection(this.recipeCollection).doc(recipe.get('name').toString()).delete().then(() => {
             console.log('Deleted!');
             // Update all the ids in the collection so as not to rewrite\merge data that's already in the database
 
             let num = 1;
-            this.getAllRecipesCollection().get().subscribe(recipe => {
+            this.getAllRecipesFromCollection().get().subscribe(recipe => {
               recipe.forEach(x => {
                 console.log('Found recipe');
                 //console.log('Old ID: ' + x.get('id'));
-                this._fireStore.collection('recipe-list').doc(x.get('name').toString()).set(
+                this._fireStore.collection(this.recipeCollection).doc(x.get('name').toString()).set(
                   { 'id' : num }, { 'merge' : true }
                 );
                 //console.log('New ID: ' + (x.get('id')+1));
@@ -201,7 +201,7 @@ export class RecipeServiceService {
       console.log("Data on modal dismissed");
       console.log(data);
       // Update data in the database here
-      this._fireStore.collection('recipe-list').doc(data.name.toString()).set(data, { 'merge' : true });
+      this._fireStore.collection(this.recipeCollection).doc(data.name.toString()).set(data, { 'merge' : true });
       
       // Show the toast
       const toast = await this._toastController.create({
@@ -238,12 +238,12 @@ export class RecipeServiceService {
     // Delete existing recipes
     /*
     for (let i=0; i<3; i++) {
-      this._fireStore.collection('recipe-list').doc((i+1).toString()).delete();
+      this._fireStore.collection(this.recipeCollection).doc((i+1).toString()).delete();
     }
     */
     // Add the 3 recipes
     for (let i=0; i<3; i++) {
-      this._fireStore.collection('recipe-list').doc((i+1).toString()).set(data[i] , { 'merge' : false });
+      this._fireStore.collection(this.recipeCollection).doc((i+1).toString()).set(data[i] , { 'merge' : false });
     }
   }
 }

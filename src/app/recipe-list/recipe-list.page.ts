@@ -24,7 +24,7 @@ export class RecipeListPage implements OnInit {
 
   initRecipe() {
     // Load data from the database and update it when there are any changes in realtime
-    this._recipeService.getAllRecipesSnapshots().subscribe(result => {
+    this._recipeService.getAllRecipesFromCollectionSnapshots().subscribe(result => {
       this.recipe = result;
       this._recipeService.recipe = result;
     });
