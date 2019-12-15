@@ -4,7 +4,13 @@
       <ion-back-button defaultHref="recipe-list"></ion-back-button>
     </ion-buttons>
     <ion-title>{{ name }}</ion-title>
-    <ion-buttons slot="end">
+    <ion-buttons slot="primary">
+      <ion-button (click)="onDeleteRecipe()">
+        <ion-icon name="trash"></ion-icon>
+      </ion-button>
+      <ion-button (click)="onEditRecipe()">
+        <ion-icon name="create"></ion-icon>
+      </ion-button>
       <ion-button (click)="onFavourite()">
         <ion-icon *ngIf="favourite" name="heart"></ion-icon>
         <ion-icon *ngIf="!favourite" name="star"></ion-icon>
@@ -63,17 +69,4 @@
   </ion-grid>
 </ion-content>
 <ion-footer>
-  <ion-toolbar>
-    <ion-button class="ion-padding-horizontal" expand="block" color="danger" (click)="onDeleteRecipe()">
-      <ion-icon slot="start" name="trash"></ion-icon>
-      Delete Recipe
-    </ion-button>
-    <ion-button class="ion-padding-horizontal" expand="block" fill="outline" (click)="onEditRecipe()">
-      Edit
-    </ion-button>
-    <ion-button class="ion-padding-horizontal" expand="block" color="success" (click)="onAddRecipe()">
-      <ion-icon slot="start" name="add"></ion-icon>
-      Add Recipe
-    </ion-button>
-  </ion-toolbar>
 </ion-footer>

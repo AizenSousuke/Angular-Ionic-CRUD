@@ -1,5 +1,4 @@
 import { Injectable, NgZone } from '@angular/core';
-import { Recipe } from './recipe-list/recipe';
 import { Router } from '@angular/router';
 import { AlertController, ModalController, ToastController } from '@ionic/angular';
 import { RecipeModalPage } from './recipe-list/recipe-modal/recipe-modal.page';
@@ -201,7 +200,15 @@ export class RecipeServiceService {
       console.log("Data on modal dismissed");
       console.log(data);
       // Update data in the database here
+      // !FIXME: If name changes, it will duplicate the recipe in the database. Need to check which recipe has the same id then push the data in to it.
       this._fireStore.collection(this.recipeCollection).doc(data.name.toString()).set(data, { 'merge' : true });
+      
+      console.log(data.id);
+      this._fireStore.collection(this.recipeCollection, query => query.where("id","==",data.id)).get().subscribe((result) => {
+        result.forEach((result) => {
+          console.log(result);
+        });
+      });
       
       // Show the toast
       const toast = await this._toastController.create({

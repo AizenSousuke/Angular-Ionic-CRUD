@@ -70,9 +70,11 @@ export class RecipeDetailPage implements OnInit {
     this.favourite = !this.favourite;
     console.log('Updating favourite');
     console.log(this.recipe); // Document Snapshot
+    // !FIXME: This returns an Observable which caused errors when trying to edit the recipe after running this function.
+    // Refresh the recipe
     this._recipeService.getRecipeByName(this._route.snapshot.paramMap.get('id').toString()).subscribe(data => {
       this.recipe = data;
-    }); // TODO: This returns an Observable which caused errors when trying to edit the recipe after running this function.
-    console.log(this.recipe); // Observable
+      console.log(this.recipe); // Observable
+    }); 
   };
 }

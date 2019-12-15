@@ -3,10 +3,15 @@ Link to Firebase App: https://angular-ionic-crud-506e0.firebaseapp.com/
 
 ### Usage
 Use the link above to access it from the Internet
+
 or
-`git clone <the link to this git>`
-`npm install`
-`ionic serve`
+
+```batch
+git clone <the link to this git>
+npm install
+ionic serve
+```
+
 Access it from https://localhost:8100/
 
 
