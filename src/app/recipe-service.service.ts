@@ -201,14 +201,20 @@ export class RecipeServiceService {
       console.log(data);
       // Update data in the database here
       // !FIXME: If name changes, it will duplicate the recipe in the database. Need to check which recipe has the same id then push the data in to it.
-      this._fireStore.collection(this.recipeCollection).doc(data.name.toString()).set(data, { 'merge' : true });
+      //this._fireStore.collection(this.recipeCollection).doc(data.name.toString()).set(data, { 'merge' : true });
+
+      //This will return the document that has the query in it
+      this._fireStore.collection(this.recipeCollection, query => query.where("id", "==", data.id)).get().subscribe(results => {
+        console.log(results);
+        // Update if there is any query found
+        if (results) {
+          this._fireStore.collection(this.recipeCollection).doc(results.docs[0].ref.id.toString()).set(data, { 'merge' : true });
+        } else {
+          this._fireStore.collection(this.recipeCollection).doc(data.name.toString()).set(data, { 'merge' : true });
+        }
+      });
       
       console.log(data.id);
-      this._fireStore.collection(this.recipeCollection, query => query.where("id","==",data.id)).get().subscribe((result) => {
-        result.forEach((result) => {
-          console.log(result);
-        });
-      });
       
       // Show the toast
       const toast = await this._toastController.create({
