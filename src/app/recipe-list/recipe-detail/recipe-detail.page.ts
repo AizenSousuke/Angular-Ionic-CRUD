@@ -34,7 +34,11 @@ export class RecipeDetailPage implements OnInit {
     // Sets the data for the recipe
     console.log("Params ID in the URL: " + this._route.snapshot.paramMap.get('id'));
     this._recipeService.getRecipeByName(this._route.snapshot.paramMap.get('id').toString()).subscribe(data => {
+      console.log("getRecipeNameFromURL:");
+      // !FIXME: Doesn't update with the correct data
+      console.log(data);
       this.recipe = data;
+      console.log(this.recipe.get('description'));
       this.id = this.recipe.get('id');
       console.log("ID: " + this.id);
       this.name = this.recipe.get('name');
@@ -58,6 +62,7 @@ export class RecipeDetailPage implements OnInit {
     this._recipeService.onEditRecipe(this.recipe).then(() => {
       // Update the recipe in the recipe detail page
       this.getRecipeNameFromURL();
+      console.log("Editing recipe completed!");
     });
   }
 

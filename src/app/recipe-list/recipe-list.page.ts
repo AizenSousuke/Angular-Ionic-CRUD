@@ -31,7 +31,7 @@ export class RecipeListPage implements OnInit {
   }
 
   cardFavourite(recipe: Recipe) {
-    this._recipeService.toggleFavourite(recipe);
+    this._recipeService.toggleCardFavourite(recipe);
   }
 
   onClickRecipe(recipe: Recipe) {

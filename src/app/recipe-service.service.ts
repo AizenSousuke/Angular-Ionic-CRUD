@@ -4,6 +4,7 @@ import { AlertController, ModalController, ToastController } from '@ionic/angula
 import { RecipeModalPage } from './recipe-list/recipe-modal/recipe-modal.page';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { FormControl } from '@angular/forms';
+import { Recipe } from './recipe-list/recipe';
 
 @Injectable({
   providedIn: 'root'
@@ -63,8 +64,34 @@ export class RecipeServiceService {
     });
   }
 
+  // Use the query function to return a list of documents that has the following parameters
+  async queryDocuments(query: string, value: any) {
+    await this._fireStore.collection(this.recipeCollection, query => query.where("name", "==", value))
+                    .get()
+                    .subscribe(result => {
+                      console.log(result);
+                      return result.docs;
+                    });
+  }
+  
+  // Toggle the favourite status of the recipe by inversing it
+  toggleCardFavourite(recipe: Recipe) {
+    // Toggle favourite
+    recipe.favourite = !recipe.favourite;
+    // Write to database
+    console.log('Recipe ID: ' + recipe.id.toString());
+    console.log('Recipe Name: ' + recipe.name.toString());
+    this._fireStore.collection(this.recipeCollection)
+                  .doc(this.queryDocuments("name", recipe.name)[0].id)
+                  .set({ 'favourite' : recipe.favourite }, { 'merge' : true })
+                  .then(() => {
+                    console.log(recipe.name + "'s Favourite Bool: " + recipe.favourite);
+    });
+  }
+
   // Toggle the favourite status of the recipe by inversing it
   toggleFavourite(recipe) {
+    // !FIXME: BUGGY function. Will create extra card if the document name isn't the same (recipe has been added before)
     // Toggle favourite
     recipe.favourite = !recipe.favourite;
     // Write to database
@@ -199,6 +226,7 @@ export class RecipeServiceService {
     if (data != undefined) {
       console.log("Data on modal dismissed");
       console.log(data);
+      console.log(data.id);
       // Update data in the database here
       // !FIXME: If name changes, it will duplicate the recipe in the database. Need to check which recipe has the same id then push the data in to it.
       //this._fireStore.collection(this.recipeCollection).doc(data.name.toString()).set(data, { 'merge' : true });
@@ -213,8 +241,6 @@ export class RecipeServiceService {
           this._fireStore.collection(this.recipeCollection).doc(data.name.toString()).set(data, { 'merge' : true });
         }
       });
-      
-      console.log(data.id);
       
       // Show the toast
       const toast = await this._toastController.create({
