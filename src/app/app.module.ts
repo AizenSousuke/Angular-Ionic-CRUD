@@ -20,6 +20,7 @@ import { AngularFireModule } from "@angular/fire";
 import { AngularFirestoreModule } from "@angular/fire/firestore";
 import { ImageService } from './image.service';
 import { ImageUploadComponentComponent } from './recipe-list/recipe-modal/image-upload-component/image-upload-component.component';
+import { RecipeServiceService } from './recipe-service.service';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { ImageUploadComponentComponent } from './recipe-list/recipe-modal/image-
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    RecipeServiceService,
   ],
   bootstrap: [AppComponent]
 })

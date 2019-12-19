@@ -6,7 +6,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { RecipeListPage } from './recipe-list.page';
-import { RecipeServiceService } from '../recipe-service.service';
 
 const routes: Routes = [
   {
@@ -24,7 +23,6 @@ const routes: Routes = [
   ],
   declarations: [RecipeListPage],
   providers: [
-    RecipeServiceService,
   ]
 })
 export class RecipeListPageModule {}
