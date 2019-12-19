@@ -32,12 +32,12 @@ export class RecipeDetailPage implements OnInit {
 
   getRecipeNameFromURL() {
     // Sets the data for the recipe
-    console.log("Params ID in the URL: " + this._route.snapshot.paramMap.get('id'));
-    this._recipeService.getRecipeByName(this._route.snapshot.paramMap.get('id').toString()).subscribe(data => {
-      console.log("getRecipeNameFromURL:");
+    console.log("Params ID in the URL: " + parseInt(this._route.snapshot.paramMap.get('id')));
+    this._recipeService.getRecipeWithUpdates("id", parseInt(this._route.snapshot.paramMap.get('id'))).subscribe(recipe => {
+      console.log("getRecipeNameFromURL's ID:");
       // !FIXME: Doesn't update with the correct data
-      console.log(data);
-      this.recipe = data;
+      console.log(recipe);
+      this.recipe = recipe[0].payload.doc;
       console.log(this.recipe.get('description'));
       this.id = this.recipe.get('id');
       console.log("ID: " + this.id);
@@ -45,8 +45,6 @@ export class RecipeDetailPage implements OnInit {
       this.imageLink = this.recipe.get('imageLink');
       this.description = this.recipe.get('description');
       console.log("Ingredients: " + this.recipe.get('ingredients'));
-      //console.log(this.recipe.get('ingredients')[0].ingredients);
-      //console.log("Ingredients Length: " + this.recipe.get('ingredients').length);
       // Add ingredientsArray to ingredients
       this.ingredients = this.recipe.get('ingredients');
       this.timeNeeded = this.recipe.get('timeNeeded');
@@ -71,15 +69,7 @@ export class RecipeDetailPage implements OnInit {
   }
 
   onFavourite() {
-    this._recipeService.setDocFavourite(this._route.snapshot.paramMap.get('id').toString(), this.favourite);
-    this.favourite = !this.favourite;
-    console.log('Updating favourite');
-    console.log(this.recipe); // Document Snapshot
-    // !FIXME: This returns an Observable which caused errors when trying to edit the recipe after running this function.
-    // Refresh the recipe
-    this._recipeService.getRecipeByName(this._route.snapshot.paramMap.get('id').toString()).subscribe(data => {
-      this.recipe = data;
-      console.log(this.recipe); // Observable
-    }); 
+    console.log("OnFavourite's bool: " + this.recipe.favourite);
+    this._recipeService.toggleCardFavourite(this.recipe);
   };
 }

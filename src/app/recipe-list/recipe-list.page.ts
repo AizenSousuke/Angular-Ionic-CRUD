@@ -19,7 +19,6 @@ export class RecipeListPage implements OnInit {
 
   ngOnInit() {
     this.initRecipe();
-    console.log(this._recipeService);
   }
 
   initRecipe() {
@@ -35,7 +34,7 @@ export class RecipeListPage implements OnInit {
 
   onClickRecipe(recipe: Recipe) {
     console.log("Clicked name: " + recipe.name);
-    this._router.navigate(['recipe-list', recipe.name.toString()]);
+    this._router.navigate(['recipe-list', recipe.id]);
   }
 
   onAddRecipe() {
