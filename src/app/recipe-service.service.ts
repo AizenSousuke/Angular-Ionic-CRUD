@@ -18,8 +18,10 @@ export class RecipeServiceService {
   // Image link default that is placed in the form values if there is nothing
   imageLink = 'https://cdn.auth0.com/blog/get-started-ionic/logo.png';
 
-  // The collection to use for recipe
-  recipeCollection = 'recipe-list';
+  // The collection name in firestore to use for recipe
+  recipeCollection : string = 'recipe-list';
+  // An array of recipes will be stored in this recipe service. All modules and components are to get their recipe data from here after the refactoring. 
+  recipeArray: any;
 
   constructor(
     private _fireStore: AngularFirestore,
@@ -29,18 +31,45 @@ export class RecipeServiceService {
     private _modalController: ModalController,
     private _toastController: ToastController,
     ) {
-
+    this.getRecipeWithUpdates().subscribe(results => {
+      console.log(results);
+    })
   }
+
+  // Refactored functions ==================================================
+
+  // Get x recipe data once. Include a parameter if you want an array of recipe(s) that matches the recipeId. If not, it will return all recipes.
+  getRecipeWithoutUpdates(query: string = "id", queryParam?: string | number) {
+    if (queryParam) {
+      return this._fireStore.collection(this.recipeCollection, query => query.where(query, "==", queryParam)).get();
+    } else {
+      return this._fireStore.collection(this.recipeCollection).get();
+    }
+  }
+
+  // Get a recipe by id and listen to updates from firestore
+  getRecipeWithUpdates(query: string = "id", queryParam?: string | number) {
+    if (queryParam) {
+      return this._fireStore.collection(this.recipeCollection, query => query.where(query, "==", queryParam)).snapshotChanges();
+    } else {
+      return this._fireStore.collection(this.recipeCollection).snapshotChanges();
+    }
+  }
+  
+  // Count the number of recipes in the database
+  countRecipeInDatabase(): number {
+    this.getRecipeWithoutUpdates().subscribe(result => {
+      console.log("Recipe Count:" + result.size);
+      return result.size;
+    }).unsubscribe();
+    return null;
+  }
+
+  // Refactored functions End ============================================
 
   // Get all the recipes from the collection. This is used to edit\delete.
   getAllRecipesFromCollection() {
     return this._fireStore.collection(this.recipeCollection);
-  }
-
-  // Get all the recipes and metadata from the collection. This is used to put the data in a list\array for realtime changes tracking.
-  getAllRecipesFromCollectionSnapshots() {
-    return this._fireStore.collection(this.recipeCollection)
-                          .snapshotChanges();
   }
 
   // Get a recipe object by name
@@ -65,55 +94,34 @@ export class RecipeServiceService {
   }
 
   // Use the query function to return a list of documents that has the following parameters
-  async queryDocuments(query: string, value: any) {
-    await this._fireStore.collection(this.recipeCollection, query => query.where("name", "==", value))
+  queryDocuments(query: string, value: any) {
+    return this._fireStore.collection(this.recipeCollection, query => query.where("name", "==", value))
                     .get()
-                    .subscribe(result => {
-                      console.log(result);
-                      return result.docs;
-                    });
+                    // .subscribe(result => {
+                    //   console.log("Result of queryDocuments:");
+                    //   console.log(result);
+                    //   return result.docs;
+                    // });
   }
   
   // Toggle the favourite status of the recipe by inversing it
   toggleCardFavourite(recipe: Recipe) {
-    // Toggle favourite
     recipe.favourite = !recipe.favourite;
-    // Write to database
-    console.log('Recipe ID: ' + recipe.id.toString());
-    console.log('Recipe Name: ' + recipe.name.toString());
-    this._fireStore.collection(this.recipeCollection)
-                  .doc(this.queryDocuments("name", recipe.name)[0].id)
-                  .set({ 'favourite' : recipe.favourite }, { 'merge' : true })
-                  .then(() => {
-                    console.log(recipe.name + "'s Favourite Bool: " + recipe.favourite);
-    });
-  }
-
-  // Toggle the favourite status of the recipe by inversing it
-  toggleFavourite(recipe) {
-    // !FIXME: BUGGY function. Will create extra card if the document name isn't the same (recipe has been added before)
-    // Toggle favourite
-    recipe.favourite = !recipe.favourite;
-    // Write to database
-    console.log('Recipe ID: ' + recipe.id.toString());
-    console.log('Recipe Name: ' + recipe.name.toString());
-    this._fireStore.collection(this.recipeCollection)
-                    .doc(recipe.name.toString())
+    this.queryDocuments("name", recipe.name).subscribe(value => {
+      // Write to database
+      console.log("Query's Name: " + value.docs[0].get("name"));
+      console.log(value);
+      console.log('Recipe ID: ' + recipe.id.toString());
+      console.log('Recipe Name: ' + recipe.name.toString());
+      // !FIXME: BUGGY function. Will create extra card if the document name isn't the same (recipe has been added before)
+      this._fireStore.collection(this.recipeCollection)
+                    .doc(value.docs[0].get("name"))
                     .set({ 'favourite' : recipe.favourite }, { 'merge' : true })
                     .then(() => {
                       console.log(recipe.name + "'s Favourite Bool: " + recipe.favourite);
-    });
-  }
-
-  // Count the number of recipes in the database
-  countRecipeInDatabase() {
-    // Set the recipe ID first
-    this.getAllRecipesFromCollection()
-        .ref
-        .get()
-        .then(recipe => {
-          this.id = recipe.size;
-          console.log('ID set to: ' + this.id);
+                    }).catch(error => {
+                      console.log("Error in toggling favourite: " + error);
+                    });
     });
   }
 

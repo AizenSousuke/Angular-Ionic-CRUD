@@ -19,7 +19,6 @@ import { environment } from "src/environments/environment";
 import { AngularFireModule } from "@angular/fire";
 import { AngularFirestoreModule } from "@angular/fire/firestore";
 import { ImageService } from './image.service';
-import { ImageUploadComponentComponent } from './recipe-list/recipe-modal/image-upload-component/image-upload-component.component';
 import { RecipeServiceService } from './recipe-service.service';
 
 @NgModule({
@@ -46,6 +45,7 @@ import { RecipeServiceService } from './recipe-service.service';
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     RecipeServiceService,
+    ImageService,
   ],
   bootstrap: [AppComponent]
 })
