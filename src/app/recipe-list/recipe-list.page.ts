@@ -9,7 +9,7 @@ import { RecipeServiceService } from '../recipe-service.service';
   styleUrls: ['./recipe-list.page.scss'],
 })
 export class RecipeListPage implements OnInit {
-  
+
   // To put in the page for Angular to loop through
   recipe;
 

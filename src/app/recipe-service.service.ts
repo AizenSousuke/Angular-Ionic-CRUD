@@ -92,12 +92,25 @@ export class RecipeServiceService {
 
   // Refactored functions End ============================================
 
-  // Get a recipe object by name
-  getRecipeByName(recipeName: String) {
-    console.log('Getting recipe with name: ' + recipeName);
-    return this._fireStore.collection(this.recipeCollection)
-                          .doc(recipeName.toString())
-                          .get();
+  // Find missing id in the database
+  findMissingId(): number {
+    let number: number = 1;
+    let found: boolean = false;
+    console.log("Finding missing id");
+    // For each recipe, check it's id and see if there's a match with number. If there isn't, return the number to use as the missing id.
+    if (!found) {
+      this.getRecipeWithoutUpdates("id", number).subscribe(results => {
+        if (!results) {
+          // results should be an array of recipes here. just loop through their ids and see if there's a spot
+          
+        } else {
+          found = true;
+          console.log("Returning number: " + number.toString());
+          return number;
+        }
+      });
+    }
+    return null;
   }
 
   async onAddRecipe() {
@@ -141,40 +154,41 @@ export class RecipeServiceService {
       backdropDismiss: false,
       header: 'Delete the Recipe?',
       message: 'Click Delete to Delete the Recipe.',
-      buttons: [{
+      buttons: [
+      {
         text: 'Cancel',
         handler: () => {
           console.log("Cancel has been selected");
           alert.dismiss();
         }
-      }, {
+      }, 
+      {
         text: 'Delete',
         handler: () => {
           console.log("Delete has been selected");          
           //Delete the recipe from the database
           console.log("Deleting: " + recipe.get('name').toString());
-          this._fireStore.collection(this.recipeCollection).doc(recipe.get('name').toString()).delete().then(() => {
-            console.log('Deleted!');
-            // Update all the ids in the collection so as not to rewrite\merge data that's already in the database
-
-            let num = 1;
-            this.getRecipeWithoutUpdates().subscribe(recipe => {
-              recipe.forEach(x => {
-                console.log('Found recipe');
-                //console.log('Old ID: ' + x.get('id'));
-                this._fireStore.collection(this.recipeCollection).doc(x.get('name').toString()).set(
-                  { 'id' : num }, { 'merge' : true }
-                );
-                //console.log('New ID: ' + (x.get('id')+1));
-                num += 1;
+          this.getRecipeWithoutUpdates("name", recipe.name).subscribe(results => {
+            results.docs[0].ref.delete().then(() => {
+              console.log('Deleted!');
+              // Update all the ids in the collection so as not to rewrite\merge data that's already in the database
+              let num = 1;
+              this.getRecipeWithoutUpdates().subscribe(recipe => {
+                recipe.forEach(x => {
+                  console.log('Found recipe');
+                  console.log(x);
+                  //console.log('New ID: ' + (x.get('id')+1));
+                  num += 1;
+                });
               });
-            }).unsubscribe();
+              // Make navigation run from within Angular. Will result in an error if not using _ngZone
+              this._ngZone.run( async () => {
+                await this._router.navigate(['/recipe-list']);
+              });
+            });
           });
 
-          // Make navigation run from within Angular. Will result in an error if not using _ngZone
-          this._ngZone.run( async () => {
-            await this._router.navigate(['/recipe-list']);
-          })
+          
           // Dimiss the alert
           alert.dismiss();
         }

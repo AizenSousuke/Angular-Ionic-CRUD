@@ -54,6 +54,10 @@ export class RecipeModalPage implements OnInit {
   setup() {
     // Check whether the form needs to be prefilled using the recipe name
     if (this.name == null || this.name == "") {
+      // !FIXME: The id has to be set properly to avoid errors with duplication
+      // Find missing id first
+      //console.log(this._recipeService.findMissingId());
+
       // If there is no name passed to the modal, assume that it was triggered from add recipe button and prefill stuffs
       console.log("Name is null. Setting it to empty.");
       this.name = "";
@@ -62,6 +66,8 @@ export class RecipeModalPage implements OnInit {
         this.id = recipe.size + 1;
         console.log('ID in modal set to: ' + this.id);
       });
+
+      // Should find the missing id that's not present in the database
     } else {
       // Prefill the values
       this.prefillValues(this.recipe);

@@ -7,7 +7,6 @@ import { RecipeServiceService } from 'src/app/recipe-service.service';
   selector: 'app-recipe-detail',
   templateUrl: './recipe-detail.page.html',
   styleUrls: ['./recipe-detail.page.scss'],
-  providers: [RecipeServiceService]
 })
 export class RecipeDetailPage implements OnInit {
   id: number;
