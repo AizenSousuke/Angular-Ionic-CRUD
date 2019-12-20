@@ -80,7 +80,7 @@ export class RecipeServiceService {
       console.log(value);
       // Write to database
       this._fireStore.collection(this.recipeCollection)
-                    .doc(value.docs[0].get("name"))
+                    .doc(value.docs[0].id)
                     .set({ 'favourite' : favourite }, { 'merge' : true })
                     .then(() => {
                       console.log(recipe.get("name") + "'s Favourite Bool: " + recipe.get("favourite"));
@@ -98,19 +98,6 @@ export class RecipeServiceService {
     return this._fireStore.collection(this.recipeCollection)
                           .doc(recipeName.toString())
                           .get();
-  }
-
-  // Set the favourite status of the recipe by inversing the old value
-  setDocFavourite(recipe, previousValue) {
-    let favouriteStatus;
-    console.log('Current Favourite: ' + previousValue);
-    favouriteStatus = !previousValue;
-    this._fireStore.collection(this.recipeCollection)
-                    .doc(recipe.toString())
-                    .set({ 'favourite' : favouriteStatus }, { 'merge' : true })
-                    .then(() => {
-                      console.log('Favourite has be set to: ' + favouriteStatus);
-    });
   }
 
   async onAddRecipe() {
