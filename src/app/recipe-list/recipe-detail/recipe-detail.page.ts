@@ -58,8 +58,6 @@ export class RecipeDetailPage implements OnInit {
 
   onEditRecipe() {
     this._recipeService.onEditRecipe(this.recipe).then(() => {
-      // Update the recipe in the recipe detail page
-      this.getRecipeNameFromURL();
       console.log("Editing recipe completed!");
     });
   }
@@ -69,7 +67,8 @@ export class RecipeDetailPage implements OnInit {
   }
 
   onFavourite() {
-    console.log("OnFavourite's bool: " + this.recipe.favourite);
+    console.log("Document in detail's bool: " + this.recipe.get('favourite'));
+    console.log(this.recipe);
     this._recipeService.toggleCardFavourite(this.recipe);
   };
 }

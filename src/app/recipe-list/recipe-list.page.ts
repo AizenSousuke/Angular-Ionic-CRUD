@@ -9,6 +9,8 @@ import { RecipeServiceService } from '../recipe-service.service';
   styleUrls: ['./recipe-list.page.scss'],
 })
 export class RecipeListPage implements OnInit {
+  
+  // To put in the page for Angular to loop through
   recipe;
 
   constructor(
@@ -25,11 +27,15 @@ export class RecipeListPage implements OnInit {
     // Load data from the database and update it when there are any changes in realtime
     this._recipeService.getRecipeWithUpdates().subscribe(results => {
       this._recipeService.recipeArray = results;
+      this.recipe = results;
     });
   }
 
   cardFavourite(recipe: Recipe) {
-    this._recipeService.toggleCardFavourite(recipe);
+    // Convert to type QueryDocumentSnapshot first and get the first match
+    this._recipeService.getRecipeWithoutUpdates("name", recipe.name).subscribe(results => {
+      this._recipeService.toggleCardFavourite(results.docs[0]);
+    })
   }
 
   onClickRecipe(recipe: Recipe) {

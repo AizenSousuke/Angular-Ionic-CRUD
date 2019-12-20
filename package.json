@@ -6,7 +6,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ionic serve -w chrome",
-    "build": "ionic build --prod && firebase deploy --only hosting",
+    "build": "ionic build --prod",
+    "deploy": "firebase deploy --only hosting",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

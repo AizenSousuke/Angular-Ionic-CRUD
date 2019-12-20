@@ -2,7 +2,7 @@ import { Injectable, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, ModalController, ToastController } from '@ionic/angular';
 import { RecipeModalPage } from './recipe-list/recipe-modal/recipe-modal.page';
-import { AngularFirestore, DocumentChangeAction } from '@angular/fire/firestore';
+import { AngularFirestore, DocumentChangeAction, QueryDocumentSnapshot } from '@angular/fire/firestore';
 import { FormControl } from '@angular/forms';
 import { Recipe } from './recipe-list/recipe';
 
@@ -22,6 +22,9 @@ export class RecipeServiceService {
   recipeCollection : string = 'recipe-list';
   // An array of recipes will be stored in this recipe service. All modules and components are to get their recipe data from here after the refactoring. 
   recipeArray: DocumentChangeAction<any>[];
+
+  // Toast duration in milliseconds
+  toastDuration: number = 2000;
 
   constructor(
     private _fireStore: AngularFirestore,
@@ -68,20 +71,19 @@ export class RecipeServiceService {
   }
 
   // Toggle the favourite status of the recipe by inversing it
-  toggleCardFavourite(recipe: Recipe) {
-    recipe.favourite = !recipe.favourite;
-    this.getRecipeWithoutUpdates("name",recipe.name).subscribe(value => {
+  toggleCardFavourite(recipe: QueryDocumentSnapshot<any>) {
+    let favourite : boolean = !recipe.get("favourite");
+    this.getRecipeWithoutUpdates("name",recipe.get("name")).subscribe(value => {
       console.log("Query's Recipe Name: " + value.docs[0].get("name"));
       console.log("Query's ID: " + value.docs[0].get("id").toString());
+      console.log("Value.docs[0] aka document ID: " + value.docs[0].id);
       console.log(value);
-      // !FIXME: BUGGY function. Will create extra card if the document name isn't the same (recipe has been added before)
-      // TODO: Change the .doc(value) to .doc(documentID)
       // Write to database
       this._fireStore.collection(this.recipeCollection)
                     .doc(value.docs[0].get("name"))
-                    .set({ 'favourite' : recipe.favourite }, { 'merge' : true })
+                    .set({ 'favourite' : favourite }, { 'merge' : true })
                     .then(() => {
-                      console.log(recipe.name + "'s Favourite Bool: " + recipe.favourite);
+                      console.log(recipe.get("name") + "'s Favourite Bool: " + recipe.get("favourite"));
                     }).catch(error => {
                       console.log("Error in toggling favourite: " + error);
                     });
@@ -137,7 +139,7 @@ export class RecipeServiceService {
       // Show the toast
       const toast = await this._toastController.create({
         message: 'Recipe created successfully!',
-        duration: 2000,
+        duration: this.toastDuration,
         showCloseButton: true, 
       });
       toast.present();
@@ -239,7 +241,7 @@ export class RecipeServiceService {
       // Show the toast
       const toast = await this._toastController.create({
         message: 'Recipe updated successfully!',
-        duration: 2000,
+        duration: this.toastDuration,
         showCloseButton: true, 
       });
       toast.present();

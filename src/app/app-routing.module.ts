@@ -7,10 +7,10 @@ const routes: Routes = [
   { path: 'recipe-list',
     children: [
       {
-        path: '', loadChildren: './recipe-list/recipe-list.module#RecipeListPageModule'
+        path: ':id', loadChildren: './recipe-list/recipe-detail/recipe-detail.module#RecipeDetailPageModule'
       },
       {
-        path: ':id', loadChildren: './recipe-list/recipe-detail/recipe-detail.module#RecipeDetailPageModule'
+        path: '', loadChildren: './recipe-list/recipe-list.module#RecipeListPageModule'
       },
     ]
   },
