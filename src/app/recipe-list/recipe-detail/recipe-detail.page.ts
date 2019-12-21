@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RecipeServiceService } from 'src/app/recipe-service.service';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -17,6 +18,7 @@ export class RecipeDetailPage implements OnInit {
   ingredients;
   timeNeeded: number;
   favourite: boolean;
+  recipeSubscription: Subscription;
 
   constructor(
     private _route : ActivatedRoute,
@@ -32,7 +34,7 @@ export class RecipeDetailPage implements OnInit {
   getRecipeNameFromURL() {
     // Sets the data for the recipe
     console.log("Params ID in the URL: " + parseInt(this._route.snapshot.paramMap.get('id')));
-    this._recipeService.getRecipeWithUpdates("id", parseInt(this._route.snapshot.paramMap.get('id'))).subscribe(recipe => {
+    this.recipeSubscription = this._recipeService.getRecipeWithUpdates("id", parseInt(this._route.snapshot.paramMap.get('id'))).subscribe(recipe => {
       console.log("getRecipeNameFromURL's ID:");
       // !FIXME: Doesn't update with the correct data
       console.log(recipe);
@@ -62,6 +64,8 @@ export class RecipeDetailPage implements OnInit {
   }
 
   onDeleteRecipe() {
+    // Unsubscribe so as not to cause payload error
+    this.recipeSubscription.unsubscribe();
     this._recipeService.onDeleteRecipe(this.recipe);
   }
 
@@ -70,4 +74,10 @@ export class RecipeDetailPage implements OnInit {
     console.log(this.recipe);
     this._recipeService.toggleCardFavourite(this.recipe);
   };
+
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    this.recipeSubscription.unsubscribe();
+  }
 }

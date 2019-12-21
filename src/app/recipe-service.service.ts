@@ -147,7 +147,6 @@ export class RecipeServiceService {
         this._fireStore.collection(this.recipeCollection).doc(data.name.toString()).set(data, { 'merge' : false });
       });
 
-
       // Go to the recipe list page here
       this._router.navigate(['/recipe-list']);
       // Show the toast
@@ -237,7 +236,7 @@ export class RecipeServiceService {
     if (data != undefined) {
       console.log("Data on modal dismissed");
       console.log(data);
-      console.log(data.id);
+      console.log("ID of recipe that we're going to edit: " + data.id);
       // Update data in the database here
       // !FIXME: If name changes, it will duplicate the recipe in the database. Need to check which recipe has the same id then push the data in to it.
       //this._fireStore.collection(this.recipeCollection).doc(data.name.toString()).set(data, { 'merge' : true });

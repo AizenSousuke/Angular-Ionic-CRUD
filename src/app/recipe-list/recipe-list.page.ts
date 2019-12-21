@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Recipe } from './recipe';
 import { Router } from '@angular/router';
 import { RecipeServiceService } from '../recipe-service.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-recipe-list',
@@ -12,6 +13,7 @@ export class RecipeListPage implements OnInit {
 
   // To put in the page for Angular to loop through
   recipe;
+  recipeSubscription: Subscription;
 
   constructor(
       private _router: Router,
@@ -25,7 +27,7 @@ export class RecipeListPage implements OnInit {
 
   initRecipe() {
     // Load data from the database and update it when there are any changes in realtime
-    this._recipeService.getRecipeWithUpdates().subscribe(results => {
+    this.recipeSubscription = this._recipeService.getRecipeWithUpdates().subscribe(results => {
       this._recipeService.recipeArray = results;
       this.recipe = results;
     });
@@ -52,5 +54,11 @@ export class RecipeListPage implements OnInit {
   }
 
   trackRecipe(index, item) {
+  }
+
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    this.recipeSubscription.unsubscribe();
   }
 }
