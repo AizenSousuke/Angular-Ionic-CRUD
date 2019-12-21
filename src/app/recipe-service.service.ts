@@ -93,24 +93,47 @@ export class RecipeServiceService {
   // Refactored functions End ============================================
 
   // Find missing id in the database
-  findMissingId(): number {
-    let number: number = 1;
-    let found: boolean = false;
-    console.log("Finding missing id");
-    // For each recipe, check it's id and see if there's a match with number. If there isn't, return the number to use as the missing id.
-    if (!found) {
-      this.getRecipeWithoutUpdates("id", number).subscribe(results => {
-        if (!results) {
-          // results should be an array of recipes here. just loop through their ids and see if there's a spot
-          
-        } else {
-          found = true;
-          console.log("Returning number: " + number.toString());
-          return number;
-        }
-      });
+  async findMissingRecipeId(): Promise<number> {
+    try {
+      let number: number = 1;
+      let found: boolean = false;
+      console.log("Finding missing id");
+      // For each recipe, check it's id and see if there's a match with number. If there isn't, return the number to use as the missing id.
+      if (!found) {
+        await this.getRecipeWithoutUpdates().subscribe(async results => {
+          if (results) {
+            // results should be an array of recipes here. just loop through their ids and see if there's a spot and use that number as the new id
+            await results.query.orderBy("id", "asc").get().then(async docs => {
+              // docs.docs[] is array of all the documents
+              let idArray: Array<number> = [];
+              docs.docs.forEach(recipe => {
+                //console.log(recipe.get("id"));
+                //console.log(idArray);
+                idArray.push(recipe.get("id"));
+              });
+              // Loop through the sorted array and find if number exists
+              docs.docs.forEach(recipe => {
+                //console.log("Looping through docs array");
+                if (number == recipe.get("id")) {
+                  number += 1;
+                }
+              });
+              // The returned number is one that is not in the array
+              console.log("Returned number: " + number);
+              found = true;
+              return await number;
+            });
+          } else {
+            found = true;
+            console.log("Returning number: " + number.toString());
+            return number;
+          }
+        });
+      }
+      return null;
+    } catch (error) {
+      console.log("Error: " + error);
     }
-    return null;
   }
 
   async onAddRecipe() {
@@ -128,23 +151,26 @@ export class RecipeServiceService {
       // TODO: Check if recipe name data exists and let user choose if he wants to replace it by recipe name
 
       // Save data to the database here
-      console.log('ID before set: ' + data.id);
-      console.log("Data:");
-      console.log(data);
-      this._fireStore.collection(this.recipeCollection).doc(data.name.toString()).set(data, { 'merge' : false });
+      this.findMissingRecipeId().then((result) => {
+        data.id = result;
+        console.log('New ID: ' + data.id);
+        console.log("Data:");
+        console.log(data);
+        this._fireStore.collection(this.recipeCollection).doc(data.name.toString()).set(data, { 'merge' : false });
 
-      // Go to the recipe list page here
-      this._router.navigate(['/recipe-list']);
-
-      // Show the toast
-      const toast = await this._toastController.create({
-        message: 'Recipe created successfully!',
-        duration: this.toastDuration,
-        showCloseButton: true, 
+        // Go to the recipe list page here
+        this._router.navigate(['/recipe-list']);
       });
-      toast.present();
-      console.log("Shown toast");
     }
+  
+    // Show the toast
+    const toast = await this._toastController.create({
+      message: 'Recipe created successfully!',
+      duration: this.toastDuration,
+      showCloseButton: true, 
+    });
+    toast.present();
+    console.log("Shown toast");
     console.log('Data: ' + data);
   }
 
