@@ -36,7 +36,7 @@
             </ion-card-title>
           </ion-card-header>
           <ion-card-content>
-            {{ item.payload.doc.data().description }}
+            {{ item.payload.doc.data().description | slice:0:100 }}
           </ion-card-content>
         </ion-card>
       </ion-col>

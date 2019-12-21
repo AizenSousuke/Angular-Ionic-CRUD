@@ -40,7 +40,6 @@
         <ion-row>
             <p>
               <ion-label *ngIf="description">Description: {{ description }}</ion-label>
-              <ion-label *ngIf="!description">There is no description for this recipe.</ion-label>
             </p>
         </ion-row>
         <ion-row>
@@ -50,18 +49,11 @@
                   <ion-item *ngFor="let i of ingredients"><ion-icon slot="start" name="checkmark"></ion-icon>{{ i.ingredients }}</ion-item>
                 </ion-list>
               </ion-label>
-              <ion-label *ngIf="!ingredients">There is no ingredient data for this recipe.</ion-label>
             </p>
         </ion-row>
         <ion-row>
           <p>
             <ion-label *ngIf="timeNeeded">Time needed to make: <b>{{ timeNeeded }}</b> minutes.</ion-label>
-            <ion-label *ngIf="!timeNeeded">There is no time needed data for this recipe.</ion-label>
-          </p>
-        </ion-row>
-        <ion-row>
-          <p>
-            <ion-label *ngIf="favourite"  [ngStyle]="{'color': 'red'}">This is one of my favourite recipe!</ion-label>
           </p>
         </ion-row>
       </ion-col>

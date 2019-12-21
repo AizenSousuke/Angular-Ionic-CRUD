@@ -24,6 +24,7 @@ export class RecipeModalPage implements OnInit {
   @Input() favourite: boolean = false;
 
   imageFileFromImageUploadComponent;
+  submitButtonBool: boolean = false;
 
   // The form to use
   addRecipeForm : FormGroup;
@@ -140,6 +141,8 @@ export class RecipeModalPage implements OnInit {
 
   // Submit with the updated imageLink if any
   onSubmitRecipe(f: FormGroup) {
+    // Disable the submit button so that user cannot make multiple request
+    this.submitButtonBool = true;
     console.log(this.imageFileFromImageUploadComponent);
     if (this.imageFileFromImageUploadComponent != null) {
       this._imageService.uploadImageAndReturnURL(this.imageFileFromImageUploadComponent).then((returnedLink) => {
