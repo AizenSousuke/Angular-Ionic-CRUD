@@ -178,12 +178,16 @@ export class RecipeServiceService {
       {
         text: 'Delete',
         handler: () => {
-          console.log("Delete has been selected");          
-          //Delete the recipe from the database
+          console.log("Delete has been selected");      
           console.log("Deleting: " + recipe.get('id').toString());
           this.getRecipeWithoutUpdates("id", recipe.get('id')).subscribe(results => {
+
+            // TODO: Delete images associated with the recipe first
+    
+            //Delete the recipe from the database
             results.docs[0].ref.delete().then(() => {
               console.log('Deleted!');
+
               // Make navigation run from within Angular. Will result in an error if not using _ngZone
               this._ngZone.run( async () => {
                 await this._router.navigate(['/recipe-list']);
