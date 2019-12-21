@@ -12,7 +12,7 @@ import { ImageService } from 'src/app/image.service';
 })
 export class RecipeModalPage implements OnInit {
   // Get the latest ID to use
-  @Input() id: number;
+  @Input() id: number = 1;
 
   // Get other information for calculations and to fill up the form
   @Input() recipe: Recipe;
@@ -54,10 +54,6 @@ export class RecipeModalPage implements OnInit {
   setup() {
     // Check whether the form needs to be prefilled using the recipe name
     if (this.name == null || this.name == "") {
-      // !FIXME: The id has to be set properly to avoid errors with duplication
-      // Find missing id first
-      //console.log(this._recipeService.findMissingId());
-
       // If there is no name passed to the modal, assume that it was triggered from add recipe button and prefill stuffs
       console.log("Name is null. Setting it to empty.");
       this.name = "";

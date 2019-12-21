@@ -90,8 +90,6 @@ export class RecipeServiceService {
     });
   }
 
-  // Refactored functions End ============================================
-
   // Find missing id in the database
   findMissingRecipeId() {
     return new Promise(resolve => {
@@ -119,10 +117,12 @@ export class RecipeServiceService {
           });
         });
       } catch (error) {
-        
+        console.log("Error: " + error);
       }
     });
   }
+  // Refactored functions End ============================================
+
 
   async onAddRecipe() {
     // Creates a modal that user can input to create a new Recipe
@@ -180,20 +180,10 @@ export class RecipeServiceService {
         handler: () => {
           console.log("Delete has been selected");          
           //Delete the recipe from the database
-          console.log("Deleting: " + recipe.get('name').toString());
-          this.getRecipeWithoutUpdates("name", recipe.name).subscribe(results => {
+          console.log("Deleting: " + recipe.get('id').toString());
+          this.getRecipeWithoutUpdates("id", recipe.get('id')).subscribe(results => {
             results.docs[0].ref.delete().then(() => {
               console.log('Deleted!');
-              // Update all the ids in the collection so as not to rewrite\merge data that's already in the database
-              let num = 1;
-              this.getRecipeWithoutUpdates().subscribe(recipe => {
-                recipe.forEach(x => {
-                  console.log('Found recipe');
-                  console.log(x);
-                  //console.log('New ID: ' + (x.get('id')+1));
-                  num += 1;
-                });
-              });
               // Make navigation run from within Angular. Will result in an error if not using _ngZone
               this._ngZone.run( async () => {
                 await this._router.navigate(['/recipe-list']);
@@ -201,7 +191,6 @@ export class RecipeServiceService {
             });
           });
 
-          
           // Dimiss the alert
           alert.dismiss();
         }
@@ -238,11 +227,8 @@ export class RecipeServiceService {
       console.log(data);
       console.log("ID of recipe that we're going to edit: " + data.id);
       // Update data in the database here
-      // !FIXME: If name changes, it will duplicate the recipe in the database. Need to check which recipe has the same id then push the data in to it.
-      //this._fireStore.collection(this.recipeCollection).doc(data.name.toString()).set(data, { 'merge' : true });
-
       //This will return the document that has the query in it
-      this._fireStore.collection(this.recipeCollection, query => query.where("id", "==", data.id)).get().subscribe(results => {
+      this.getRecipeWithoutUpdates("id", data.id).subscribe(results => {
         console.log(results);
         // Update if there is any query found
         if (results) {
