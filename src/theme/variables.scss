@@ -74,4 +74,36 @@
   --ion-color-light-contrast-rgb: 0, 0, 0;
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
+
+  // Modified colors
+  --ion-color-primary: #FF5400;
+  --ion-color-primary-tint: #FF8245;
+  --ion-text-color: #FFBD00;
+  --ion-background-color: #9E0059;
+  --ion-background-color-2: rgb(122, 0, 69);
+
+  img  {
+    border-radius: 2%;
+    width: 100%;
+  }
+
+  ion-card {
+    background-color: #FF0054;
+    color: var(--ion-text-color);
+  }
+
+  ion-card-title {
+    font-style: bold;
+    font-weight: 600;
+    color: var(--ion-text-color);
+    text-shadow: 1px 1px 5px black;
+  }
+
+  h1 {
+    font-size: xx-large;
+    border-radius: 5%;
+    padding: 5px;
+    background-color: var(--ion-background-color-2);
+  }
+
 }
