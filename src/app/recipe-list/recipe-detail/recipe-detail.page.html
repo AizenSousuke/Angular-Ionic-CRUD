@@ -42,17 +42,23 @@
         </ion-row>
         <ion-row>
             <p>
-              <ion-label *ngIf="description">Description: {{ description }}</ion-label>
+              <ion-label *ngIf="description">Description:</ion-label>
             </p>
         </ion-row>
+        <ion-item>
+          <p>
+            {{ description }}
+          </p>
+        </ion-item>
         <ion-row>
-            <p>
-              <ion-label *ngIf="ingredients">Ingredients needed:
-                <ion-list lines="full">
-                  <ion-item *ngFor="let i of ingredients"><ion-icon slot="start" name="checkmark"></ion-icon>{{ i.ingredients }}</ion-item>
-                </ion-list>
-              </ion-label>
-            </p>
+          <p>
+            <ion-label *ngIf="ingredients">Ingredients needed:</ion-label>
+          </p>
+        </ion-row>
+        <ion-row>
+          <ion-list>
+            <ion-item *ngFor="let i of ingredients" lines="none"><ion-icon slot="start" name="play"></ion-icon>{{ i.ingredients }}</ion-item>
+          </ion-list>
         </ion-row>
         <ion-row>
           <p>
