@@ -27,6 +27,9 @@ export class RecipeModalPage implements OnInit {
   imageFileFromImageUploadComponent;
   submitButtonBool: boolean = false;
 
+  // Quill text editor
+  quill: Quill;
+
   // The form to use
   addRecipeForm : FormGroup;
 
@@ -36,7 +39,7 @@ export class RecipeModalPage implements OnInit {
     private _angularFireStore: AngularFirestore,
     private _imageService: ImageService,
   ) {
-    // Initialized the form
+    // Initialize the form
     this.addRecipeForm = this._formBuilder.group({
       recipeName: [''],
       imageLink: [''],
@@ -57,14 +60,24 @@ export class RecipeModalPage implements OnInit {
   setupQuill() {
     var toolbarOptions = ['bold', 'italic', 'underline', 'strike'];
 
-    var quill = new Quill('#quill-editor', {
+    this.quill = new Quill('#quill-editor', {
       modules: {
-        toolbar: toolbarOptions
+        toolbar: toolbarOptions,
       },
       theme: 'snow',
+      placeholder: 'Insert description here...',
     });
+  }
 
-    
+  onSetupQuill(string: string) {
+    this.quill.setContents(this.quill.setText(this.description, 'user'), 'user');
+    console.log("Quill is holding on to : " + this.quill.getText());
+  }
+
+  onSubmitQuill(): string {
+    console.log("Quill is holding on to : " + this.quill.getText());
+    console.log(this.quill.getText());
+    return this.quill.getText();
   }
 
   setup() {
@@ -106,6 +119,7 @@ export class RecipeModalPage implements OnInit {
       'favourite': this.favourite,
     });
     this.prefillIngredients();
+    this.onSetupQuill(this.description);
   }
 
   prefillIngredients() {
@@ -156,6 +170,9 @@ export class RecipeModalPage implements OnInit {
 
   // Submit with the updated imageLink if any
   onSubmitRecipe(f: FormGroup) {
+    // Get what quill editor is holding first
+    this.description = this.onSubmitQuill();
+    
     // Disable the submit button so that user cannot make multiple request
     this.submitButtonBool = true;
     console.log(this.imageFileFromImageUploadComponent);
@@ -170,7 +187,8 @@ export class RecipeModalPage implements OnInit {
           "id": this.id,
           "imageLink": f.get('imageLink').value,
           "name": f.get('recipeName').value,
-          "description": f.get('description').value,
+          //"description": f.get('description').value,
+          "description": this.onSubmitQuill(),
           "ingredients" : f.get('ingredientsArray').value,
           "timeNeeded": f.get('timeNeeded').value,
           "favourite": f.get('favourite').value,
@@ -188,7 +206,8 @@ export class RecipeModalPage implements OnInit {
         "id": this.id,
         "imageLink": f.get('imageLink').value,
         "name": f.get('recipeName').value,
-        "description": f.get('description').value,
+        //"description": f.get('description').value,
+        "description": this.onSubmitQuill(),
         "ingredients" : f.get('ingredientsArray').value,
         "timeNeeded": f.get('timeNeeded').value,
         "favourite": f.get('favourite').value,
