@@ -5,6 +5,7 @@ import { RecipeModalPage } from './recipe-list/recipe-modal/recipe-modal.page';
 import { AngularFirestore, DocumentChangeAction, QueryDocumentSnapshot } from '@angular/fire/firestore';
 import { FormControl } from '@angular/forms';
 import { Recipe } from './recipe-list/recipe';
+import { Delta } from 'quill';
 
 @Injectable({
   providedIn: 'root'
@@ -121,6 +122,18 @@ export class RecipeServiceService {
       }
     });
   }
+
+  convertDeltaToString(delta: Delta): string {
+    let stringToReturn: string = '';
+    stringToReturn = JSON.stringify(delta);
+    return stringToReturn;
+  }
+
+  convertStringToDelta(string: string): Delta {
+    let deltaToReturn: Delta;
+    deltaToReturn = JSON.parse(string);
+    return deltaToReturn;
+  }
   // Refactored functions End ============================================
 
 
@@ -137,6 +150,11 @@ export class RecipeServiceService {
     const { data } = await modal.onDidDismiss();
     if (data != undefined) {
       // TODO: Check if recipe name data exists and let user choose if he wants to replace it by recipe name
+
+      // Convert data.description from delta to string
+      if (data.description != null) {
+        data.description = this.convertDeltaToString(data.description);
+      }
 
       // Save data to the database here
       this.findMissingRecipeId().then(id => {
@@ -225,11 +243,18 @@ export class RecipeServiceService {
     });
     modal.present();
     const { data } = await modal.onDidDismiss();
+
     // This function runs when modal is dismissed without data. It shouldn't run. Fixed with != undefined check. 
     if (data != undefined) {
       console.log("Data on modal dismissed");
       console.log(data);
       console.log("ID of recipe that we're going to edit: " + data.id);
+    
+      // Convert quill editor's delta to string
+      if (data.description != null) {
+        data.description = this.convertDeltaToString(data.description);
+      }
+      
       // Update data in the database here
       //This will return the document that has the query in it
       this.getRecipeWithoutUpdates("id", data.id).subscribe(results => {

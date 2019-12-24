@@ -20,6 +20,7 @@ import { AngularFireModule } from "@angular/fire";
 import { AngularFirestoreModule } from "@angular/fire/firestore";
 import { ImageService } from './image.service';
 import { RecipeServiceService } from './recipe-service.service';
+import { QuillModule } from 'ngx-quill';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { RecipeServiceService } from './recipe-service.service';
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule,
     RecipeModalPageModule,
+    QuillModule.forRoot(),
   ],
   providers: [
     StatusBar,

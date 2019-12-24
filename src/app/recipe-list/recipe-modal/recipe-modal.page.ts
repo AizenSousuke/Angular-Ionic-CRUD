@@ -5,6 +5,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { Recipe } from '../recipe';
 import { ImageService } from 'src/app/image.service';
 import * as Quill from 'quill';
+import { Delta } from 'quill';
 
 @Component({
   selector: 'app-recipe-modal',
@@ -19,7 +20,7 @@ export class RecipeModalPage implements OnInit {
   @Input() recipe: Recipe;
   @Input() name: string = "";
   @Input() imageLink: string = "";
-  @Input() description: string = "";
+  @Input() description: string = '""';
   @Input() ingredients;
   @Input() timeNeeded: number = 0;
   @Input() favourite: boolean = false;
@@ -66,18 +67,33 @@ export class RecipeModalPage implements OnInit {
       },
       theme: 'snow',
       placeholder: 'Insert description here...',
+      formControlName: 'description'
     });
   }
 
-  onSetupQuill(string: string) {
-    this.quill.setContents(this.quill.setText(this.description, 'user'), 'user');
-    console.log("Quill is holding on to : " + this.quill.getText());
+  setQuillContents(string: string) {
+    // TODO: Use recipe service to refactor the converting part. But importing the service here results in a circular dependency error though :(
+    console.log(string);
+    var delta: Delta;
+    // TODO: I think can refactor these two ifs below
+    if (string == '' || string == "") {
+      string = '""';
+      console.log("Trying to convert string to delta");
+      delta = JSON.parse(string);
+      console.log("Converted string to delta");
+    }
+    if (string != '' || string != null) {
+      delta = JSON.parse(string);
+      this.quill.setContents(delta, 'user');
+      console.log(this.quill.setContents(delta, 'user'));
+      console.log("Quill is holding on to : " + this.quill.getContents());
+    }
   }
 
-  onSubmitQuill(): string {
-    console.log("Quill is holding on to : " + this.quill.getText());
-    console.log(this.quill.getText());
-    return this.quill.getText();
+  getQuillContents(): Delta {
+    console.log("Quill is holding on to : " + this.quill.getContents());
+    console.log(this.quill.getContents());
+    return this.quill.getContents();
   }
 
   setup() {
@@ -119,7 +135,8 @@ export class RecipeModalPage implements OnInit {
       'favourite': this.favourite,
     });
     this.prefillIngredients();
-    this.onSetupQuill(this.description);
+    // Set the quill editor's contents 
+    this.setQuillContents(this.description);
   }
 
   prefillIngredients() {
@@ -171,8 +188,8 @@ export class RecipeModalPage implements OnInit {
   // Submit with the updated imageLink if any
   onSubmitRecipe(f: FormGroup) {
     // Get what quill editor is holding first
-    this.description = this.onSubmitQuill();
-    
+    this.description = this.getQuillContents();
+
     // Disable the submit button so that user cannot make multiple request
     this.submitButtonBool = true;
     console.log(this.imageFileFromImageUploadComponent);
@@ -187,8 +204,7 @@ export class RecipeModalPage implements OnInit {
           "id": this.id,
           "imageLink": f.get('imageLink').value,
           "name": f.get('recipeName').value,
-          //"description": f.get('description').value,
-          "description": this.onSubmitQuill(),
+          "description": this.getQuillContents(),
           "ingredients" : f.get('ingredientsArray').value,
           "timeNeeded": f.get('timeNeeded').value,
           "favourite": f.get('favourite').value,
@@ -206,8 +222,7 @@ export class RecipeModalPage implements OnInit {
         "id": this.id,
         "imageLink": f.get('imageLink').value,
         "name": f.get('recipeName').value,
-        //"description": f.get('description').value,
-        "description": this.onSubmitQuill(),
+        "description": this.getQuillContents(),
         "ingredients" : f.get('ingredientsArray').value,
         "timeNeeded": f.get('timeNeeded').value,
         "favourite": f.get('favourite').value,

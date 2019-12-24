@@ -82,6 +82,7 @@
   --ion-text-color-2: #6d5000;
   --ion-background-color: #2a2a2a;
   --ion-background-color-2: #575757;
+  --ion-background-color-quill: #494949;
 
   ion-row>img  {
     border-radius: 2%;
@@ -136,7 +137,12 @@
   }
 
   #quill-editor {
-    background-color: #494949;
+    background-color: var(--ion-background-color-quill);
+    border: none;
+  }
+
+  #quill-viewer {
+    background-color: var(--ion-background-color-quill);
     border: none;
   }
 

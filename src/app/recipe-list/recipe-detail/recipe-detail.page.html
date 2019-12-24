@@ -45,10 +45,14 @@
               <ion-label *ngIf="description">Description:</ion-label>
             </p>
         </ion-row>
-        <ion-item>
+        <!-- <ion-item>
           <p>
             {{ description }}
           </p>
+        </ion-item> -->
+        <ion-item lines="none">
+          <div id="quill-viewer"></div>
+          <!--<quill-view content="description" format="html" theme="snow"></quill-view>-->
         </ion-item>
         <ion-row>
           <p>

@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RecipeServiceService } from 'src/app/recipe-service.service';
 import { Subscription } from 'rxjs';
-
+import * as Quill from 'quill';
+import { Delta } from 'quill';
 
 @Component({
   selector: 'app-recipe-detail',
@@ -20,6 +21,9 @@ export class RecipeDetailPage implements OnInit {
   favourite: boolean;
   recipeSubscription: Subscription;
 
+  // Quill text viewer
+  quill: Quill;
+
   constructor(
     private _route : ActivatedRoute,
     private _recipeService : RecipeServiceService,
@@ -29,6 +33,25 @@ export class RecipeDetailPage implements OnInit {
   ngOnInit() {
     // Initialize Variables
     this.getRecipeNameFromURL();
+    this.setupQuill();
+  }
+
+  setupQuill() {
+    this.quill = new Quill('#quill-viewer', {
+      modules: {
+        toolbar: false,
+      },
+      readOnly: true,
+      theme: 'snow',
+    });
+  }
+
+  setQuillViewer() {
+    // Create new delta from firebase delta
+    var newDelta = new Delta([
+      { insert: this.description }
+    ]);
+    this.quill.setContents(newDelta, 'api');
   }
 
   getRecipeNameFromURL() {
@@ -36,7 +59,6 @@ export class RecipeDetailPage implements OnInit {
     console.log("Params ID in the URL: " + parseInt(this._route.snapshot.paramMap.get('id')));
     this.recipeSubscription = this._recipeService.getRecipeWithUpdates("id", parseInt(this._route.snapshot.paramMap.get('id'))).subscribe(recipe => {
       console.log("getRecipeNameFromURL's ID:");
-      // !FIXME: Doesn't update with the correct data
       console.log(recipe);
       this.recipe = recipe[0].payload.doc;
       console.log(this.recipe.get('description'));

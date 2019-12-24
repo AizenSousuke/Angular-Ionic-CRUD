@@ -7,7 +7,6 @@ import { IonicModule } from '@ionic/angular';
 
 import { RecipeModalPage } from './recipe-modal.page';
 import { ImageUploadComponentComponent } from './image-upload-component/image-upload-component.component';
-import { QuillModule } from 'ngx-quill';
 
 const routes: Routes = [
   {
@@ -23,7 +22,6 @@ const routes: Routes = [
     ReactiveFormsModule,
     IonicModule,
     RouterModule.forChild(routes),
-    QuillModule.forRoot(),
   ],
   declarations: [
     RecipeModalPage, 
