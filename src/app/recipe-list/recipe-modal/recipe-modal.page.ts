@@ -4,6 +4,7 @@ import { FormGroup, FormBuilder, FormArray } from "@angular/forms";
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Recipe } from '../recipe';
 import { ImageService } from 'src/app/image.service';
+import * as Quill from 'quill';
 
 @Component({
   selector: 'app-recipe-modal',
@@ -49,7 +50,21 @@ export class RecipeModalPage implements OnInit {
   }
 
   ngOnInit() {
+    this.setupQuill();
     this.setup();
+  }
+
+  setupQuill() {
+    var toolbarOptions = ['bold', 'italic', 'underline', 'strike'];
+
+    var quill = new Quill('#quill-editor', {
+      modules: {
+        toolbar: toolbarOptions
+      },
+      theme: 'snow',
+    });
+
+    
   }
 
   setup() {
