@@ -15,7 +15,7 @@ export class RecipeDetailPage implements OnInit {
   recipe;
   imageLink: string;
   name: string;
-  description: string;
+  description;
   ingredients;
   timeNeeded: number;
   favourite: boolean;
@@ -32,8 +32,8 @@ export class RecipeDetailPage implements OnInit {
 
   ngOnInit() {
     // Initialize Variables
-    this.getRecipeNameFromURL();
     this.setupQuill();
+    this.getRecipeNameFromURL();
   }
 
   setupQuill() {
@@ -46,12 +46,10 @@ export class RecipeDetailPage implements OnInit {
     });
   }
 
-  setQuillViewer() {
-    // Create new delta from firebase delta
-    var newDelta = new Delta([
-      { insert: this.description }
-    ]);
-    this.quill.setContents(newDelta, 'api');
+  setQuillViewer(delta: Delta) {
+    this.quill.setContents(delta, 'api');
+    console.log("Setting quill editor's content to:");
+    console.log(this.quill.getContents());
   }
 
   getRecipeNameFromURL() {
@@ -61,17 +59,22 @@ export class RecipeDetailPage implements OnInit {
       console.log("getRecipeNameFromURL's ID:");
       console.log(recipe);
       this.recipe = recipe[0].payload.doc;
-      console.log(this.recipe.get('description'));
       this.id = this.recipe.get('id');
       console.log("ID: " + this.id);
       this.name = this.recipe.get('name');
       this.imageLink = this.recipe.get('imageLink');
-      this.description = this.recipe.get('description');
+      console.log(this.recipe.get('description'));
+      this.description = this._recipeService.convertStringToDelta(this.recipe.get('description'));
       console.log("Ingredients: " + this.recipe.get('ingredients'));
       // Add ingredientsArray to ingredients
       this.ingredients = this.recipe.get('ingredients');
       this.timeNeeded = this.recipe.get('timeNeeded');
       this.favourite = this.recipe.get('favourite');
+
+      // Set quill viewer to show description
+      console.log(this.description);
+      console.log("Setting quill viewer");
+      this.setQuillViewer(this.description);
     });
   }
 
