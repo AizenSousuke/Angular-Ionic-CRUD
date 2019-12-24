@@ -52,6 +52,15 @@ export class RecipeDetailPage implements OnInit {
     console.log(this.quill.getContents());
   }
 
+  getQuillViewerTextLength(): boolean {
+    //console.log(this.quill.getLength());
+    if (this.quill.getLength() > 1) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   getRecipeNameFromURL() {
     // Sets the data for the recipe
     console.log("Params ID in the URL: " + parseInt(this._route.snapshot.paramMap.get('id')));

@@ -21,9 +21,9 @@
     <ion-row>
       <ion-col size-lg="6" offset-lg="3">
         <ion-card *ngFor="let item of recipe; trackBy: trackRecipe">
-          <ion-fab vertical="top" horizontal="end" slot="fixed">
-            <ion-fab-button color="dark" shape="round" fill="clear" (click)="cardFavourite(item.payload.doc.data())">
-                <ion-icon name="heart" *ngIf="item.payload.doc.data().favourite" [ngStyle]="{'color': 'red'}"></ion-icon>
+          <ion-fab vertical="top" horizontal="end" edge="false" slot="fixed">
+            <ion-fab-button shape="round" fill="clear" (click)="cardFavourite(item.payload.doc.data())">
+                <ion-icon name="heart" *ngIf="item.payload.doc.data().favourite" [ngStyle]="{'color': 'pink'}"></ion-icon>
                 <ion-icon name="star" *ngIf="!item.payload.doc.data().favourite" [ngStyle]="{'color': 'yellow'}"></ion-icon>
             </ion-fab-button>
           </ion-fab>

@@ -26,6 +26,12 @@
         <ion-row>
           <!--<ion-img [src]="imageLink"></ion-img>-->
           <img src="{{ imageLink }}" alt="">
+          <ion-fab vertical="bottom" horizontal="end" edge="true">
+            <ion-fab-button shape="round" fill="clear" (click)=onFavourite()>
+              <ion-icon name="heart" *ngIf="favourite" [ngStyle]="{'color': 'pink'}"></ion-icon>
+              <ion-icon name="star" *ngIf="!favourite" [ngStyle]="{'color': 'yellow'}"></ion-icon>
+            </ion-fab-button>
+          </ion-fab>
         </ion-row>
       </ion-col>
       <ion-col size-md="8" size-xs="12">
@@ -37,22 +43,15 @@
         <ion-row>
             <h1>
               {{ name }}
-              <ion-icon name="heart" *ngIf="favourite" [ngStyle]="{'color': 'red'}"></ion-icon>
             </h1>
         </ion-row>
-        <ion-row>
+        <ion-row [hidden]="getQuillViewerTextLength()">
             <p>
-              <ion-label *ngIf="description">Description:</ion-label>
+              <ion-label>Description:</ion-label>
             </p>
         </ion-row>
-        <!-- <ion-item>
-          <p>
-            {{ description }}
-          </p>
-        </ion-item> -->
-        <ion-item lines="none">
+        <ion-item [hidden]="getQuillViewerTextLength()" lines="none">
           <div id="quill-viewer"></div>
-          <!--<quill-view content="description" format="html" theme="snow"></quill-view>-->
         </ion-item>
         <ion-row>
           <p>
@@ -61,7 +60,7 @@
         </ion-row>
         <ion-row>
           <ion-list>
-            <ion-item *ngFor="let i of ingredients" lines="none"><ion-icon slot="start" name="play"></ion-icon>{{ i.ingredients }}</ion-item>
+            <ion-item *ngFor="let i of ingredients" lines="none"><ion-icon slot="start" name="pricetag"></ion-icon>{{ i.ingredients }}</ion-item>
           </ion-list>
         </ion-row>
         <ion-row>
