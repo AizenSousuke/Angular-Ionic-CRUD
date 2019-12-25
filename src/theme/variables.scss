@@ -104,14 +104,6 @@
     -webkit-text-fill-color: transparent;
   }
 
-  // h1 {
-  //   font-size: xx-large;
-  //   border-radius: 5%;
-  //   padding: 5px;
-  //   background: -webkit-linear-gradient(var(--ion-text-color), var(--ion-text-color-2));
-  //   -webkit-background-clip: text;
-  //   -webkit-text-fill-color: transparent;
-  // }
 
   h1 {
     word-break: break-word;
@@ -145,8 +137,12 @@
     border: none;
   }
 
+  .ql-editor.ql-blank::before {
+    color: var(--ion-text-color);
+  }
+
   #quill-viewer {
-    background-color: var(--ion-background-color-quill);
+    background-color: var(--ion-background-color);
     border: none;
     width: 100%;
   }
