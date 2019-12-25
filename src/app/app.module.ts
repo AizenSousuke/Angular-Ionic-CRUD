@@ -21,6 +21,7 @@ import { AngularFirestoreModule } from "@angular/fire/firestore";
 import { ImageService } from './image.service';
 import { RecipeServiceService } from './recipe-service.service';
 import { QuillModule } from 'ngx-quill';
+import { FirebaseAuthService } from './firebase-auth.service';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { QuillModule } from 'ngx-quill';
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     RecipeServiceService,
     ImageService,
+    FirebaseAuthService,
   ],
   bootstrap: [AppComponent]
 })

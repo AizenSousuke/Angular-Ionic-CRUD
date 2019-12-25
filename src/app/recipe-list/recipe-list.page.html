@@ -28,8 +28,19 @@
   </ion-header>
   <ion-content>
     <ion-list>
-      <ion-item>
+      <ion-item *ngIf="_firebaseAuthService.currentUser">
+        <ion-img src="{{_firebaseAuthService.currentUser.photoURL}}"></ion-img>
+      </ion-item>
+      <ion-item *ngIf="_firebaseAuthService.currentUser">
+        <ion-title size="small">
+          <h4>Currently signed in as: </h4><h3><b>{{ _firebaseAuthService.currentUser.email }}</b></h3>
+        </ion-title>
+      </ion-item>
+      <ion-item lines="none" *ngIf="!_firebaseAuthService.currentUser" (click)="onLogin()">
         <ion-title size="small">Login</ion-title>
+      </ion-item>
+      <ion-item lines="none" *ngIf="_firebaseAuthService.currentUser" (click)="onLogout()">
+        <ion-title size="small">Logout</ion-title>
       </ion-item>
     </ion-list>
   </ion-content>

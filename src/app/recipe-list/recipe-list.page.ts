@@ -3,6 +3,8 @@ import { Recipe } from './recipe';
 import { Router } from '@angular/router';
 import { RecipeServiceService } from '../recipe-service.service';
 import { Subscription } from 'rxjs';
+import { FirebaseAuthService } from '../firebase-auth.service';
+import { MenuController } from '@ionic/angular';
 
 @Component({
   selector: 'app-recipe-list',
@@ -15,14 +17,20 @@ export class RecipeListPage implements OnInit {
   recipe;
   recipeSubscription: Subscription;
 
+  menu: Promise<HTMLIonMenuElement>;
+  menuItemLoggedIn: boolean;
+
   constructor(
       private _router: Router,
       private _recipeService: RecipeServiceService,
+      private _firebaseAuthService: FirebaseAuthService,
+      private _menuController: MenuController,
     ) { 
     }
 
   ngOnInit() {
     this.initRecipe();
+    this.menu = this._menuController.get("recipeListMenu");
   }
 
   initRecipe() {
@@ -47,6 +55,20 @@ export class RecipeListPage implements OnInit {
 
   onAddRecipe() {
     this._recipeService.onAddRecipe();
+  }
+
+  onLogin() {
+    this._firebaseAuthService.onSignIn();
+    this.menu.then(menu => {
+      menu.close();
+    });
+  }
+
+  onLogout() {
+    this._firebaseAuthService.onSignOut();
+    this.menu.then(menu => {
+      menu.close();
+    });
   }
 
   trackRecipe(index, item) {
