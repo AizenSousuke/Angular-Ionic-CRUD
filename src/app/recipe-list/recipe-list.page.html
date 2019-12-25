@@ -7,6 +7,9 @@
       </ion-buttons>
       -->
     </ion-buttons>
+    <ion-buttons slot="start">
+      <ion-menu-button menu="recipeListMenu"></ion-menu-button>
+    </ion-buttons>
     <ion-title>Recipe List</ion-title>
     <ion-buttons slot="primary">
       <ion-button slot="primary" (click)="onAddRecipe()">
@@ -16,7 +19,31 @@
   </ion-toolbar>
 </ion-header>
 
+<!-- Edit menu here -->
+<ion-menu contentId="content" side="start" menuId="recipeListMenu">
+  <ion-header>
+    <ion-toolbar color="primary">
+      <ion-title>Menu</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-list>
+      <ion-item>
+        <ion-title size="small">Login</ion-title>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+  <ion-footer color="primary">
+    <ion-toolbar color="tertiary">
+      <ion-title>
+        <h6>Designed and programmed by Nik.</h6>
+      </ion-title>
+    </ion-toolbar>
+  </ion-footer>
+</ion-menu>
+
 <ion-content class="ion-padding">
+  <ion-router-outlet id="content"></ion-router-outlet>
   <ion-grid fixed>
     <ion-row>
       <ion-col size-lg="6" offset-lg="3">
