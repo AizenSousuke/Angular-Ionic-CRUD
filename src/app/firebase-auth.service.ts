@@ -9,7 +9,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 export class FirebaseAuthService {
 
   firebaseAuthRef: firebase.auth.Auth;
-  provider: firebase.auth.GithubAuthProvider;
+  provider;
 
   // User
   currentUser: firebase.User;
@@ -24,21 +24,11 @@ export class FirebaseAuthService {
     //Add 'implements OnInit' to the class.
     console.log("Init firebase auth service");
     this.firebaseAuthRef = firebase.auth();
-    this.provider = new firebase.auth.GithubAuthProvider();
     // Set an observable to change the logged in state of the app
     this.checkLoggedIn();
   }
 
   checkLoggedIn() {
-    // this.firebaseAuthRef.onAuthStateChanged(user => {
-    //   if (user) {
-    //     this.currentUser = user;
-    //     console.log("This user is logged in: " + this.currentUser.email);
-    //   } else {
-    //     this.currentUser = null;
-    //     console.log("There is no user logged in.");
-    //   }
-    // });
     this._angularFireAuth.authState.subscribe(user => {
       if (user) {
         this.currentUser = user;
@@ -50,8 +40,13 @@ export class FirebaseAuthService {
     })
   }
 
-  onSignIn() {
+  onSignIn(provider: string) {
     console.log("Signing in");
+    if (provider == "Github") {
+      this.provider = new firebase.auth.GithubAuthProvider();
+    } else if (provider == "Google") {
+      this.provider = new firebase.auth.GoogleAuthProvider();
+    }
     this.firebaseAuthRef.signInWithPopup(this.provider).then(result => {
       console.log(result);
       this.currentUser = result.user;
@@ -77,6 +72,7 @@ export class FirebaseAuthService {
     const toast = await this._toastController.create({
       message: message,
       duration: duration,
+      color: 'primary',
     });
     toast.present();
   }

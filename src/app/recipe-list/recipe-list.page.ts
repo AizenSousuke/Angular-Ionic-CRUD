@@ -57,8 +57,8 @@ export class RecipeListPage implements OnInit {
     this._recipeService.onAddRecipe();
   }
 
-  onLogin() {
-    this._firebaseAuthService.onSignIn();
+  onLogin(provider: string) {
+    this._firebaseAuthService.onSignIn(provider);
     this.menu.then(menu => {
       menu.close();
     });
