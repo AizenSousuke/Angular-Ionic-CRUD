@@ -101,11 +101,13 @@
     font-size: 40px;
     background: -webkit-linear-gradient(var(--ion-text-color), var(--ion-text-color-2));
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 
 
-  h1 {
+  ion-text>h1 {
+    font-size: 35px;
     word-break: break-word;
   }
 

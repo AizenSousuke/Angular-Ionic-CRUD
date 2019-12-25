@@ -85,6 +85,7 @@ export class RecipeServiceService {
                     .set({ 'favourite' : favourite }, { 'merge' : true })
                     .then(() => {
                       console.log(recipe.get("name") + "'s Favourite Bool: " + recipe.get("favourite"));
+                      this.showToast('Set favourite!', this.toastDuration/2);
                     }).catch(error => {
                       console.log("Error in toggling favourite: " + error);
                     });
@@ -166,15 +167,10 @@ export class RecipeServiceService {
       });
 
       // Go to the recipe list page here
-      this._router.navigate(['/recipe-list']);
-      // Show the toast
-      const toast = await this._toastController.create({
-        message: 'Recipe created successfully!',
-        duration: this.toastDuration,
-        showCloseButton: true, 
+      this._router.navigate(['/recipe-list']).then(() => {
+        // Show the toast
+        this.showToast('Recipe created successfully');
       });
-      toast.present();
-      console.log("Shown toast");
       console.log('Data: ' + data);
     }
   }
@@ -208,7 +204,10 @@ export class RecipeServiceService {
 
               // Make navigation run from within Angular. Will result in an error if not using _ngZone
               this._ngZone.run( async () => {
-                await this._router.navigate(['/recipe-list']);
+                await this._router.navigate(['/recipe-list']).then(() => {
+                  // Show the toast
+                  this.showToast('Recipe has been deleted successfully');
+                });;
               });
             });
           });
@@ -256,58 +255,33 @@ export class RecipeServiceService {
       }
       
       // Update data in the database here
-      //This will return the document that has the query in it
+      // This will return the document that has the query in it
       this.getRecipeWithoutUpdates("id", data.id).subscribe(results => {
         console.log(results);
         // Update if there is any query found
         if (results) {
-          this._fireStore.collection(this.recipeCollection).doc(results.docs[0].ref.id.toString()).set(data, { 'merge' : true });
+          this._fireStore.collection(this.recipeCollection).doc(results.docs[0].ref.id.toString()).set(data, { 'merge' : true }).then(() => {
+            // Show the toast
+            this.showToast('Recipe updated successfully');
+          });
         } else {
-          this._fireStore.collection(this.recipeCollection).doc(data.name.toString()).set(data, { 'merge' : true });
+          this._fireStore.collection(this.recipeCollection).doc(data.name.toString()).set(data, { 'merge' : true }).then(() => {
+            // Show the toast
+            this.showToast('Recipe updated successfully');
+          });
         }
       });
-      
-      // Show the toast
-      const toast = await this._toastController.create({
-        message: 'Recipe updated successfully!',
-        duration: this.toastDuration,
-        showCloseButton: true, 
-      });
-      toast.present();
-      console.log("Shown toast");
     }
   }
 
-  addDefaultRecipes() {
-    let data = [
-      {
-        "id": 1,
-        "imageLink": 'https://cdn.auth0.com/blog/get-started-ionic/logo.png',
-        "name": '1',
-        "ingredients": [{"ingredients" : "1"}],
-      },
-      {
-        "id": 2,
-        "imageLink": 'https://cdn.auth0.com/blog/get-started-ionic/logo.png',
-        "name": '2',
-        "ingredients": [{"ingredients" : "2"}],
-      },
-      {
-        "id": 3,
-        "imageLink": 'https://cdn.auth0.com/blog/get-started-ionic/logo.png',
-        "name": '3',
-        "ingredients": [{"ingredients" : "3"}],
-      }
-    ];
-    // Delete existing recipes
-    /*
-    for (let i=0; i<3; i++) {
-      this._fireStore.collection(this.recipeCollection).doc((i+1).toString()).delete();
-    }
-    */
-    // Add the 3 recipes
-    for (let i=0; i<3; i++) {
-      this._fireStore.collection(this.recipeCollection).doc((i+1).toString()).set(data[i] , { 'merge' : false });
-    }
+  async showToast(string: string, fTime: number = this.toastDuration, button: boolean = false, color: string = 'primary') {
+    const toast = await this._toastController.create({
+      message: string,
+      duration: fTime,
+      showCloseButton: button,
+      color: color,
+    });
+    toast.present();
+    console.log("Shown toast");
   }
 }
