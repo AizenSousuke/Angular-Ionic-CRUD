@@ -1,11 +1,12 @@
 import { Injectable, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController, ModalController, ToastController } from '@ionic/angular';
+import { AlertController, ModalController, ToastController, LoadingController } from '@ionic/angular';
 import { RecipeModalPage } from './recipe-list/recipe-modal/recipe-modal.page';
 import { AngularFirestore, DocumentChangeAction, QueryDocumentSnapshot } from '@angular/fire/firestore';
 import { FormControl } from '@angular/forms';
 import { Recipe } from './recipe-list/recipe';
 import { Delta } from 'quill';
+import { LoadingServiceService } from "./loading-service.service";
 
 @Injectable({
   providedIn: 'root'
@@ -34,6 +35,7 @@ export class RecipeServiceService {
     private _ngZone: NgZone,
     private _modalController: ModalController,
     private _toastController: ToastController,
+    private _loadingService: LoadingServiceService,
     ) {
   }
 
@@ -74,6 +76,7 @@ export class RecipeServiceService {
   // Toggle the favourite status of the recipe by inversing it
   toggleCardFavourite(recipe: QueryDocumentSnapshot<any>) {
     let favourite : boolean = !recipe.get("favourite");
+    this._loadingService.presentLoading();
     this.getRecipeWithoutUpdates("name",recipe.get("name")).subscribe(value => {
       console.log("Query's Recipe Name: " + value.docs[0].get("name"));
       console.log("Query's ID: " + value.docs[0].get("id").toString());
@@ -86,6 +89,7 @@ export class RecipeServiceService {
                     .then(() => {
                       console.log(recipe.get("name") + "'s Favourite Bool: " + recipe.get("favourite"));
                       this.showToast('Set favourite!', this.toastDuration/2);
+                      this._loadingService.dismissLoading();
                     }).catch(error => {
                       console.log("Error in toggling favourite: " + error);
                     });
@@ -152,6 +156,8 @@ export class RecipeServiceService {
     if (data != undefined) {
       // TODO: Check if recipe name data exists and let user choose if he wants to replace it by recipe name
 
+      this._loadingService.presentLoading();
+
       // Convert data.description from delta to string
       if (data.description != null) {
         data.description = this.convertDeltaToString(data.description);
@@ -164,6 +170,7 @@ export class RecipeServiceService {
         console.log("Data:");
         console.log(data);
         this._fireStore.collection(this.recipeCollection).doc(data.name.toString()).set(data, { 'merge' : false });
+        this._loadingService.dismissLoading();
       });
 
       // Go to the recipe list page here
@@ -194,6 +201,7 @@ export class RecipeServiceService {
         handler: () => {
           console.log("Delete has been selected");      
           console.log("Deleting: " + recipe.get('id').toString());
+          this._loadingService.presentLoading();
           this.getRecipeWithoutUpdates("id", recipe.get('id')).subscribe(results => {
 
             // TODO: Delete images associated with the recipe first
@@ -201,6 +209,7 @@ export class RecipeServiceService {
             //Delete the recipe from the database
             results.docs[0].ref.delete().then(() => {
               console.log('Deleted!');
+              this._loadingService.dismissLoading();
 
               // Make navigation run from within Angular. Will result in an error if not using _ngZone
               this._ngZone.run( async () => {
@@ -248,6 +257,7 @@ export class RecipeServiceService {
       console.log("Data on modal dismissed");
       console.log(data);
       console.log("ID of recipe that we're going to edit: " + data.id);
+      this._loadingService.presentLoading();
     
       // Convert quill editor's delta to string
       if (data.description != null) {
@@ -263,11 +273,13 @@ export class RecipeServiceService {
           this._fireStore.collection(this.recipeCollection).doc(results.docs[0].ref.id.toString()).set(data, { 'merge' : true }).then(() => {
             // Show the toast
             this.showToast('Recipe updated successfully');
+            this._loadingService.dismissLoading();
           });
         } else {
           this._fireStore.collection(this.recipeCollection).doc(data.name.toString()).set(data, { 'merge' : true }).then(() => {
             // Show the toast
             this.showToast('Recipe updated successfully');
+            this._loadingService.dismissLoading();
           });
         }
       });

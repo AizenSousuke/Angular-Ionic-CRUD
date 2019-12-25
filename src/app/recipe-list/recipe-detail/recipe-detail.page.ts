@@ -4,6 +4,7 @@ import { RecipeServiceService } from 'src/app/recipe-service.service';
 import { Subscription } from 'rxjs';
 import * as Quill from 'quill';
 import { Delta } from 'quill';
+import { LoadingServiceService } from 'src/app/loading-service.service';
 
 @Component({
   selector: 'app-recipe-detail',
@@ -27,6 +28,7 @@ export class RecipeDetailPage implements OnInit {
   constructor(
     private _route : ActivatedRoute,
     private _recipeService : RecipeServiceService,
+    private _loadingService : LoadingServiceService,
     ) { 
   }
 
@@ -64,6 +66,7 @@ export class RecipeDetailPage implements OnInit {
   getRecipeNameFromURL() {
     // Sets the data for the recipe
     console.log("Params ID in the URL: " + parseInt(this._route.snapshot.paramMap.get('id')));
+    this._loadingService.presentLoading();
     this.recipeSubscription = this._recipeService.getRecipeWithUpdates("id", parseInt(this._route.snapshot.paramMap.get('id'))).subscribe(recipe => {
       console.log("getRecipeNameFromURL's ID:");
       console.log(recipe);
@@ -84,6 +87,8 @@ export class RecipeDetailPage implements OnInit {
       console.log(this.description);
       console.log("Setting quill viewer");
       this.setQuillViewer(this.description);
+
+      this._loadingService.dismissLoading();
     });
   }
 

@@ -153,4 +153,11 @@
     background-color: darkgrey;
     border: none;
   }
+
+  .custom-loading-css {
+    .loading-wrapper {
+      background: transparent;
+      box-shadow: none;
+    }
+  }
 }

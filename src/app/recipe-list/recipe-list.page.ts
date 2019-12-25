@@ -5,6 +5,7 @@ import { RecipeServiceService } from '../recipe-service.service';
 import { Subscription } from 'rxjs';
 import { FirebaseAuthService } from '../firebase-auth.service';
 import { MenuController } from '@ionic/angular';
+import { LoadingServiceService } from '../loading-service.service';
 
 @Component({
   selector: 'app-recipe-list',
@@ -25,6 +26,7 @@ export class RecipeListPage implements OnInit {
       private _recipeService: RecipeServiceService,
       private _menuController: MenuController,
       public _firebaseAuthService: FirebaseAuthService,
+      private _loadingService: LoadingServiceService,
     ) { 
     }
 
@@ -35,9 +37,11 @@ export class RecipeListPage implements OnInit {
 
   initRecipe() {
     // Load data from the database and update it when there are any changes in realtime
+    this._loadingService.presentLoading();
     this.recipeSubscription = this._recipeService.getRecipeWithUpdates().subscribe(results => {
       this._recipeService.recipeArray = results;
       this.recipe = results;
+      this._loadingService.dismissLoading();
     });
   }
 
