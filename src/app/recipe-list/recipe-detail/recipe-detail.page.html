@@ -41,10 +41,13 @@
           </ion-text>
         </ion-row>
         <ion-row>
+          <ion-text color="primary">
             <h1>
               {{ name }}
             </h1>
+          </ion-text>
         </ion-row>
+
         <ion-row [hidden]="getQuillViewerTextLength()">
             <p>
               <ion-label>Description:</ion-label>

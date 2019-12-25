@@ -12,36 +12,32 @@
           <ion-item>
             <ion-label position="floating">Recipe Name: <ion-text color="danger">*</ion-text>
             </ion-label>
-            <ion-input required formControlName="recipeName" type="text" placeholder="Awesome recipe"></ion-input>
+            <ion-input required formControlName="recipeName" type="text" maxlength="40" placeholder="Awesome recipe"></ion-input>
           </ion-item>
           <ion-item lines="none">
             <ion-label position="floating">Image Link: <ion-text color="danger"></ion-text>
             </ion-label>
-            <!-- Image upload component. TODO: Image service is causing errors. See F12 for error. -->
             <app-image-upload-component [imageUploaded]="imageLink" (outputImageFile)="getNewImageFile($event)">Image upload component not loaded</app-image-upload-component>
           </ion-item>
           <ion-item>
-            <ion-label position="floating">Description: <ion-text color="danger"></ion-text>
-            </ion-label>
-            <!--
-            <ion-textarea formControlName="description" type="text" rows="5"
-              placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut non aliquam lectus.">
-            </ion-textarea>
-            -->
+            <div>
+              <ion-label>
+                Description:
+              </ion-label>
+            </div>
           </ion-item>
           <div id="quill-editor"></div>
           <ion-item lines="none">
-            <ion-label>Ingredients: <ion-text color="danger">*</ion-text>
+            <ion-label>
+              Ingredients: <ion-text color="danger">*</ion-text>
             </ion-label>
           </ion-item>
           <div formArrayName="ingredientsArray">
-            <!--<ion-item *ngFor="let ingredients of addRecipeForm.get('ingredientsArray').controls; index as i" [formGroupName]="i">-->
             <ion-item *ngFor="let ingredients of getControls(); index as i" [formGroupName]="i">
               <div class="ion-padding-end">
                 Ingredient {{i+1}}: 
               </div>
-              <ion-input required type="text" formControlName="ingredients"></ion-input>
-              <!--<ion-button *ngIf="i!=0" (click)="onDeleteIngredients(i)">-->
+              <ion-input required type="text" maxlength="30" formControlName="ingredients"></ion-input>
               <ion-button *ngIf="addRecipeForm.get('ingredientsArray').controls.length > 1" (click)="onDeleteIngredients(i)">
                 <ion-icon slot="icon-only" name="trash"></ion-icon>
               </ion-button>
@@ -53,8 +49,8 @@
           <ion-item>
             <ion-label position="floating">Time Needed (minutes): <ion-text color="danger"></ion-text>
             </ion-label>
-            <ion-input formControlName="timeNeeded" type="number"
-              placeholder="60"></ion-input>
+            <ion-input formControlName="timeNeeded" type="text" maxlength="4" pattern="\d{0,4}"
+              placeholder="Insert time in minutes."></ion-input>
           </ion-item>
           <ion-item>
             <ion-label position="inline">Favourite: <ion-text color="danger"></ion-text>

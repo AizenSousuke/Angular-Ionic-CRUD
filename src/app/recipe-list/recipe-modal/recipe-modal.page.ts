@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 import { ModalController, NavParams } from '@ionic/angular';
 import { FormGroup, FormBuilder, FormArray } from "@angular/forms";
 import { AngularFirestore } from '@angular/fire/firestore';
@@ -39,6 +39,7 @@ export class RecipeModalPage implements OnInit {
     private _formBuilder: FormBuilder,
     private _angularFireStore: AngularFirestore,
     private _imageService: ImageService,
+    private _changeDetectionRef: ChangeDetectorRef,
   ) {
     // Initialize the form
     this.addRecipeForm = this._formBuilder.group({
@@ -177,12 +178,19 @@ export class RecipeModalPage implements OnInit {
   addIngredients() {
     this.getIngredients().push(this.addIngredientsGroup());
     console.log("Added ingredients group to the Form Array.");
+    this.runChangeDetectionAfterUpdatingIngredients();
   }
 
   onDeleteIngredients(position) {
     // Delete the ingredients object at position x in the FormArray
     console.log("Deleted " + this.getIngredients().at(position).get('ingredients').value);
     this.getIngredients().removeAt(position);
+    this.runChangeDetectionAfterUpdatingIngredients();
+  }
+
+  runChangeDetectionAfterUpdatingIngredients() {
+    console.log("Change detection");
+    this._changeDetectionRef.detectChanges();
   }
 
   // Submit with the updated imageLink if any

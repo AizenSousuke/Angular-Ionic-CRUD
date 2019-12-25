@@ -104,13 +104,17 @@
     -webkit-text-fill-color: transparent;
   }
 
+  // h1 {
+  //   font-size: xx-large;
+  //   border-radius: 5%;
+  //   padding: 5px;
+  //   background: -webkit-linear-gradient(var(--ion-text-color), var(--ion-text-color-2));
+  //   -webkit-background-clip: text;
+  //   -webkit-text-fill-color: transparent;
+  // }
+
   h1 {
-    font-size: xx-large;
-    border-radius: 5%;
-    padding: 5px;
-    background: -webkit-linear-gradient(var(--ion-text-color), var(--ion-text-color-2));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    word-break: break-word;
   }
 
   ion-item>ion-icon {
