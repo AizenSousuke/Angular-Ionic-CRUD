@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase';
 import { ToastController } from '@ionic/angular';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,8 @@ export class FirebaseAuthService {
   // User
   currentUser: firebase.User;
 
-  constructor(private _toastController: ToastController) {
+  constructor(private _toastController: ToastController,
+              private _angularFireAuth: AngularFireAuth) {
     this.ngOnInit();
   }
 
@@ -28,12 +30,24 @@ export class FirebaseAuthService {
   }
 
   checkLoggedIn() {
-    this.firebaseAuthRef.onAuthStateChanged(user => {
+    // this.firebaseAuthRef.onAuthStateChanged(user => {
+    //   if (user) {
+    //     this.currentUser = user;
+    //     console.log("This user is logged in: " + this.currentUser.email);
+    //   } else {
+    //     this.currentUser = null;
+    //     console.log("There is no user logged in.");
+    //   }
+    // });
+    this._angularFireAuth.authState.subscribe(user => {
       if (user) {
         this.currentUser = user;
-        console.log(this.currentUser);
+        console.log("This user is logged in: " + this.currentUser.email);
+      } else {
+        this.currentUser = null;
+        console.log("There is no user logged in.");
       }
-    });
+    })
   }
 
   onSignIn() {

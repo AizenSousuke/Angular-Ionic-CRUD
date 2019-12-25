@@ -22,6 +22,7 @@ import { ImageService } from './image.service';
 import { RecipeServiceService } from './recipe-service.service';
 import { QuillModule } from 'ngx-quill';
 import { FirebaseAuthService } from './firebase-auth.service';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { FirebaseAuthService } from './firebase-auth.service';
     RecipeServiceService,
     ImageService,
     FirebaseAuthService,
+    AngularFireAuth,
   ],
   bootstrap: [AppComponent]
 })

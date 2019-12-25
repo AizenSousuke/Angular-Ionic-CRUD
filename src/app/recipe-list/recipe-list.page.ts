@@ -23,8 +23,8 @@ export class RecipeListPage implements OnInit {
   constructor(
       private _router: Router,
       private _recipeService: RecipeServiceService,
-      private _firebaseAuthService: FirebaseAuthService,
       private _menuController: MenuController,
+      public _firebaseAuthService: FirebaseAuthService,
     ) { 
     }
 
