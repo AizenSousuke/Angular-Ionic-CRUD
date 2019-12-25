@@ -72,13 +72,13 @@
         </ion-row>
       </ion-col>
     </ion-row>
-    <ion-fab vertical="bottom" horizontal="end" edge="false" class="ion-hide-sm-down">
-      <ion-fab-button shape="round" fill="clear" (click)=onFavourite()>
-        <ion-icon name="heart" *ngIf="favourite" [ngStyle]="{'color': 'pink'}"></ion-icon>
-        <ion-icon name="star" *ngIf="!favourite" [ngStyle]="{'color': 'yellow'}"></ion-icon>
-      </ion-fab-button>
-    </ion-fab>
   </ion-grid>
 </ion-content>
 <ion-footer>
+  <ion-fab vertical="bottom" horizontal="end" class="ion-hide-sm-down">
+    <ion-fab-button shape="round" fill="clear" (click)=onFavourite()>
+      <ion-icon name="heart" *ngIf="favourite" [ngStyle]="{'color': 'pink'}"></ion-icon>
+      <ion-icon name="star" *ngIf="!favourite" [ngStyle]="{'color': 'yellow'}"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-footer>

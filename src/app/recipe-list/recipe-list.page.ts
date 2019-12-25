@@ -49,10 +49,6 @@ export class RecipeListPage implements OnInit {
     this._recipeService.onAddRecipe();
   }
 
-  addDefaultRecipes() {
-    this._recipeService.addDefaultRecipes();
-  }
-
   trackRecipe(index, item) {
   }
 
