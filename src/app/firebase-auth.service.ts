@@ -58,6 +58,7 @@ export class FirebaseAuthService {
       return this.presentToast("Logged in successfully");
     }).catch(reason => {
       this.presentToast(reason.message.toString());
+      this._loadingService.dismissLoading();
     });
   }
 
@@ -71,6 +72,7 @@ export class FirebaseAuthService {
       this.presentToast("Signed out successfully");
     }).catch(reason => {
       this.presentToast(reason.message.toString());
+      this._loadingService.dismissLoading();
     })
   }
 
