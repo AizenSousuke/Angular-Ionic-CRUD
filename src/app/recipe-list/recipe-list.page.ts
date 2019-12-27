@@ -17,14 +17,14 @@ export class RecipeListPage implements OnInit {
 
   // To put in the page for Angular to loop through
   //recipe;
-  recipeSubscription: Subscription;
+  //recipeSubscription: Subscription;
 
   menu: Promise<HTMLIonMenuElement>;
   menuItemLoggedIn: boolean;
 
   constructor(
       private _router: Router,
-      private _recipeService: RecipeServiceService,
+      public _recipeService: RecipeServiceService,
       private _menuController: MenuController,
       public _firebaseAuthService: FirebaseAuthService,
       private _loadingService: LoadingServiceService,
@@ -38,8 +38,11 @@ export class RecipeListPage implements OnInit {
   }
 
   initRecipe() {
+
+    this._recipeService.sortBy("id");
+
     // Load data from the database and update it when there are any changes in realtime
-    this._loadingService.presentLoading();
+    //this._loadingService.presentLoading();
 
     // this._recipeService.getRecipeWithUpdatesReference().get().then(result => {
     //   result.query.orderBy("id", "asc").get().then(newOrder => {
@@ -50,10 +53,15 @@ export class RecipeListPage implements OnInit {
     //   });
     // });
 
-    this.recipeSubscription = this._recipeService.getRecipeWithUpdates().subscribe(results => {
-      this._recipeService.recipeArray = results;
-      this._loadingService.dismissLoading();
-    });
+    // this._recipeService.getRecipeWithUpdatesReference().orderBy("id").get().then(results => {
+    //   this._recipeService.recipeArray = results.docs;
+    //   this._loadingService.dismissLoading();
+    // });
+
+    // this.recipeSubscription = this._recipeService.getRecipeWithUpdates().subscribe(results => {
+    //   this._recipeService.recipeArray = results;
+    //   this._loadingService.dismissLoading();
+    // });
   }
 
   cardFavourite(recipe: Recipe) {
@@ -96,6 +104,6 @@ export class RecipeListPage implements OnInit {
   ngOnDestroy(): void {
     //Called once, before the instance is destroyed.
     //Add 'implements OnDestroy' to the class.
-    this.recipeSubscription.unsubscribe();
+    //this.recipeSubscription.unsubscribe();
   }
 }

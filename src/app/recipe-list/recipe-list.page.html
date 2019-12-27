@@ -56,24 +56,24 @@
   <ion-router-outlet id="content"></ion-router-outlet>
   <ion-grid fixed>
     <ion-row>
-      <ion-col size-lg="6" offset-lg="3">
-        <!-- <ion-card *ngFor="let item of _recipeService.recipeArray; let i = index; trackBy: trackRecipe">
+      <ion-col size-lg="6" offset-lg="3" *ngIf="_recipeService.recipeArray?.length>0">
+        <ion-card *ngFor="let item of _recipeService.recipeArray; let i = index; trackBy: trackRecipe">
           <ion-fab vertical="top" horizontal="start" slot="fixed">
-            <ion-fab-button shape="round" fill="clear" (click)="cardFavourite(item[i].data())">
-                <ion-icon name="heart" *ngIf="item[i].data().favourite" [ngStyle]="{'color': 'pink'}"></ion-icon>
-                <ion-icon name="star" *ngIf="!item[i].data().favourite" [ngStyle]="{'color': 'yellow'}"></ion-icon>
+            <ion-fab-button shape="round" fill="clear" (click)="cardFavourite(_recipeService.recipeArray[i].data())">
+                <ion-icon name="heart" *ngIf="_recipeService.recipeArray[i].data().favourite" [ngStyle]="{'color': 'pink'}"></ion-icon>
+                <ion-icon name="star" *ngIf="!_recipeService.recipeArray[i].data().favourite" [ngStyle]="{'color': 'yellow'}"></ion-icon>
             </ion-fab-button>
           </ion-fab>
-          <img *ngIf="item[i].data().imageLink" [src]="item[i].data().imageLink" alt="iitem[i].data().imageLink" (click)="onClickRecipe(item[i].data())">
-          <ion-card-header (click)="onClickRecipe(item[i].data())">
+          <img *ngIf="_recipeService.recipeArray[i].data().imageLink" [src]="_recipeService.recipeArray[i].data().imageLink" alt="_recipeService.recipeArray[i].data().imageLink" (click)="onClickRecipe(_recipeService.recipeArray[i].data())">
+          <ion-card-header (click)="onClickRecipe(_recipeService.recipeArray[i].data())">
             <ion-card-title>
-                <ion-label>{{ item[i].data().name }}</ion-label>
+                <ion-label>{{ _recipeService.recipeArray[i].data().name }}</ion-label>
             </ion-card-title>
           </ion-card-header>
           <ion-card-content>
           </ion-card-content>
-        </ion-card> -->
-        <ion-card *ngFor="let item of _recipeService.recipeArray; let i = index; trackBy: trackRecipe">
+        </ion-card>
+        <!-- <ion-card *ngFor="let item of _recipeService.recipeArray; let i = index; trackBy: trackRecipe">
           <ion-fab vertical="top" horizontal="start" slot="fixed">
             <ion-fab-button shape="round" fill="clear" (click)="cardFavourite(item.payload.doc.data())">
                 <ion-icon name="heart" *ngIf="item.payload.doc.data().favourite" [ngStyle]="{'color': 'pink'}"></ion-icon>
@@ -88,7 +88,7 @@
           </ion-card-header>
           <ion-card-content>
           </ion-card-content>
-        </ion-card>
+        </ion-card> -->
       </ion-col>
     </ion-row>
   </ion-grid>

@@ -59,6 +59,14 @@ export class RecipeServiceService {
     return this._fireStore.collection(this.recipeCollection).ref;
   }
 
+  // updateRecipeSorting() {
+  //   this._loadingService.presentLoading();
+  //   this.getRecipeWithUpdatesReference().orderBy("id").get().then(results => {
+  //     this.recipeArray = results.docs;
+  //     this._loadingService.dismissLoading();
+  //   });
+  // }
+
   // Get a recipe by id and listen to updates from firestore
   getRecipeWithUpdates(queryString: string = "id", queryParam?: string | number) {
     if (queryParam) {
@@ -146,13 +154,19 @@ export class RecipeServiceService {
   }
 
   sortBy(string: string = "id", direction?) {
-
-    this.getRecipeWithUpdatesReference().onSnapshot(result => {
-      //console.log(result.docs[0].data().imageLink);
-      result.query.orderBy(string, direction).get().then(newOrder => {
-        //console.log(newOrder.docs[0].data().imageLink);
-        //this.recipeArray = newOrder.docs;
-      });
+    // this._loadingService.presentLoading();
+    // this.getRecipeWithUpdatesReference().onSnapshot(result => {
+    //   //console.log(result.docs[0].data().imageLink);
+    //   result.query.orderBy(string, direction).get().then(newOrder => {
+    //     //console.log(newOrder.docs[0].data().imageLink);
+    //     this.recipeArray = newOrder.docs;
+    //     this._loadingService.dismissLoading();
+    //   });
+    // });
+    this._loadingService.presentLoading();
+    this.getRecipeWithUpdatesReference().orderBy(string, direction).get().then(results => {
+      this.recipeArray = results.docs;
+      this._loadingService.dismissLoading();
     });
   }
   // Refactored functions End ============================================
