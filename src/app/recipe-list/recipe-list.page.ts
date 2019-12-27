@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import { FirebaseAuthService } from '../firebase-auth.service';
 import { MenuController } from '@ionic/angular';
 import { LoadingServiceService } from '../loading-service.service';
+import { PopoverService } from '../popover.service';
 
 @Component({
   selector: 'app-recipe-list',
@@ -15,7 +16,7 @@ import { LoadingServiceService } from '../loading-service.service';
 export class RecipeListPage implements OnInit {
 
   // To put in the page for Angular to loop through
-  recipe;
+  //recipe;
   recipeSubscription: Subscription;
 
   menu: Promise<HTMLIonMenuElement>;
@@ -27,6 +28,7 @@ export class RecipeListPage implements OnInit {
       private _menuController: MenuController,
       public _firebaseAuthService: FirebaseAuthService,
       private _loadingService: LoadingServiceService,
+      private _popoverService: PopoverService,
     ) { 
     }
 
@@ -38,9 +40,18 @@ export class RecipeListPage implements OnInit {
   initRecipe() {
     // Load data from the database and update it when there are any changes in realtime
     this._loadingService.presentLoading();
+
+    // this._recipeService.getRecipeWithUpdatesReference().get().then(result => {
+    //   result.query.orderBy("id", "asc").get().then(newOrder => {
+    //     this._recipeService.recipeArray = newOrder.docs;
+    //     console.log(this._recipeService.recipeArray);
+    //   }).then(() => {
+    //     this._loadingService.dismissLoading();
+    //   });
+    // });
+
     this.recipeSubscription = this._recipeService.getRecipeWithUpdates().subscribe(results => {
       this._recipeService.recipeArray = results;
-      this.recipe = results;
       this._loadingService.dismissLoading();
     });
   }
@@ -73,6 +84,10 @@ export class RecipeListPage implements OnInit {
     this.menu.then(menu => {
       menu.close();
     });
+  }
+
+  onSort(event: any) {
+    this._popoverService.onSort(event);
   }
 
   trackRecipe(index, item) {

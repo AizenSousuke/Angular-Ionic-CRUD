@@ -4,7 +4,6 @@ import { AlertController, ModalController, ToastController, LoadingController } 
 import { RecipeModalPage } from './recipe-list/recipe-modal/recipe-modal.page';
 import { AngularFirestore, DocumentChangeAction, QueryDocumentSnapshot } from '@angular/fire/firestore';
 import { FormControl } from '@angular/forms';
-import { Recipe } from './recipe-list/recipe';
 import { Delta } from 'quill';
 import { LoadingServiceService } from "./loading-service.service";
 
@@ -23,7 +22,8 @@ export class RecipeServiceService {
   // The collection name in firestore to use for recipe
   recipeCollection : string = 'recipe-list';
   // An array of recipes will be stored in this recipe service. All modules and components are to get their recipe data from here after the refactoring. 
-  recipeArray: DocumentChangeAction<any>[];
+  // recipeArray: DocumentChangeAction<any>[];
+  recipeArray;
 
   // Toast duration in milliseconds
   toastDuration: number = 2000;
@@ -53,6 +53,10 @@ export class RecipeServiceService {
     } else {
       return this._fireStore.collection(this.recipeCollection).get();
     }
+  }
+
+  getRecipeWithUpdatesReference() {
+    return this._fireStore.collection(this.recipeCollection).ref;
   }
 
   // Get a recipe by id and listen to updates from firestore
@@ -92,6 +96,7 @@ export class RecipeServiceService {
                       this._loadingService.dismissLoading();
                     }).catch(error => {
                       console.log("Error in toggling favourite: " + error);
+                      this.showToast("Please login. " + error.message, this.toastDuration, false, "danger");
                     });
     });
   }
@@ -139,6 +144,17 @@ export class RecipeServiceService {
     deltaToReturn = JSON.parse(string);
     return deltaToReturn;
   }
+
+  sortBy(string: string = "id", direction?) {
+
+    this.getRecipeWithUpdatesReference().onSnapshot(result => {
+      //console.log(result.docs[0].data().imageLink);
+      result.query.orderBy(string, direction).get().then(newOrder => {
+        //console.log(newOrder.docs[0].data().imageLink);
+        //this.recipeArray = newOrder.docs;
+      });
+    });
+  }
   // Refactored functions End ============================================
 
 
@@ -177,6 +193,8 @@ export class RecipeServiceService {
       this._router.navigate(['/recipe-list']).then(() => {
         // Show the toast
         this.showToast('Recipe created successfully');
+      }).catch(error => {
+        this.showToast("Please login. " + error.message, this.toastDuration, false, "danger");
       });
       console.log('Data: ' + data);
     }
@@ -216,7 +234,9 @@ export class RecipeServiceService {
                 await this._router.navigate(['/recipe-list']).then(() => {
                   // Show the toast
                   this.showToast('Recipe has been deleted successfully');
-                });;
+                }).catch(error => {
+                  this.showToast("Please login. " + error.message, this.toastDuration, false, "danger");
+                });
               });
             });
           });
@@ -274,12 +294,16 @@ export class RecipeServiceService {
             // Show the toast
             this.showToast('Recipe updated successfully');
             this._loadingService.dismissLoading();
+          }).catch(error => {
+            this.showToast("Please login. " + error.message, this.toastDuration, false, "danger");
           });
         } else {
           this._fireStore.collection(this.recipeCollection).doc(data.name.toString()).set(data, { 'merge' : true }).then(() => {
             // Show the toast
             this.showToast('Recipe updated successfully');
             this._loadingService.dismissLoading();
+          }).catch(error => {
+            this.showToast("Please login. " + error.message, this.toastDuration, false, "danger");
           });
         }
       });

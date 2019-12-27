@@ -24,13 +24,16 @@ import { QuillModule } from 'ngx-quill';
 import { FirebaseAuthService } from './firebase-auth.service';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { LoadingServiceService } from './loading-service.service';
+import { PopoverService } from './popover.service';
+import { PopoverComponent } from './popover/popover.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    PopoverComponent
   ],
   entryComponents: [
-    
+    PopoverComponent,
   ],
   imports: [
     BrowserModule, 
@@ -54,6 +57,7 @@ import { LoadingServiceService } from './loading-service.service';
     FirebaseAuthService,
     AngularFireAuth,
     LoadingServiceService,
+    PopoverService,
   ],
   bootstrap: [AppComponent]
 })

@@ -1,0 +1,17 @@
+<ion-list>
+  <ion-radio-group>
+    <ion-list-header>Sort by:</ion-list-header>
+    <ion-item>
+      <ion-label>Name</ion-label>
+      <ion-radio value="name" (ionSelect)="onSort($event)"></ion-radio>
+    </ion-item>
+    <ion-item>
+      <ion-label>Favourite</ion-label>
+      <ion-radio value="favourite" (ionSelect)="onSort($event)"></ion-radio>
+    </ion-item>
+    <ion-item>
+      <ion-label>ID</ion-label>
+      <ion-radio value="id" (ionSelect)="onSort($event)"></ion-radio>
+    </ion-item>
+  </ion-radio-group>
+</ion-list>
