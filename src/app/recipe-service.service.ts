@@ -26,7 +26,7 @@ export class RecipeServiceService {
   recipeArray;
 
   // Set default sortby
-  defaultSortBy = "id";
+  defaultSortBy = "name";
 
   // Toast duration in milliseconds
   toastDuration: number = 2000;

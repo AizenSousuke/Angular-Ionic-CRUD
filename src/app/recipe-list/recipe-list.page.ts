@@ -38,8 +38,8 @@ export class RecipeListPage implements OnInit {
   }
 
   initRecipe() {
-
-    this._recipeService.sortBy("id");
+    // Initial sort of the recipes
+    this._recipeService.sortBy(this._recipeService.defaultSortBy);
 
     // Load data from the database and update it when there are any changes in realtime
     //this._loadingService.presentLoading();
@@ -95,7 +95,7 @@ export class RecipeListPage implements OnInit {
   }
 
   onSort(event: any) {
-    this._popoverService.onSort(event);
+    this._popoverService.onSort(event, this._recipeService.defaultSortBy);
   }
 
   trackRecipe(index, item) {

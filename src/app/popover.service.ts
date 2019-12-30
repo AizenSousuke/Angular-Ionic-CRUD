@@ -23,6 +23,9 @@ export class PopoverService {
       component: PopoverComponent,
       event: event,
       showBackdrop: false,
+      componentProps: {
+        currentSortBy: componentProps,
+      }
     });
     await popover.present();
     await popover.onDidDismiss().then(data => {
