@@ -31,6 +31,7 @@ export class PopoverService {
 
       // Sort the recipe list here
       if (data != null || data != undefined) {
+        this._recipeService.defaultSortBy = data.data;
         this._recipeService.sortBy(data.data);
       }
     });

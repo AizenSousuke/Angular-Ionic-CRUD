@@ -25,6 +25,9 @@ export class RecipeServiceService {
   // recipeArray: DocumentChangeAction<any>[];
   recipeArray;
 
+  // Set default sortby
+  defaultSortBy = "id";
+
   // Toast duration in milliseconds
   toastDuration: number = 2000;
 
@@ -99,11 +102,16 @@ export class RecipeServiceService {
                     .doc(value.docs[0].id)
                     .set({ 'favourite' : favourite }, { 'merge' : true })
                     .then(() => {
+                      // TODO: Update the recipe in the recipeArray here to reflect the updated favourite boolean value
+                      this.sortBy();
+                      //this.recipeArray[this.recipeArray.findIndex(recipe)].favourite = favourite;
+
                       console.log(recipe.get("name") + "'s Favourite Bool: " + recipe.get("favourite"));
                       this.showToast('Set favourite!', this.toastDuration/2);
                       this._loadingService.dismissLoading();
                     }).catch(error => {
                       console.log("Error in toggling favourite: " + error);
+                      this._loadingService.dismissLoading();
                       this.showToast("Please login. " + error.message, this.toastDuration, false, "danger");
                     });
     });
@@ -136,6 +144,7 @@ export class RecipeServiceService {
           });
         });
       } catch (error) {
+        this.showToast("Error: " + error.message);
         console.log("Error: " + error);
       }
     });
@@ -153,7 +162,7 @@ export class RecipeServiceService {
     return deltaToReturn;
   }
 
-  sortBy(string: string = "id", direction?) {
+  sortBy(string: string = this.defaultSortBy, direction?) {
     // this._loadingService.presentLoading();
     // this.getRecipeWithUpdatesReference().onSnapshot(result => {
     //   //console.log(result.docs[0].data().imageLink);
@@ -166,6 +175,9 @@ export class RecipeServiceService {
     this._loadingService.presentLoading();
     this.getRecipeWithUpdatesReference().orderBy(string, direction).get().then(results => {
       this.recipeArray = results.docs;
+      this._loadingService.dismissLoading();
+    }).catch(error => {
+      this.showToast("Error: " + error.message, this.toastDuration, false, "warning");
       this._loadingService.dismissLoading();
     });
   }
