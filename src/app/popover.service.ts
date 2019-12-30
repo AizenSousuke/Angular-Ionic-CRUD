@@ -27,10 +27,10 @@ export class PopoverService {
     await popover.present();
     await popover.onDidDismiss().then(data => {
       console.log("Dismissed popover");
-      console.log("Sorting by: " + data.data);
 
       // Sort the recipe list here
-      if (data != null || data != undefined) {
+      if (data.data != null && data.data != undefined) {
+        console.log("Sorting by: " + data.data);
         this._recipeService.defaultSortBy = data.data;
         this._recipeService.sortBy(data.data);
       }
